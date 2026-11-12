@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lessinia Rally Historic 2026</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b0b0c">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<style>
+:root{
+  /* Layout: una colonna da telefono a bordo strada, stato "adesso" in cima, poi orari, meteo, posto, checklist. Palette nera come "Spese Università", giallo per gli orari del rally. */
+  --bg:#0b0b0c;
+  --panel:#161618;
+  --soft:#212124;
+  --line:#29292d;
+  --ink:#f4f4f5;
+  --muted:#8e8e95;
+  --accent:#f5c04f;
+  --hero:#212124; --hero-b:#101012; --hero-line:rgba(255,255,255,.09);
+  --btn:#f4f4f5; --btn-ink:#0a0a0a;
+  --red:#f87171; --red-soft:#2a1717;
+  --ok:#4ade80; --ok-soft:#13251a;
+  --shadow:0 1px 0 rgba(255,255,255,.03),0 12px 28px -18px rgba(0,0,0,.9);
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration-color:var(--muted);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 48px;display:grid;gap:16px}
+header{position:relative;overflow:hidden;display:grid;gap:4px;border-radius:22px;padding:22px;background:linear-gradient(150deg,var(--hero) 0%,var(--hero-b) 100%);border:1px solid var(--hero-line);box-shadow:var(--shadow)}
+header::after{content:"";position:absolute;right:-70px;top:-80px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+header .eyebrow{color:var(--accent)}
+h1{font:800 38px/1.05 var(--display);letter-spacing:-.02em;margin:4px 0 2px;text-wrap:balance}
+.sub{color:var(--muted)}
+h2{font:700 18px/1.2 var(--display);letter-spacing:-.01em;margin:0 0 12px;text-wrap:balance}
+section{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Stato adesso */
+.now{display:grid;gap:12px;box-shadow:var(--shadow), inset 4px 0 0 var(--accent)}
+.now-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;font:700 13px/1 var(--mono);padding:6px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.pill.closed{color:var(--red);background:var(--red-soft)}
+.pill.open{color:var(--ok);background:var(--ok-soft)}
+.pill.idle{color:var(--muted);background:var(--soft)}
+.big{font:800 30px/1.1 var(--display);letter-spacing:-.02em}
+.count{font:700 28px/1 var(--mono);color:var(--accent);font-variant-numeric:tabular-nums}
+.note{color:var(--muted);font-size:13px}
+
+/* Timeline */
+.tl{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.tl li{display:grid;grid-template-columns:62px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.tl li:first-child{border-top:0}
+.tl .t{font:700 16px/1.3 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.tl .ps .t{color:var(--accent)}
+.tl .ps .w{font-weight:700}
+.tl .w{display:block}
+.tl .d{display:block;color:var(--muted);font-size:13px}
+.tl li.past{opacity:.4}
+.tl li.current{background:var(--soft);border-radius:12px;margin:0 -10px;padding-left:10px;padding-right:10px}
+
+/* Tabelle */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:420px;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td.mono{white-space:nowrap}
+tr.mine td{background:var(--soft)}
+tr.mine td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+
+/* Meteo */
+.bars{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;align-items:end;height:130px;margin-top:8px}
+.bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}
+.bar span{font:500 11px/1 var(--mono);color:var(--ink)}
+.bar i{display:block;width:100%;border-radius:6px 6px 0 0;background:linear-gradient(#5a5a62,#2c2c31)}
+.bar.ps i{background:linear-gradient(var(--accent),rgba(245,192,79,.35))}
+.hrs{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;font:500 11px/1 var(--mono);color:var(--muted);text-align:center;margin-top:4px}
+.wx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.tile{background:var(--soft);border-radius:14px;padding:12px 14px}
+.tile b{display:block;font:700 22px/1.1 var(--mono);font-variant-numeric:tabular-nums}
+.tile small{color:var(--muted)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:11px 16px;border-radius:12px;border:1px solid var(--btn);color:var(--btn-ink);background:var(--btn);font:600 14px/1 var(--body);text-decoration:none}
+.btn.ghost{background:var(--panel);color:var(--ink);border-color:var(--line)}
+
+/* Checklist */
+.check{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:6px 0}
+.check input{width:20px;height:20px;accent-color:var(--accent);flex:none;margin-top:1px}
+.check input:checked + span{color:var(--muted);text-decoration:line-through}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:6px}
+.spot{margin:0 0 12px;display:grid;gap:8px}
+.spot svg.osm{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:#101012}
+.spot-btns{margin:0 0 14px}
+.radar{display:grid;gap:4px;margin-top:14px;padding:14px;border-radius:14px;background:var(--soft)}
+.radar b{display:block;font:700 15px/1.3 var(--display)}
+.radar .btns{margin-top:8px}
+/* Meteo su misura */
+.c39{box-shadow:var(--shadow), inset 4px 0 0 var(--accent)}
+.c39-next{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin:12px 0}
+.c39-time{font:800 40px/1 var(--display);letter-spacing:-.02em;margin:6px 0 4px;font-variant-numeric:tabular-nums}
+.c39-count{font:700 26px/1 var(--mono);color:var(--accent);font-variant-numeric:tabular-nums}
+.c39-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:8px}
+.c39-item{background:var(--soft);border-radius:12px;padding:10px 12px;display:grid;gap:2px}
+.c39-item b{font:700 18px/1.2 var(--mono)}
+.c39-item small{color:var(--muted);font-size:12px}
+.c39-item.past{opacity:.45}
+.h3{margin:16px 0 8px;font:700 15px/1.3 var(--display)}
+.trip-big{background:var(--soft);border-radius:16px;padding:16px;display:grid;gap:4px}
+.trip-time{font:800 40px/1 var(--display);color:var(--accent);font-variant-numeric:tabular-nums}
+.poi{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.poi li{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;background:var(--soft)}
+.poi b{display:block;font-weight:600}
+.poi small{display:block;color:var(--muted);font-size:12px}
+.poi-ic{width:34px;height:34px;border-radius:10px;background:#2c2c31;display:grid;place-items:center;font:700 12px/1 var(--mono);color:var(--ink)}
+.poi-ic.sos{background:var(--red-soft);color:var(--red)}
+.btn.sm{padding:7px 10px;font-size:12px}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin:12px 0}
+.shot{background:var(--soft);border-radius:14px;padding:12px 14px}
+.shot-h{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.tag2{font:700 11px/1 var(--mono);background:var(--accent);color:#141414;padding:4px 7px;border-radius:999px}
+.shot ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+.search{width:100%;margin:10px 0;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--soft);color:var(--ink);font:500 15px/1.2 var(--body)}
+.ent{display:grid;gap:6px;max-height:520px;overflow:auto}
+.ent-row{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;background:var(--soft)}
+.ent-row.mine{box-shadow:inset 3px 0 0 var(--accent);background:rgba(245,192,79,.08)}
+.ent-n{font:800 18px/1 var(--display);text-align:center}
+.ent-row b{display:block;font-weight:600}
+.ent-row small{display:block;color:var(--muted);font-size:12px}
+.offline-res{margin:12px 0 4px;padding:12px 14px;border-radius:14px;background:var(--soft);display:grid;gap:8px}
+.off-t{width:100%;border-collapse:collapse;font-size:13px}
+.off-t td{padding:5px 6px;border-bottom:1px solid var(--line)}
+.off-t tr.mine td{background:rgba(245,192,79,.1);color:var(--accent);font-weight:700}
+.res-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 4px;padding:16px 18px;border-radius:16px;background:linear-gradient(150deg,#2a2412,#161618);border:1px solid rgba(245,192,79,.45);text-decoration:none;color:var(--ink)}
+.res-cta b{display:block;font:700 18px/1.2 var(--display)}
+.res-cta small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.res-cta .arrow{font:700 24px/1 var(--display);color:var(--accent)}
+.res-cta:hover{border-color:var(--accent)}
+.res-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.res-head h2{margin:0}
+.res-frame{margin:12px 0 4px;border-radius:14px;border:1px solid var(--line);overflow:hidden;background:#0f0f10;height:560px}
+.res-frame iframe{display:block;width:100%;height:100%;border:0;background:#fff;filter:invert(.92) hue-rotate(180deg)}
+button.btn{cursor:pointer}
+.mk{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:#161618;border:1px solid #f4f4f5;color:#f4f4f5;font:700 11px/1 ui-monospace,monospace}
+.satmap{height:380px;border-radius:14px;border:1px solid var(--line);overflow:hidden;background:#101012}
+.satmap .leaflet-control-attribution{background:rgba(11,11,12,.55)!important;color:#8e8e95!important;font:10px/1.4 var(--body)!important;padding:1px 6px!important;border-radius:6px 0 0 0}
+.satmap .leaflet-control-attribution a{color:#8e8e95!important}
+.satmap .leaflet-bar{border:1px solid var(--line)!important;box-shadow:none!important;border-radius:10px!important;overflow:hidden}
+.satmap .leaflet-bar a{background:#161618!important;color:#f4f4f5!important;border-bottom:1px solid var(--line)!important}
+.satmap .leaflet-bar a:hover{background:#212124!important}
+.satmap .lbl{background:rgba(11,11,12,.8);color:#f5c04f;border:1px solid #f5c04f;border-radius:999px;padding:2px 8px;font:700 12px/1.3 var(--body);white-space:nowrap;box-shadow:none}
+.satmap .lbl::before{display:none}
+.satmap .lbl2{color:#f4f4f5;border-color:#8e8e95}
+.wx-meta{margin:-4px 0 14px}
+.wx-hero{display:grid;gap:16px;padding:20px;border-radius:18px;background:linear-gradient(150deg,#232327 0%,#141416 100%);border:1px solid var(--line)}
+.wx-hero-main{display:flex;gap:16px;align-items:center}
+.wx-ico-big{width:88px;height:88px;flex:none}
+.wx-ico-big svg{width:100%;height:100%}
+.wx-hero-temp{font:800 44px/1 var(--display);letter-spacing:-.03em;margin:6px 0 4px;font-variant-numeric:tabular-nums}
+.wx-sep{color:var(--muted);font-weight:600;margin:0 6px}
+#wx-min{color:var(--muted)}
+.wx-hero-cond{color:var(--ink);font-weight:600}
+.wx-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.wx-chip{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:2px}
+.wx-chip small{color:var(--muted);font-size:12px}
+.wx-chip b{font:700 17px/1.2 var(--mono);font-variant-numeric:tabular-nums}
+.wx-chart-wrap{margin-top:18px}
+.wx-chart-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.wx-chart-head h3,.wx-days-col h3{margin:0;font:700 15px/1.3 var(--display)}
+.wx-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:12px 2px 6px;margin:-4px -2px 0;scrollbar-width:thin;scrollbar-color:#3a3a40 transparent}
+.wx-hours{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(52px,1fr);gap:6px;min-width:max-content;position:relative}
+.wx-h{display:grid;justify-items:center;gap:6px;padding:10px 4px 8px;border-radius:14px;background:var(--soft);border:1px solid transparent;position:relative}
+.wx-h.ps{border-color:var(--accent);background:rgba(245,192,79,.08)}
+.wx-h .hh{font:600 12px/1 var(--mono);color:var(--muted)}
+.wx-h.ps .hh{color:var(--accent)}
+.wx-h .ic{width:34px;height:34px}
+.wx-h .ic svg{width:100%;height:100%}
+.wx-h .tt{font:700 16px/1 var(--mono);font-variant-numeric:tabular-nums}
+.wx-h .pp{font:500 11px/1 var(--mono);color:#7dd3fc;min-height:11px}
+.wx-h .ww{font:500 11px/1 var(--mono);color:var(--muted)}
+.wx-h .tag{position:absolute;top:-9px;font:700 10px/1 var(--mono);background:var(--accent);color:#141414;padding:3px 6px;border-radius:999px;white-space:nowrap}
+.wx-h .bar{width:6px;border-radius:3px;background:linear-gradient(#f5c04f,#f87171);align-self:end}
+.wx-days-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:18px}
+.wx-days-col{display:grid;gap:8px;align-content:start}
+.wx-days{display:grid;gap:6px}
+.wx-d{display:grid;grid-template-columns:58px 30px 1fr auto;gap:10px;align-items:center;padding:8px 12px;border-radius:12px;background:var(--soft)}
+.wx-d.sat{box-shadow:inset 3px 0 0 var(--accent)}
+.wx-d .dn{font:600 13px/1.2 var(--body)}
+.wx-d .ic{width:30px;height:30px}
+.wx-d .ic svg{width:100%;height:100%}
+.wx-d .rng{position:relative;height:6px;border-radius:3px;background:#2c2c31}
+.wx-d .rng i{position:absolute;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,#7dd3fc,#f5c04f)}
+.wx-d .tv{font:600 13px/1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.wx-d .tv span{color:var(--muted)}
+.wx-d .pr{grid-column:3/5;font:500 11px/1 var(--mono);color:#7dd3fc;margin-top:-4px}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px}
+.wcol{display:grid;gap:10px;align-content:start}
+.wcol h3{margin:0;font:700 15px/1.3 var(--display)}
+.wbox{overflow:hidden;border-radius:14px;background:#161618;border:1px solid var(--line)}
+.wbox iframe{display:block;border:0;width:calc(100% + 6px);margin:-1px -3px 0 -1px;background:#161618}
+.rbox{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--line);background:#2b5079;height:460px}
+.rbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media (min-width:700px){.rbox{height:520px}}
+.live{display:grid;gap:8px;margin-top:14px}
+.live h3{margin:0;font:700 15px/1.3 var(--display)}
+.live iframe{display:block;width:100%;border:1px solid var(--line);border-radius:14px;background:#161618}
+.radar-frame{background:#fff!important}
+section.warn{box-shadow:var(--shadow), inset 4px 0 0 var(--red)}
+footer{color:var(--muted);font-size:13px;display:grid;gap:4px}
+@media (max-width:420px){h1{font-size:32px}.big{font-size:26px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Trofeo Banca Valsabbina · Rally Club Valpantena</div>
+  <h1>8° Lessinia Rally Historic</h1>
+  <div class="sub">Sabato 14 novembre 2026 · Tornante consigliato: fine PS 4/6/8 "Calavedo", Bosco Chiesanuova</div>
+</header>
+
+<section class="now" aria-live="polite">
+  <div class="eyebrow">Adesso</div>
+  <div class="now-row">
+    <span class="big" id="now-title">Prossimo passaggio</span>
+  </div>
+  <div class="now-row">
+    <span class="count" id="now-count">–</span>
+    <span class="note" id="now-detail"></span>
+  </div>
+  <div class="now-row">
+    <span class="note">Strada Calavedo:</span><span class="pill idle" id="pill-cal">–</span>
+    <span class="note">Strada Velo:</span><span class="pill idle" id="pill-velo">–</span>
+  </div>
+  <div class="note">Gli orari di riapertura sono indicativi: la strada riapre solo dopo il passaggio della vettura "scopa".</div>
+</section>
+
+<section class="c39" id="c39">
+  <div class="res-head"><h2>Quando passa il 39</h2><span class="pill idle" id="c39-pill">in attesa dell'ordine di partenza</span></div>
+  <div class="c39-next" id="c39-next">
+    <div><div class="eyebrow">Prossimo passaggio del 39 al tornante</div><div class="c39-time" id="c39-time">–</div><div class="note" id="c39-sub">L'ordine di partenza esce venerdì: Claude aggiorna la dashboard e qui compare l'orario stimato.</div></div>
+    <div class="c39-count" id="c39-count"></div>
+  </div>
+  <div class="c39-list" id="c39-list"></div>
+  <p class="note">Stima: orario di partenza della prova + un minuto per ogni auto davanti al 39 + circa 9 minuti per arrivare al tornante, che è verso la fine dei 10,5 km. Ritardi e ritiri possono spostarla di qualche minuto: tieniti pronto 5 minuti prima.</p>
+</section>
+
+<section>
+  <h2>Programma di sabato</h2>
+  <ol class="tl" id="timeline">
+    <li data-start="08:30" data-end="09:00"><span class="t">8:30</span><span><span class="w">Parcheggio a Bosco e salita a piedi al tornante</span><span class="d">Lascia l'auto in paese, non sulla strada della prova</span></span></li>
+    <li data-start="09:00" data-end="09:01"><span class="t">9:00</span><span><span class="w">Chiude la strada Calavedo</span><span class="d">Da qui in poi resti dentro fino alla riapertura</span></span></li>
+    <li class="ps" data-start="10:17" data-end="11:45"><span class="t">10:17</span><span><span class="w">PS 4 · Calavedo "Banca Valsabbina"</span><span class="d">Prima auto. 82 iscritti, passaggio di circa 1h30</span></span></li>
+    <li data-start="11:45" data-end="13:00"><span class="t">11:45</span><span><span class="w">Strada riaperta · pausa pranzo in paese</span><span class="d">Fino alle 13:00 circa</span></span></li>
+    <li class="ps" data-start="14:14" data-end="15:45"><span class="t">14:14</span><span><span class="w">PS 6 · Calavedo "F.lli Scala Marmi"</span><span class="d">Secondo passaggio</span></span></li>
+    <li data-start="15:45" data-end="16:30"><span class="t">15:45</span><span><span class="w">Strada riaperta · caffè caldo</span><span class="d">Richiude alle 16:30. Il sole tramonta verso le 16:50</span></span></li>
+    <li class="ps" data-start="17:42" data-end="18:00"><span class="t">17:42</span><span><span class="w">PS 8 · Calavedo "M.T.S." al buio</span><span class="d">Fari accesi: il passaggio più scenografico</span></span></li>
+    <li data-start="18:00" data-end="19:40"><span class="t">18:00</span><span><span class="w">Arrivo a Bosco Chiesanuova, Piazza Marconi</span><span class="d">Si arriva a piedi</span></span></li>
+    <li data-start="19:40" data-end="23:59"><span class="t">19:40</span><span><span class="w">Strade riaperte · rientro a casa</span><span class="d">Orario indicativo</span></span></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Prove speciali e strade chiuse</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Prova</th><th>Km</th><th>1ª auto</th><th>Strada chiusa</th></tr></thead>
+      <tbody>
+        <tr><td>PS 3 · Velo Veronese</td><td class="mono">7,24</td><td class="mono">9:39</td><td class="mono">8:20–11:10</td></tr>
+        <tr class="mine"><td>PS 4 · Calavedo</td><td class="mono">10,53</td><td class="mono">10:17</td><td class="mono">9:00–11:45</td></tr>
+        <tr><td>PS 5 · Velo Veronese</td><td class="mono">7,24</td><td class="mono">13:36</td><td class="mono">12:30–15:00</td></tr>
+        <tr class="mine"><td>PS 6 · Calavedo</td><td class="mono">10,53</td><td class="mono">14:14</td><td class="mono">13:00–15:45</td></tr>
+        <tr><td>PS 7 · Velo Veronese</td><td class="mono">7,24</td><td class="mono">17:04</td><td class="mono">16:00–19:00</td></tr>
+        <tr class="mine"><td>PS 8 · Calavedo</td><td class="mono">10,53</td><td class="mono">17:42</td><td class="mono">16:30–19:40</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Venerdì 13: PS 1 e PS 2 Romagnano/Azzago (5,52 km) alle 16:44 e alle 19:27. Strade chiuse dalle 15:30 alle 18:15 e dalle 19:00 alle 21:25. Partenza da Grezzana, Piazza C. Ederle.</p>
+</section>
+
+<section class="live-res">
+  <div class="res-head">
+    <h2>Classifica live</h2>
+    <span class="pill open">aggiornata da Claude</span>
+  </div>
+  <p class="note">Appena l'organizzazione pubblica una classifica ufficiale, Claude la trasforma in una tabella e aggiorna questa pagina: posizione, equipaggio, auto, tempo e distacco, con il n. 39 evidenziato. Il link resta sempre lo stesso.</p>
+  <a class="res-cta" href="https://claude.ai/artifact/3EE8RXXMet6Y7sC6wzYoAW">
+    <span><b>Apri la classifica</b><small>Prima classifica attesa venerdì verso le 18:15, dopo la PS 1</small></span>
+    <span class="arrow">→</span>
+  </a>
+  <div class="offline-res" id="off-res">
+    <div class="eyebrow">Copia salvata in questo file · funziona anche senza segnale</div>
+    <div id="off-body" class="note">Ancora nessuna classifica: la prima arriva dopo la PS 1. Ogni volta che aggiorno la classifica ti rimando anche questo file con la copia dentro.</div>
+  </div>
+  <div class="btns">
+    <a class="btn ghost" href="https://webapp.sportity.com/event/Lessinia2026/9fe650ba-6cee-48be-a23d-24445bf119bf">Albo ufficiale Sportity</a>
+    <a class="btn ghost" href="https://www.cronocarservice.com/archivio-file/rally_storico/14618/">PDF Cronocar</a>
+  </div>
+</section>
+
+<section>
+  <h2>Meteo al tornante consigliato</h2>
+  <div class="wx-meta note" id="wx-meta">Carico le previsioni…</div>
+
+  <div class="wx-hero" id="wx-hero">
+    <div class="wx-hero-main">
+      <div class="wx-ico-big" id="wx-hero-ico"></div>
+      <div>
+        <div class="eyebrow">Sabato 14 novembre · Bosco Chiesanuova</div>
+        <div class="wx-hero-temp"><span id="wx-max">–</span><span class="wx-sep">/</span><span id="wx-min">–</span></div>
+        <div class="wx-hero-cond" id="wx-cond">–</div>
+      </div>
+    </div>
+    <div class="wx-chips" id="wx-chips"></div>
+  </div>
+
+  <div class="wx-chart-wrap">
+    <div class="wx-chart-head"><h3>Sabato ora per ora</h3><span class="note">In giallo le ore dei passaggi</span></div>
+    <div class="wx-scroll">
+      <div class="wx-hours" id="wx-hours"></div>
+    </div>
+  </div>
+
+  <div class="wx-days-wrap">
+    <div class="wx-days-col">
+      <h3>Bosco Chiesanuova</h3>
+      <div class="wx-days" id="wx-days-bosco"></div>
+    </div>
+    <div class="wx-days-col">
+      <h3>Velo Veronese</h3>
+      <div class="wx-days" id="wx-days-velo"></div>
+    </div>
+  </div>
+  <div class="live">
+    <h3>Radar 3B Meteo</h3>
+    <div class="rbox"><iframe title="Radar 3B Meteo" src="https://www.3bmeteo.com/cartografico?embed=1#type=italia,param=radar,fascia_ora=auto,embed=1" loading="lazy" allow="fullscreen"></iframe></div>
+    <span class="note">Pioggia, neve e grandine in tempo reale, con l'animazione degli ultimi minuti. Allarga con due dita per zoomare sulla Lessinia.</span>
+  </div>
+  <div class="btns">
+    <a class="btn" href="https://www.3bmeteo.com/meteo/bosco+chiesanuova">Confronta con 3B Meteo</a>
+    <a class="btn ghost" href="https://www.3bmeteo.com/radar/italia">Radar a schermo intero</a>
+  </div>
+</section>
+
+<section class="warn">
+  <h2>Il posto: tornante a fine prova</h2>
+  <figure class="spot">
+    <svg class="osm" viewBox="-240 -200 480 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mappa del tornante su Via Saina a Bosco Chiesanuova: la prova arriva da ovest, fa il tornante cerchiato in giallo, scende al secondo tornante e risale verso il paese">
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#f87171"/></marker>
+</defs>
+<rect x="-240" y="-200" width="480" height="330" fill="#101012"/>
+<path fill="#141a16" d="M247 -6L240 -12L229 -23L220 -29L203 -40L193 -46L198 -49L202 -58L201 -61L183 -69L173 -74L174 -79L184 -78L191 -77L197 -79L199 -83L197 -90L195 -95L191 -98L182 -100L178 -103L181 -106L190 -106L197 -106L203 -107L206 -111L209 -115L213 -118L212 -122L214 -130L216 -134L217 -137L217 -141L221 -148L227 -151L227 -156L219 -157L200 -157L198 -153L190 -154L183 -160L172 -163L165 -163L162 -160L156 -159L153 -162L155 -174L160 -178L164 -178L166 -175L169 -173L179 -175L183 -173L190 -175L197 -175L205 -174L213 -177L215 -181L220 -183L220 -186L220 -192L221 -196L227 -199L227 -202L226 -207L228 -211L232 -216L236 -218L244 -217L250 -214L252 -209L253 -205L256 -204L259 -204L269 -201L270 -196L268 -191L267 -186L265 -182L265 -176L263 -173L258 -169L253 -164L247 -162L243 -159L238 -154L237 -149L238 -140L245 -138L250 -138L256 -137L254 -126L250 -128L243 -129L240 -126L238 -118L238 -115L235 -110L232 -107L231 -100L231 -92L233 -88L234 -83L234 -79L229 -77L223 -75L226 -70L234 -68L237 -67L241 -60L244 -58L246 -56L249 -53L249 -49L254 -46L255 -42L255 -37L258 -34L259 -33L260 -29L256 -25L251 -21L249 -19L250 -15L252 -17L254 -16L251 -11L249 -6L247 -6ZM31 -73L28 -74L27 -75L30 -87L32 -102L51 -99L76 -90L90 -88L98 -88L122 -95L142 -105L148 -99L118 -77L114 -76L92 -58L52 -59L43 -72L35 -73L31 -73ZM-238 43L-237 49L-216 59L-226 69L-235 77L-249 83L-261 82L-281 88L-286 93L-303 102L-320 107L-329 109L-353 107L-360 102L-360 92L-354 84L-344 80L-342 75L-317 68L-301 62L-286 59L-279 51L-279 42L-271 35L-266 36L-263 41L-257 45L-249 46L-238 43ZM30 -87L27 -75L28 -74L31 -73L-1 -43L-11 -43L-25 -46L-37 -51L-45 -57L-53 -66L-75 -85L-81 -90L-87 -92L-80 -106L-97 -133L-116 -121L-119 -127L-96 -137L-88 -137L-38 -175L-35 -171L-34 -170L30 -184L20 -177L9 -165L2 -153L-5 -136L-12 -139L-16 -135L-18 -129L-17 -121L-14 -111L-7 -99L4 -94L30 -87ZM141 -150L136 -143L137 -133L142 -130L149 -135L152 -148L158 -155L165 -155L172 -154L176 -147L176 -138L150 -122L118 -106L97 -100L90 -100L79 -102L55 -110L39 -115L31 -125L35 -131L50 -139L58 -139L67 -134L76 -131L82 -136L93 -139L142 -158L141 -150Z"/>
+<path fill="#18181b" d="M61 -175L71 -147L129 -168L120 -195L61 -175ZM30 -184L-34 -170L-43 -230L20 -243L50 -252L61 -243L67 -227L69 -211L59 -196L47 -190L30 -184ZM-254 -219L-249 -225L-232 -248L-225 -232L-221 -225L-217 -212L-214 -204L-216 -203L-243 -196L-304 -148L-334 -191L-287 -225L-279 -232L-281 -242L-254 -219Z"/>
+<path fill="#2a2a2f" d="M-39 -193L-34 -195L-31 -182L-36 -181ZM-220 23L-188 12L-183 26L-214 37ZM-15 -51L-1 -48L-2 -39L-16 -41ZM58 -24L69 -24L69 -9L58 -9ZM115 -69L121 -61L106 -50L100 -59ZM-162 -78L-164 -93L-160 -94L-153 -95L-154 -102L-141 -103L-139 -87L-153 -85L-152 -80L-157 -79ZM52 145L55 145L56 141L65 141L67 144L67 154L56 155L55 150L52 151ZM-43 -38L-31 -36L-31 -28L-33 -25L-41 -27L-41 -30L-45 -31L-53 -39L-56 -41L-53 -46ZM-156 -206L-159 -214L-148 -217L-149 -220L-144 -222L-142 -218L-135 -217L-134 -211L-148 -208ZM-184 -56L-172 -60L-173 -64L-167 -66L-163 -55L-186 -47L-188 -52L-184 -54ZM51 -60L56 -60L56 -58L65 -58L65 -55L78 -54L78 -45L67 -45L66 -47L52 -48ZM61 85L68 81L74 89L76 88L78 94L76 94L80 102L71 106L67 99ZM250 -3L252 -9L270 -5L268 -11L277 -15L276 -18L282 -20L286 -9L272 -3L270 2ZM232 18L235 9L239 10L240 7L247 8L247 11L275 15L273 25L252 21ZM264 33L269 35L269 43L267 43L268 48L265 48L265 53L260 52L261 39L264 39ZM132 112L145 111L146 123L150 124L149 130L122 132L123 126L132 126ZM244 -80L243 -89L270 -91L274 -77L257 -73L255 -83ZM215 199L224 202L222 207L227 210L224 218L218 216L216 221L207 218L211 209L207 208L210 200L214 202ZM286 -133L296 -131L295 -127L303 -126L304 -118L297 -120L295 -111L289 -112L285 -116L286 -120L284 -120ZM116 -231L116 -241L124 -241L125 -252L128 -252L127 -242L135 -241L134 -235L143 -233L150 -224L118 -208L116 -217L129 -223L125 -231ZM-232 -183L-235 -195L-224 -199L-208 -201L-206 -195L-226 -189L-225 -186ZM-94 -126L-80 -107L-84 -103L-80 -97L-90 -90L-109 -115ZM196 -227L212 -223L212 -210L210 -210L206 -204L202 -205L203 -212L193 -215ZM130 147L139 147L140 154L144 153L144 148L150 147L151 161L157 161L158 178L150 178L150 181L137 181L136 173L138 173L137 169L128 167L127 155L130 155ZM79 -145L93 -149L96 -139L81 -135ZM19 -61L33 -74L40 -66L25 -54ZM-249 -189L-245 -193L-243 -190L-247 -187ZM181 -67L190 -64L187 -55L177 -58ZM86 -52L98 -51L97 -47L87 -48ZM101 -155L116 -161L119 -151L104 -146ZM9 -106L30 -103L29 -93L8 -97ZM122 -54L126 -55L128 -51L124 -49ZM146 -39L156 -41L158 -28L148 -27ZM-41 104L-32 102L-30 112L-38 114ZM17 -29L41 -30L43 -17L18 -15ZM138 -179L144 -180L145 -162L139 -162ZM180 -13L183 -18L189 -15L186 -9ZM-4 -9L-3 -12L6 -9L5 -5ZM42 -53L47 -58L50 -55L45 -49ZM-261 -124L-253 -125L-252 -117L-259 -116ZM216 0L219 -4L223 -8L232 -1L225 8ZM182 -98L191 -95L188 -83L179 -85ZM196 -19L202 -28L221 -17L215 -8ZM107 47L112 46L113 53L108 53ZM233 124L249 123L249 128L234 129ZM247 -155L254 -154L252 -143L245 -144ZM264 -48L276 -44L273 -33L262 -37ZM263 -64L273 -68L276 -62L275 -58L268 -54ZM148 81L158 81L157 90L147 89ZM127 79L139 79L139 84L137 84L137 91L127 91ZM-229 -145L-222 -150L-215 -151L-209 -140L-223 -133ZM209 97L218 101L213 113L204 109ZM-46 -123L-41 -123L-40 -110L-50 -109L-50 -117L-46 -118ZM-216 -178L-208 -180L-204 -177L-202 -170L-214 -167ZM243 -123L252 -123L252 -118L257 -118L256 -112L242 -111ZM173 -212L186 -211L186 -208L183 -208L183 -200L173 -201ZM177 -32L182 -40L188 -37L183 -29ZM-3 -30L9 -28L6 -13L-6 -15L-31 -21L-28 -33ZM-288 -123L-289 -131L-276 -133L-275 -127L-284 -126L-284 -123ZM34 -58L42 -64L44 -61L29 -48L27 -51ZM241 -98L242 -108L274 -107L275 -99ZM86 -28L99 -28L98 -15L83 -16L84 -22L87 -23ZM266 95L271 99L267 102L271 106L264 112L258 105L263 102L261 99ZM277 -35L293 -35L294 -24L276 -22ZM273 -183L282 -178L278 -163L274 -144L257 -151L259 -161L266 -160ZM113 -43L124 -46L126 -37L112 -33L109 -42ZM-198 -176L-201 -185L-189 -189L-184 -187L-180 -175L-188 -172L-190 -178ZM-133 -59L-126 -70L-112 -61L-120 -50ZM283 -105L299 -103L299 -96L284 -96ZM232 159L230 152L236 150L234 146L244 144L246 152L240 153L241 158ZM166 79L182 80L180 88L175 88L174 92L163 90ZM107 -266L108 -276L120 -275L137 -272L136 -267L140 -266L140 -260L121 -263ZM136 -81L151 -91L157 -80L139 -68L134 -77L138 -79ZM106 174L119 173L121 186L107 187ZM165 109L181 110L181 125L153 123L153 115L164 116ZM123 -196L128 -197L131 -191L136 -192L139 -183L128 -177ZM201 -141L209 -142L208 -121L203 -121L199 -113L191 -116L196 -129L201 -130ZM90 -241L103 -237L103 -230L110 -230L112 -218L84 -209L77 -211ZM-80 -225L-68 -223L-67 -221L-70 -220L-69 -217L-77 -214ZM79 -203L101 -212L106 -201L84 -192ZM207 -197L200 -198L199 -186L206 -187ZM190 -191L190 -184L199 -186L200 -198L193 -198L193 -191ZM181 -194L191 -197L190 -182L181 -185ZM-138 108L-138 116L-118 118L-118 110ZM-153 106L-139 107L-140 115L-154 113ZM-117 113L-108 109L-103 124L-110 128ZM31 27L29 17L48 14L50 24Z"/>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path stroke="#3a3a40" stroke-width="1.5" stroke-dasharray="3 3" d="M40 -223L40 -207L33 -195L11 -185L-3 -182M5 -134L18 -139L22 -139M73 -97L66 -88L59 -78L54 -68L48 -47L46 -37M22 -139L55 -127L70 -121L84 -118L115 -122L123 -128L136 -130L149 -145L153 -160L153 -180M115 -122L104 -107L92 -93M130 -155L134 -139L136 -130M84 1L97 0L102 -3L105 -16L107 -33L107 -48M156 -194L145 -189L136 -181L132 -163L130 -155M127 -129L110 -129L84 -127L65 -130L49 -136L41 -140M112 -140L126 -135L134 -139"/>
+<path stroke="#38383e" stroke-width="3" d="M-10 -260L3 -261L20 -259L33 -243M113 -252L101 -258L87 -255L82 -239L77 -213L67 -195L60 -180L58 -169L60 -155L64 -145L77 -133L90 -133L115 -141L124 -145L130 -155M-3 -182L-4 -158L-1 -139L5 -134"/>
+<path stroke="#4a4a52" stroke-width="5" d="M57 -272L64 -253L69 -229L71 -212L67 -205L49 -189L38 -184L27 -173L15 -159L7 -145L5 -134M57 -272L114 -264L143 -258M77 267L74 243L65 219L49 199L13 175L-26 132L-43 121L-49 112L-50 104L-43 89L-21 44L-2 22L2 10M36 -110L45 -106L68 -99L92 -93L101 -94L122 -99L148 -111L173 -131L183 -133L184 -125L177 -115L171 -104L167 -79L168 -67L169 -60M5 -134L13 -124L25 -115L36 -110M88 -190L123 -206L156 -221L189 -221M2 10L-14 25L-32 44L-49 58L-71 66L-91 71L-104 76L-114 90L-118 109L-118 116M5 2L19 5L38 8L60 6L84 1L91 -2L96 -7L96 -14M57 -272L12 -282L-23 -289L-54 -280L-78 -272L-106 -254L-123 -245L-168 -227L-182 -219L-202 -199L-230 -170L-250 -153M169 -60L190 -44L220 -24L250 1L258 5L275 4L301 -13L329 -32"/>
+<path stroke="#f87171" stroke-width="7" d="M-260 12L-249 10L-220 -7L-188 -24L-175 -33L-161 -38L-148 -39L-139 -35L-129 -30L-117 -26L-104 -25L-93 -26L-75 -19L-43 -5L-20 3L-12 6L-7 8L-2 10L2 10L4 8L5 4L5 2L5 0L0 -4L-14 -10L-31 -18L-47 -24L-56 -32L-67 -42L-81 -56L-94 -71L-99 -78L-100 -84L-98 -89L-94 -89L-89 -88L-82 -83L-74 -73L-62 -61L-44 -44L-32 -40L-13 -38L3 -36L36 -36L46 -37L69 -37L87 -39L100 -44L107 -48L115 -55L129 -60L144 -64L156 -64L169 -60"/>
+<path stroke="#f87171" stroke-width="2" marker-end="url(#ar)" d="M-200 -12L-180 -22"/>
+<path stroke="#f87171" stroke-width="2" marker-end="url(#ar)" d="M-28 -44L-48 -57"/>
+<path stroke="#f87171" stroke-width="2" marker-end="url(#ar)" d="M60 -45L84 -47"/>
+</g>
+<circle cx="2" cy="3" r="17" fill="none" stroke="#f5c04f" stroke-width="3.5"/>
+<circle cx="2" cy="3" r="3.5" fill="#f5c04f"/>
+<circle cx="-97" cy="-82" r="12" fill="none" stroke="#8e8e95" stroke-width="2" stroke-dasharray="3 3"/>
+<g font-family="Plus Jakarta Sans, system-ui, sans-serif" font-size="10" fill="#8e8e95">
+<text x="26" y="20" fill="#f5c04f" font-size="12" font-weight="700">Il tornante</text>
+<text x="-150" y="-92" font-size="10">2° tornante</text>
+<text x="-232" y="30" fill="#f87171" font-weight="600">PS 4/6/8 arriva da Corso</text>
+<text x="-56" y="70" transform="rotate(-62 -56 70)">Via dei Licheni</text>
+<text x="-200" y="-40" transform="rotate(-24 -200 -40)">Via Saina</text>
+<text x="130" y="-70" transform="rotate(-12 130 -70)">verso il paese</text>
+<text x="-30" y="-190">Palaghiaccio</text>
+</g>
+<g transform="translate(176 104)" font-family="JetBrains Mono, monospace" font-size="9" fill="#8e8e95">
+<path d="M0 0H50" stroke="#8e8e95" stroke-width="2"/><path d="M0 -4V4M50 -4V4" stroke="#8e8e95" stroke-width="1.5"/>
+<text x="12" y="-7">50 m</text>
+</g>
+<g transform="translate(220 -178)" font-family="JetBrains Mono, monospace" font-size="10" fill="#f4f4f5">
+<path d="M0 -10L5 4L0 1L-5 4Z" fill="#f4f4f5"/><text x="-3.5" y="16">N</text>
+</g>
+<text x="-234" y="124" font-family="Plus Jakarta Sans, system-ui, sans-serif" font-size="8" fill="#6b6b72">© OpenStreetMap contributors</text>
+</svg>
+    <figcaption class="note">Il tornante su Via Saina, appena sotto il paese. In rosso il percorso della prova ricostruito sulle strade di OpenStreetMap: le frecce indicano il senso di marcia delle auto, il cerchio giallo è il tornante consigliato. Il tracciato esatto va confermato sul posto.</figcaption>
+  </figure>
+  <div class="live">
+    <h3>Vista satellite</h3>
+    <div id="sat" class="satmap" role="img" aria-label="Vista satellite del tornante su Via Saina con il percorso della prova"></div>
+    <span class="note">Trascina e allarga con due dita. In rosso la prova, in giallo il tornante consigliato.</span>
+  </div>
+  <div class="btns spot-btns">
+    <a class="btn" href="https://www.google.com/maps/@?api=1&amp;map_action=pano&amp;viewpoint=45.619783,11.026997">Apri Street View del tornante</a>
+    <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&amp;query=45.619783,11.026997">Mappa Google</a>
+    <a class="btn ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.619783,11.026997">Portami lì</a>
+  </div>
+  <ul class="plain">
+    <li>Coordinate: <span class="mono">45°37'11.2"N 11°01'37.2"E</span></li>
+    <li>Cerca il cartello giallo a scacchi dell'<b>arrivo lanciato</b>. Se il tornante è prima del cartello, resta lì. Se è dopo, torna indietro qualche centinaio di metri lungo la prova.</li>
+    <li>Mettiti <b>all'interno della curva e in alto</b>, mai all'esterno o nella traiettoria d'uscita.</li>
+    <li>Segui sempre i commissari. La zona dello stop è riservata a loro.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Foto con il Galaxy S24 Ultra</h2>
+  <p class="note">Usa la modalità <b>Pro</b> (in Fotocamera → Altro → Pro) per scegliere tu tempo e ISO. Dal tornante l'obiettivo migliore è il <b>3x</b>; il <b>5x</b> serve per i primi piani da lontano. Per la raffica imposta in Impostazioni fotocamera → "Scorri il tasto di scatto verso" → Scatta foto a raffica, poi trascina il tasto verso il basso.</p>
+  <div class="shots">
+    <div class="shot"><div class="shot-h"><span class="tag2">PS 4 · 10:17</span><b>Luce piena del mattino</b></div>
+      <ul><li><b>Nitide:</b> 3x, tempo 1/1000, ISO auto, raffica</li><li><b>Panning:</b> 1x o 3x, tempo 1/60–1/125, ISO 50–100, segui l'auto con tutto il busto</li><li>Messa a fuoco manuale sul punto di corda della curva, poi aspetta lì</li></ul></div>
+    <div class="shot"><div class="shot-h"><span class="tag2">PS 6 · 14:14</span><b>Luce più bassa e ombre</b></div>
+      <ul><li><b>Nitide:</b> 3x, tempo 1/800, ISO auto (fino a 800)</li><li><b>Panning:</b> tempo 1/60, ISO 50–100</li><li>Il tornante è in parte in ombra: esposizione +0,3 se le auto bianche vengono scure</li></ul></div>
+    <div class="shot"><div class="shot-h"><span class="tag2">PS 8 · 17:42</span><b>Buio, solo fari</b></div>
+      <ul><li><b>Fari nitidi:</b> 1x, tempo 1/250, ISO 3200: un po' di grana ma auto ferma</li><li><b>Scie di luce:</b> telefono appoggiato fermo, tempo 2–4 s, ISO 50: la curva diventa una scia di fari</li><li>Il 5x al buio peggiora molto: resta su 1x o 3x</li></ul></div>
+    <div class="shot"><div class="shot-h"><span class="tag2">Video</span><b>Per le storie</b></div>
+      <ul><li>4K a 60 fps, oppure Super Slow-mo per l'entrata in curva</li><li>Verticale se è per le storie di Instagram</li><li>Blocca l'esposizione toccando a lungo lo schermo</li></ul></div>
+  </div>
+  <p class="note">Salva anche in RAW (Impostazioni → Opzioni immagine Pro → RAW e JPEG) se vuoi sistemarle dopo. Con il freddo la batteria cala in fretta: tieni il telefono in tasca tra un passaggio e l'altro e pulisci gli obiettivi prima di ogni prova.</p>
+</section>
+
+<section>
+  <h2>Viaggio, parcheggio e servizi</h2>
+  <div class="trip">
+    <div class="trip-big"><div class="eyebrow">Partenza consigliata da Verona sud</div><div class="trip-time">7:20</div><div class="note">Circa 45 km e un'ora di strada, in salita da Verona verso Grezzana e la Lessinia. Così arrivi a Bosco verso le 8:20, parcheggi con calma e sei al tornante prima che la strada chiuda alle 9:00.</div></div>
+  </div>
+  <h3 class="h3">Parcheggi gratuiti vicino al tornante</h3>
+  <ul class="poi">
+    <li><span class="poi-ic">P</span><span><b>Zona Piazza della Chiesa</b><small>gratuito · circa 260 m dal tornante</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.621969,11.028267">Portami lì</a></li>
+    <li><span class="poi-ic">P</span><span><b>Vicino a Piazza Borgo</b><small>gratuito · circa 380 m</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.622102,11.030511">Portami lì</a></li>
+    <li><span class="poi-ic">P</span><span><b>Parcheggio grande, circa 90 posti</b><small>gratuito · circa 580 m · utile se in centro è pieno</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.624376,11.030623">Portami lì</a></li>
+  </ul>
+  <p class="note">Il giorno del rally alcuni parcheggi in centro possono essere riservati all'organizzazione: segui i cartelli e i commissari. Dal parcheggio scendi a piedi su Via Saina, 5 minuti.</p>
+  <h3 class="h3">Bar, bagni e servizi</h3>
+  <ul class="poi">
+    <li><span class="poi-ic">☕</span><span><b>Osteria La Baita</b><small>Largo Jenna · circa 100 m, la più vicina</small></span></li>
+    <li><span class="poi-ic">☕</span><span><b>Bar Brunelli · Dal Campe</b><small>Piazza della Chiesa · circa 350 m</small></span></li>
+    <li><span class="poi-ic">☕</span><span><b>Bar centrale · Frac · La Creperie</b><small>Piazza Borgo e Piazza Marconi · circa 370–400 m</small></span></li>
+    <li><span class="poi-ic">WC</span><span><b>Bagni pubblici</b><small>vicino a Piazza della Chiesa · circa 300 m</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.621837,11.029428">Portami lì</a></li>
+    <li><span class="poi-ic">+</span><span><b>Farmacia</b><small>circa 540 m, verso Via General Cantore</small></span></li>
+  </ul>
+  <p class="note">Posizioni da OpenStreetMap; gli orari di apertura non sono indicati, verificali sul posto.</p>
+  <h3 class="h3">Numeri utili</h3>
+  <ul class="poi">
+    <li><span class="poi-ic sos">112</span><span><b>Emergenze</b><small>Numero unico europeo: soccorso, carabinieri, vigili del fuoco</small></span></li>
+    <li><span class="poi-ic">☎</span><span><b>Organizzazione Rally Club Valpantena</b><small class="mono">Bob +39 348 081 1712 · Gian +39 347 252 9415</small></span></li>
+  </ul>
+</section>
+
+<div class="cols">
+  <section>
+    <h2>Promemoria foto</h2>
+    <ul class="check" data-key="foto">
+      <li><label><input type="checkbox" id="f1"><span>Il <b>n. 39</b>: Ford Sierra 4x4 bianca e blu, livrea Mobil 1. Manca solo l'orario di partenza</span></label></li>
+      <li><label><input type="checkbox" id="f2"><span>Video anche in verticale per Instagram</span></label></li>
+      <li><label><input type="checkbox" id="f3"><span>Allenarsi sulle prime auto</span></label></li>
+      <li><label><input type="checkbox" id="f4"><span>Nitide: da 1/1000 s in su, a raffica</span></label></li>
+      <li><label><input type="checkbox" id="f5"><span>Panning: tra 1/60 e 1/125 s, seguendo l'auto</span></label></li>
+      <li><label><input type="checkbox" id="f6"><span>PS 8 al buio: fari e scie di luce</span></label></li>
+    </ul>
+  </section>
+  <section>
+    <h2>Da portare</h2>
+    <ul class="check" data-key="zaino">
+      <li><label><input type="checkbox" id="z1"><span>Vestiti pesanti a strati, guanti, berretto</span></label></li>
+      <li><label><input type="checkbox" id="z2"><span>Scarpe che non scivolano</span></label></li>
+      <li><label><input type="checkbox" id="z3"><span>Sedia pieghevole</span></label></li>
+      <li><label><input type="checkbox" id="z4"><span>Da mangiare e un termos di bevanda calda</span></label></li>
+      <li><label><input type="checkbox" id="z5"><span>Batterie cariche e powerbank</span></label></li>
+      <li><label><input type="checkbox" id="z6"><span>Torcia o frontale per la sera</span></label></li>
+    </ul>
+  </section>
+</div>
+
+<section>
+  <div class="res-head"><h2>Elenco partenti</h2><span class="note" id="ent-count"></span></div>
+  <input class="search" id="ent-q" type="search" inputmode="numeric" placeholder="Cerca numero, pilota o auto" aria-label="Cerca nell'elenco partenti">
+  <div id="ent-list" class="ent"><p class="note">L'elenco iscritti esce venerdì sull'albo di gara: Claude lo inserisce qui e ti rimanda il file.</p></div>
+</section>
+
+<section>
+  <h2>Contatti e documenti</h2>
+  <ul class="plain">
+    <li>Organizzazione: Bob <span class="mono">+39 348 081 1712</span> · Gian <span class="mono">+39 347 252 9415</span></li>
+    <li><a href="https://www.rallyclubvalpantena.it/documenti">Documenti e orari chiusura strade, Rally Club Valpantena</a></li>
+    <li><a href="https://webapp.sportity.com/event/Lessinia2026/9fe650ba-6cee-48be-a23d-24445bf119bf">Sportity: comunicati, iscritti, classifiche</a></li>
+    <li><a href="https://app-cdn.sportity.com/aa15abe4-02be-463f-8979-b71db9051b03/cdfaf294-f52a-4417-aace-e55be7c08b41_8LRH2026%20CARTINA%20Rev.260820%20RPG.pdf">Cartina del percorso (PDF)</a></li>
+  </ul>
+</section>
+
+<footer>
+  <span>Fonti: tabella distanze e tempi Rev. 260909, orari chiusura strade dal sito del Rally Club Valpantena, previsioni Open-Meteo (ItaliaMeteo-ARPAE ICON-2I) confrontate con 3B Meteo, radar 3B Meteo, mappa © OpenStreetMap contributors, immagini satellitari © Esri.</span>
+</footer>
+</div>
+
+<script>
+window.RALLY_DATA=null;
+function __main(){
+(function(){
+  // Meteo: Bosco Chiesanuova sab 14, ore 8-19 (3B Meteo, 12/11 14:40)
+  var temps=[1.9,2.8,3.6,4.4,4.9,5.2,4.9,4.3,3.2,1.8,1.4,1.6];
+  var psHours=[10,14,17];
+  var bars=document.getElementById('bars'), hrs=document.getElementById('hrs');
+  if(bars&&hrs){
+  var max=6;
+  temps.forEach(function(t,i){
+    var h=8+i, d=document.createElement('div');
+    d.className='bar'+(psHours.indexOf(h)>=0?' ps':'');
+    d.innerHTML='<span>'+t.toFixed(1).replace('.',',')+'°</span><i style="height:'+Math.max(6,t/max*100)+'px"></i>';
+    bars.appendChild(d);
+    var l=document.createElement('div'); l.textContent=h; hrs.appendChild(l);
+  });
+  }
+
+  // Timer: aggiorna allo scoccare di ogni minuto
+  function everyMinute(fn){fn();setTimeout(function(){fn();setInterval(fn,60000);},60000-(Date.now()%60000)+50);document.addEventListener('visibilitychange',function(){if(!document.hidden)fn();});}
+  window.everyMinute=everyMinute;
+  // ===== Dati aggiornati da Claude durante il rally =====
+  var RALLY=Object.assign({pos39:null,entries:[],offline:null},window.RALLY_DATA||{});
+  // Quando passa il 39
+  (function(){
+    var PSL=[['PS 4','10:17'],['PS 6','14:14'],['PS 8','17:42']], TO_HAIRPIN=9;
+    function at(hm,add){var p=hm.split(':');return new Date(2026,10,14,+p[0],+p[1]+add);}
+    function hm(d){return d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
+    function tick(){
+      var known=!!RALLY.pos39, off=(known?RALLY.pos39-1:0)+TO_HAIRPIN, now=new Date(), next=null, html='';
+      var pill=document.getElementById('c39-pill');
+      if(known){pill.className='pill open';pill.textContent='parte '+RALLY.pos39+'° · stima';}
+      else{pill.className='pill idle';pill.textContent='per ora: prima auto';}
+      PSL.forEach(function(p){var t=at(p[1],off),past=now>t; if(!past&&!next) next=[p[0],t];
+        html+='<div class="c39-item'+(past?' past':'')+'"><small>'+p[0]+' al tornante</small><b>~'+hm(t)+'</b></div>';});
+      document.getElementById('c39-list').innerHTML=html;
+      if(next){document.getElementById('c39-time').textContent='~'+hm(next[1]);
+        document.getElementById('c39-sub').textContent=known?(next[0]+' · il 39 parte '+RALLY.pos39+'° e passa circa '+off+' minuti dopo l\'orario della prova'):(next[0]+' · prima auto al tornante. Quando esce l\'ordine di partenza il timer passa al 39.');
+        var m=Math.ceil((next[1]-now)/60000),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;
+        document.getElementById('c39-count').textContent=(d?d+'g ':'')+(d||h?h+'h ':'')+String(mm).padStart(d||h?2:1,'0')+(d||h?'m':' min');}
+      else{document.getElementById('c39-time').textContent='Fatto';document.getElementById('c39-sub').textContent='Il 39 ha finito le prove: ci vediamo all\'arrivo a Bosco.';document.getElementById('c39-count').textContent='';}
+    }
+    everyMinute(tick);
+  })();
+  // Elenco partenti
+  (function(){
+    var L=document.getElementById('ent-list'),Q=document.getElementById('ent-q'),C=document.getElementById('ent-count');
+    if(!RALLY.entries.length){Q.disabled=true;return;}
+    function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+    function draw(){var q=Q.value.trim().toLowerCase(),rows=RALLY.entries.filter(function(e){return !q||String(e.n)===q||(e.d+' '+e.c+' '+e.car+' '+e.cls).toLowerCase().indexOf(q)>=0;});
+      C.textContent=rows.length+' di '+RALLY.entries.length+' equipaggi';
+      L.innerHTML=rows.map(function(e){return '<div class="ent-row'+(e.n==39?' mine':'')+'"><span class="ent-n">'+esc(e.n)+'</span><span><b>'+esc(e.d)+' · '+esc(e.c)+'</b><small>'+esc(e.car)+(e.cls?' · '+esc(e.cls):'')+'</small></span></div>';}).join('');}
+    Q.addEventListener('input',draw); draw();
+  })();
+  // Classifica offline
+  (function(){
+    var o=RALLY.offline; if(!o) return;
+    var b=document.getElementById('off-body');
+    b.className='';
+    b.innerHTML='<b>'+o.title+'</b> <span class="note">· salvata '+o.time+'</span><table class="off-t">'+o.rows.map(function(r){return '<tr'+(r.n==39?' class="mine"':'')+'><td>'+r.pos+'</td><td>'+r.n+'</td><td>'+r.crew+'</td><td>'+(r.gap||'')+'</td></tr>';}).join('')+'</table>';
+  })();
+
+  // Vista satellite (Leaflet + immagini Esri)
+  (function(){
+    if(!window.L||!document.getElementById('sat')) return;
+    var stage=[[45.619675, 11.023658], [45.619693, 11.023799], [45.619846, 11.024171], [45.619999, 11.024582], [45.620079, 11.024749], [45.620124, 11.024929], [45.620133, 11.025096], [45.620097, 11.025212], [45.620052, 11.02534], [45.620017, 11.025494], [45.620008, 11.025661], [45.620017, 11.025803], [45.619954, 11.026034], [45.619828, 11.026445], [45.619756, 11.02674], [45.619729, 11.026843], [45.619711, 11.026907], [45.619693, 11.026971], [45.619693, 11.027023], [45.619711, 11.027048], [45.619747, 11.027061], [45.619765, 11.027061], [45.619783, 11.027061], [45.619819, 11.026997], [45.619873, 11.026817], [45.619945, 11.026599], [45.619999, 11.026393], [45.62007, 11.026278], [45.62016, 11.026136], [45.620286, 11.025957], [45.620421, 11.02579], [45.620484, 11.025725], [45.620538, 11.025713], [45.620582, 11.025738], [45.620582, 11.02579], [45.620574, 11.025854], [45.620529, 11.025944], [45.620439, 11.026047], [45.620331, 11.026201], [45.620178, 11.026432], [45.620142, 11.026586], [45.620124, 11.02683], [45.620106, 11.027036], [45.620106, 11.027459], [45.620115, 11.027588], [45.620115, 11.027883], [45.620133, 11.028114], [45.620178, 11.028281], [45.620214, 11.028371], [45.620277, 11.028474], [45.620322, 11.028654], [45.620358, 11.028846], [45.620358, 11.029001], [45.620322, 11.029168]];
+    var map=L.map('sat',{zoomControl:true,attributionControl:true,scrollWheelZoom:false,maxZoom:19});
+    map.fitBounds([[45.619700,11.025650],[45.620620,11.027250]],{padding:[30,30],maxZoom:18});
+    map.attributionControl.setPrefix(false);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:19,attribution:'Immagini © Esri, Maxar'}).addTo(map);
+    L.polyline(stage,{color:'#0b0b0c',weight:9,opacity:.55}).addTo(map);
+    L.polyline(stage,{color:'#f87171',weight:5,opacity:.95,lineCap:'round',lineJoin:'round'}).addTo(map);
+    L.circleMarker([45.619756,11.027023],{radius:16,color:'#f5c04f',weight:3,fill:false}).addTo(map);
+    L.circleMarker([45.619756,11.027023],{radius:4,color:'#f5c04f',weight:0,fillColor:'#f5c04f',fillOpacity:1}).addTo(map)
+      .bindTooltip('Il tornante',{permanent:true,direction:'right',offset:[16,0],className:'lbl'});
+    L.circleMarker([45.62052,11.025751],{radius:10,color:'#f4f4f5',weight:2,dashArray:'3 4',fill:false}).addTo(map)
+      .bindTooltip('2° tornante',{permanent:true,direction:'left',offset:[-12,0],className:'lbl lbl2'});
+    [[45.621969,11.028267,'P','Parcheggio gratuito'],[45.622102,11.030511,'P','Parcheggio gratuito'],[45.621837,11.029428,'WC','Bagni pubblici'],[45.620689,11.027216,'☕','Osteria La Baita']].forEach(function(p){
+      L.marker([p[0],p[1]],{icon:L.divIcon({className:'',html:'<span class="mk">'+p[2]+'</span>',iconSize:[26,26],iconAnchor:[13,13]})}).addTo(map).bindTooltip(p[3],{direction:'top',offset:[0,-12]});
+    });
+  })();
+
+  // ===== Meteo su misura: Open-Meteo, modello ItaliaMeteo-ARPAE ICON-2I =====
+  (function(){
+    var DAY='2026-11-14';
+    var PS={10:'PS 4',14:'PS 6',17:'PS 8'};
+    var LOC={bosco:{lat:45.6198,lon:11.0270},velo:{lat:45.6064,lon:11.0959}};
+    var H='temperature_2m,apparent_temperature,precipitation,snowfall,weather_code,wind_speed_10m,wind_gusts_10m,is_day';
+    var D='weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,wind_speed_10m_max,sunrise,sunset';
+    function url(l,model,withHourly){
+      return 'https://api.open-meteo.com/v1/forecast?latitude='+l.lat+'&longitude='+l.lon+(withHourly?'&hourly='+H:'')+'&daily='+D+'&timezone=Europe%2FRome&forecast_days=7&models='+model;
+    }
+    function getJ(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});}
+    // Unisce: valori ICON-2I dove ci sono, altrimenti il miglior modello disponibile
+    function merge(a,b,key){
+      if(!a||!a[key]) return b?b[key]:null; if(!b||!b[key]) return a[key];
+      var out={time:a[key].time};
+      Object.keys(b[key]).forEach(function(k){ if(k==='time')return; var av=a[key][k]||[], bv=b[key][k]||[]; out[k]=a[key].time.map(function(t,i){var j=b[key].time.indexOf(t);var v=av[i];return (v===null||v===undefined)?(j>=0?bv[j]:null):v;}); });
+      return out;
+    }
+    function load(l,withHourly){
+      return Promise.allSettled([getJ(url(l,'italia_meteo_arpae_icon_2i',withHourly)),getJ(url(l,'best_match',withHourly))]).then(function(r){
+        var a=r[0].status==='fulfilled'?r[0].value:null, b=r[1].status==='fulfilled'?r[1].value:null;
+        if(!a&&!b) throw new Error('offline');
+        return {hourly:withHourly?merge(a,b,'hourly'):null,daily:merge(a,b,'daily'),icon2i:!!a};
+      });
+    }
+    // Icone
+    var S='stroke-linecap="round" stroke-linejoin="round"';
+    function sun(x,y,r){var s='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#f5c04f"/>';for(var i=0;i<8;i++){var a=i*Math.PI/4,x1=x+Math.cos(a)*(r+4),y1=y+Math.sin(a)*(r+4),x2=x+Math.cos(a)*(r+9),y2=y+Math.sin(a)*(r+9);s+='<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="#f5c04f" stroke-width="3" '+S+'/>';}return s;}
+    function moon(x,y){return '<path d="M'+(x+6)+' '+(y-13)+'a14 14 0 1 0 9 22a11 11 0 1 1-9-22z" fill="#c7c9d6"/>';}
+    function cloud(x,y,c){return '<path d="M'+(x-18)+' '+(y+12)+'h34a11 11 0 0 0 0-22a15 15 0 0 0-28-4a10 10 0 0 0-6 26z" fill="'+(c||'#d4d4d8')+'"/>';}
+    function drops(n,col){var s='';for(var i=0;i<n;i++){var x=22+i*9;s+='<line x1="'+x+'" y1="50" x2="'+(x-3)+'" y2="58" stroke="'+(col||'#7dd3fc')+'" stroke-width="3" '+S+'/>';}return s;}
+    function flakes(n){var s='';for(var i=0;i<n;i++){var x=22+i*10;s+='<circle cx="'+x+'" cy="54" r="2.6" fill="#e0f2fe"/>';}return s;}
+    function icon(code,day){
+      var b='<svg viewBox="0 0 64 64" aria-hidden="true">', e='</svg>', light=day!==0;
+      var cel=light?sun(32,30,11):moon(30,30);
+      if(code===0) return b+cel+e;
+      if(code===1) return b+(light?sun(26,24,10):moon(24,24))+cloud(38,34,'#9a9aa3')+e;
+      if(code===2) return b+(light?sun(24,22,10):moon(22,22))+cloud(36,32)+e;
+      if(code===3) return b+cloud(28,26,'#8e8e95')+cloud(36,34)+e;
+      if(code===45||code===48) return b+cloud(32,26,'#8e8e95')+'<line x1="14" y1="48" x2="50" y2="48" stroke="#8e8e95" stroke-width="3" '+S+'/><line x1="18" y1="56" x2="46" y2="56" stroke="#8e8e95" stroke-width="3" '+S+'/>'+e;
+      if(code>=51&&code<=57) return b+cloud(32,30)+drops(3,'#bae6fd')+e;
+      if((code>=61&&code<=67)||(code>=80&&code<=82)) return b+cloud(32,30,'#a1a1aa')+drops(4)+e;
+      if((code>=71&&code<=77)||code===85||code===86) return b+cloud(32,30)+flakes(4)+e;
+      if(code>=95) return b+cloud(32,28,'#71717a')+'<path d="M34 40l-8 12h7l-4 10 11-14h-7l4-8z" fill="#f5c04f"/>'+e;
+      return b+cloud(32,30)+e;
+    }
+    var TXT={0:'Sereno',1:'Quasi sereno',2:'Parzialmente nuvoloso',3:'Coperto',45:'Nebbia',48:'Nebbia con brina',51:'Pioviggine debole',53:'Pioviggine',55:'Pioviggine intensa',56:'Pioviggine gelata',57:'Pioviggine gelata',61:'Pioggia debole',63:'Pioggia',65:'Pioggia forte',66:'Pioggia gelata',67:'Pioggia gelata',71:'Neve debole',73:'Neve',75:'Neve forte',77:'Nevischio',80:'Rovesci deboli',81:'Rovesci',82:'Rovesci forti',85:'Rovesci di neve',86:'Rovesci di neve forti',95:'Temporale',96:'Temporale con grandine',99:'Temporale con grandine'};
+    function f1(v){return v==null?'–':(Math.round(v*10)/10).toFixed(1).replace('.',',');}
+    function r0(v){return v==null?'–':String(Math.round(v)).replace('-','−');}
+    var GG=['dom','lun','mar','mer','gio','ven','sab'];
+    function hhmm(s){return s?s.slice(11,16):'–';}
+
+    function renderHero(bh,bd){
+      var i=bd.time.indexOf(DAY);
+      if(i<0){document.getElementById('wx-hero').hidden=true;return;}
+      // Condizione della giornata: la più frequente tra le 8 e le 18, come fa 3B Meteo
+      var cnt={},code=bd.weather_code[i];
+      for(var h=8;h<=18;h++){var k=bh.time.indexOf(DAY+'T'+String(h).padStart(2,'0')+':00');if(k>=0){var c=bh.weather_code[k];cnt[c]=(cnt[c]||0)+1;}}
+      var best=-1;Object.keys(cnt).forEach(function(c){if(cnt[c]>best){best=cnt[c];code=+c;}});
+      document.getElementById('wx-hero-ico').innerHTML=icon(code,1);
+      document.getElementById('wx-max').textContent=r0(bd.temperature_2m_max[i])+'°';
+      document.getElementById('wx-min').textContent=r0(bd.temperature_2m_min[i])+'°';
+      document.getElementById('wx-cond').textContent=TXT[code]||'–';
+      var idx=function(h){return bh.time.indexOf(DAY+'T'+String(h).padStart(2,'0')+':00');};
+      var ps8=idx(18), ps8b=idx(17);
+      var feel=bh.apparent_temperature[ps8b];
+      var chips=[
+        ['Pioggia',f1(bd.precipitation_sum[i])+' mm'],
+        ['Neve',f1(bd.snowfall_sum[i])+' cm'],
+        ['Vento max',r0(bd.wind_speed_10m_max[i])+' km/h'],
+        ['Percepita alla PS 8',r0(feel)+'°'],
+        ['Alba · tramonto',hhmm(bd.sunrise[i])+' · '+hhmm(bd.sunset[i])]
+      ];
+      document.getElementById('wx-chips').innerHTML=chips.map(function(c){return '<div class="wx-chip"><small>'+c[0]+'</small><b>'+c[1]+'</b></div>';}).join('');
+    }
+    function renderHours(bh){
+      var out='',vals=[];
+      for(var h=8;h<=19;h++){var j=bh.time.indexOf(DAY+'T'+String(h).padStart(2,'0')+':00'); if(j>=0) vals.push(bh.temperature_2m[j]);}
+      var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),span=Math.max(1,mx-mn);
+      for(var h=8;h<=19;h++){
+        var j=bh.time.indexOf(DAY+'T'+String(h).padStart(2,'0')+':00'); if(j<0) continue;
+        var t=bh.temperature_2m[j],p=bh.precipitation[j],sn=bh.snowfall[j],w=bh.wind_speed_10m[j];
+        var ps=PS[h], hgt=Math.round(8+(t-mn)/span*30);
+        out+='<div class="wx-h'+(ps?' ps':'')+'">'+(ps?'<span class="tag">'+ps+'</span>':'')+
+          '<span class="hh">'+h+':00</span><span class="ic">'+icon(bh.weather_code[j],bh.is_day[j])+'</span>'+
+          '<span class="tt">'+r0(t)+'°</span><span class="bar" style="height:'+hgt+'px"></span>'+
+          '<span class="pp">'+(sn>0?f1(sn)+' cm':(p>0?f1(p)+' mm':''))+'</span>'+
+          '<span class="ww">'+r0(w)+' km/h</span></div>';
+      }
+      document.getElementById('wx-hours').innerHTML=out;
+    }
+    function renderDays(el,d){
+      var lo=Math.min.apply(null,d.temperature_2m_min.filter(function(v){return v!=null;})),hi=Math.max.apply(null,d.temperature_2m_max.filter(function(v){return v!=null;})),span=Math.max(1,hi-lo);
+      var html=d.time.slice(0,6).map(function(t,i){
+        var dt=new Date(t+'T12:00:00'),name=i===0?'Oggi':GG[dt.getDay()]+' '+dt.getDate();
+        var a=(d.temperature_2m_min[i]-lo)/span*100,b=(d.temperature_2m_max[i]-lo)/span*100;
+        var p=d.precipitation_sum[i],s=d.snowfall_sum[i];
+        return '<div class="wx-d'+(t===DAY?' sat':'')+'"><span class="dn">'+name+'</span><span class="ic">'+icon(d.weather_code[i],1)+'</span>'+
+          '<span class="rng"><i style="left:'+a.toFixed(0)+'%;right:'+(100-b).toFixed(0)+'%"></i></span>'+
+          '<span class="tv"><span>'+r0(d.temperature_2m_min[i])+'°</span> '+r0(d.temperature_2m_max[i])+'°</span>'+
+          ((p>0.2||s>0)?'<span class="pr">'+(s>0?f1(s)+' cm neve':f1(p)+' mm pioggia')+'</span>':'')+'</div>';
+      }).join('');
+      document.getElementById(el).innerHTML=html;
+    }
+    function renderAll(data,when,cached){
+      renderHero(data.bosco.hourly,data.bosco.daily);
+      renderHours(data.bosco.hourly);
+      renderDays('wx-days-bosco',data.bosco.daily);
+      renderDays('wx-days-velo',data.velo.daily);
+      var t=new Date(when);
+      document.getElementById('wx-meta').innerHTML=(cached?'<b style="color:var(--accent)">Senza connessione:</b> mostro le previsioni salvate ':'Aggiornato ')+
+        t.toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'})+' alle '+t.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})+
+        ' · Fonte Open-Meteo, modello '+(data.bosco.icon2i?'ItaliaMeteo-ARPAE ICON-2I':'migliore disponibile')+'. Si aggiorna da solo ogni 30 minuti.';
+    }
+    function run(){
+      Promise.all([load(LOC.bosco,true),load(LOC.velo,false)]).then(function(r){
+        var data={bosco:r[0],velo:r[1]},now=Date.now();
+        try{localStorage.setItem('lrh26-wx',JSON.stringify({when:now,data:data}));}catch(e){}
+        renderAll(data,now,false);
+      }).catch(function(){
+        var c=null; try{c=JSON.parse(localStorage.getItem('lrh26-wx'));}catch(e){}
+        if(c&&c.data) renderAll(c.data,c.when,true);
+        else document.getElementById('wx-meta').textContent='Non riesco a caricare le previsioni: controlla la connessione e ricarica la pagina.';
+      });
+    }
+    run(); setInterval(run,30*60*1000);
+  })();
+
+  // Stato adesso
+  var DAY='2026-11-14';
+  function at(hm){var p=hm.split(':');return new Date(2026,10,14,+p[0],+p[1]);}
+  var cal=[['09:00','11:45'],['13:00','15:45'],['16:30','19:40']];
+  var velo=[['08:20','11:10'],['12:30','15:00'],['16:00','19:00']];
+  var passes=[['10:17','PS 4 Calavedo'],['14:14','PS 6 Calavedo'],['17:42','PS 8 Calavedo, al buio']];
+  function road(el,wins,now){
+    var day=new Date(2026,10,14), isDay=now.toDateString()===day.toDateString();
+    if(!isDay){el.className='pill open';el.textContent='aperta';return;}
+    var closed=wins.some(function(w){return now>=at(w[0])&&now<at(w[1]);});
+    el.className='pill '+(closed?'closed':'open');
+    el.textContent=closed?'chiusa':'aperta';
+  }
+  function fmt(ms){
+    var s=Math.max(0,Math.floor(ms/1000)),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);
+    if(d>0) return d+'g '+h+'h '+String(m).padStart(2,'0')+'m';
+    return h+'h '+String(m).padStart(2,'0')+'m';
+  }
+  function tick(){
+    var now=new Date();
+    var title=document.getElementById('now-title'),count=document.getElementById('now-count'),det=document.getElementById('now-detail');
+    var next=null, live=null;
+    passes.forEach(function(p){
+      var s=at(p[0]), e=new Date(s.getTime()+85*60000);
+      if(now>=s&&now<e) live=p;
+      if(!next&&now<s) next=p;
+    });
+    if(live){title.textContent='In corso: '+live[1];count.textContent='LIVE';det.textContent='Prima auto partita alle '+live[0]+'. Il passaggio dura circa 1h30.';}
+    else if(next){title.textContent='Prossimo: '+next[1];count.textContent=fmt(at(next[0])-now);det.textContent='Prima auto alle '+next[0]+' di sabato 14';}
+    else {title.textContent='Rally concluso';count.textContent='🏁';det.textContent='Arrivo a Bosco alle 18:00, Piazza Marconi';}
+    road(document.getElementById('pill-cal'),cal,now);
+    road(document.getElementById('pill-velo'),velo,now);
+    // Timeline
+    var isDay=now.toDateString()===new Date(2026,10,14).toDateString();
+    document.querySelectorAll('#timeline li').forEach(function(li){
+      li.classList.remove('past','current');
+      if(!isDay){ if(now>new Date(2026,10,15)) li.classList.add('past'); return;}
+      var s=at(li.dataset.start), e=at(li.dataset.end);
+      if(now>=e) li.classList.add('past'); else if(now>=s) li.classList.add('current');
+    });
+  }
+  window.everyMinute?everyMinute(tick):setInterval(tick,60000);
+
+  // Checklist ricordata su questo dispositivo
+  document.querySelectorAll('.check input').forEach(function(cb){
+    try{ cb.checked=localStorage.getItem('lrh26-'+cb.id)==='1'; }catch(e){}
+    cb.addEventListener('change',function(){ try{ localStorage.setItem('lrh26-'+cb.id,cb.checked?'1':'0'); }catch(e){} });
+  });
+})();
+}
+(function(){
+  var done=false;function go(d){if(done)return;done=true;window.RALLY_DATA=d||null;__main();}
+  fetch('data.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(d){
+    if(d){try{localStorage.setItem('lrh26-data',JSON.stringify(d));}catch(e){} go(d);}
+    else{var c=null;try{c=JSON.parse(localStorage.getItem('lrh26-data'));}catch(e){} go(c);}
+  });
+  setTimeout(function(){var c=null;try{c=JSON.parse(localStorage.getItem('lrh26-data'));}catch(e){} go(c);},4000);
+  if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
+})();
+</script>
+</body>
+</html>
