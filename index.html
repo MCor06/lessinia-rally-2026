@@ -726,6 +726,9 @@ html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brig
 
 .toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));z-index:91;transform:translate(-50%,-80px);background:var(--panel);color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--accent);padding:10px 16px;border-radius:12px;font:600 13px/1 var(--body);box-shadow:0 10px 24px rgba(0,0,0,.6);transition:transform .25s ease;pointer-events:none}
 .toast.on{transform:translate(-50%,0)}
+
+/* PC: riquadri incastrati senza buchi tra uno e l'altro */
+@media (min-width:1100px){.wrap.mas{grid-auto-rows:4px;row-gap:0;align-items:start;grid-auto-flow:row dense}.wrap.mas>#road{grid-column:1/-1}.wrap.mas>section.warn{grid-column:auto;order:0}.wrap.mas>*{margin-bottom:18px}.wrap.mas>.subnav{margin-top:-6px;margin-bottom:12px}}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -2142,6 +2145,24 @@ html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brig
   document.addEventListener('touchend',function(){if(y0==null)return;y0=null;el.classList.add('anim');
     if(d>=TH){busy=true;el.classList.add('spin');el.style.transform='translateY('+(TH*0.9-46+env())+'px)';arc.setAttribute('stroke-dashoffset',String(C*0.7));soft();}
     else{el.style.transform='translateY(-60px)';el.style.opacity=0;d=0;}},{passive:true});
+})();
+</script>
+<script>
+// PC: incastra i riquadri delle due colonne (niente spazi vuoti sotto quelli più corti)
+(function(){
+  var mq=window.matchMedia('(min-width:1100px)'),wrap=document.querySelector('.wrap'),R=4,G=18,raf=0;
+  function lay(){raf=0;var kids=[].slice.call(wrap.children);
+    if(!mq.matches){wrap.classList.remove('mas');kids.forEach(function(k){k.style.gridRowEnd='';});return;}
+    wrap.classList.add('mas');
+    kids.forEach(function(k){if(k.hidden||k.offsetParent===null&&getComputedStyle(k).position!=='fixed'){k.style.gridRowEnd='';return;}
+      var h=k.getBoundingClientRect().height,g=k.classList.contains('subnav')?6:G;k.style.gridRowEnd='span '+Math.max(1,Math.ceil((h+g)/R));});
+  }
+  function q(){if(!raf)raf=requestAnimationFrame(lay);}
+  if('ResizeObserver' in window){var ro=new ResizeObserver(q);[].slice.call(wrap.children).forEach(function(k){ro.observe(k);});}
+  window.addEventListener('resize',q);window.addEventListener('lrh-page',function(){setTimeout(q,30);});
+  document.addEventListener('toggle',q,true);
+  if(mq.addEventListener)mq.addEventListener('change',q);
+  q();setTimeout(q,800);setTimeout(q,3000);
 })();
 </script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
