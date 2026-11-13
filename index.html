@@ -709,6 +709,20 @@ h2{display:flex;align-items:center}
 /* Niente zoom della pagina: niente doppio tocco, il pizzico resta solo su mappe e radar */
 html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 button,a,input,label,.btn,.tabs a,.subnav a{touch-action:manipulation}
+
+/* ===== Trascina per aggiornare, nello stile dell'app ===== */
+html,body{overscroll-behavior-y:none}
+.ptr{position:fixed;left:50%;top:0;z-index:90;width:46px;height:46px;margin-left:-23px;border-radius:50%;background:var(--panel);border:1px solid var(--line);box-shadow:0 10px 24px rgba(0,0,0,.6);display:grid;place-items:center;transform:translateY(-60px);opacity:0;pointer-events:none}
+.ptr.anim{transition:transform .25s ease,opacity .25s ease}
+.ptr svg{width:30px;height:30px}
+.ptr .trk{stroke:var(--soft)}
+.ptr .arc{stroke:var(--accent);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+.ptr .arw{stroke:var(--accent);transition:transform .2s;transform-origin:50% 50%}
+.ptr.ready .arw{transform:rotate(180deg)}
+.ptr.spin svg{animation:ptrspin .8s linear infinite}
+.ptr.spin .arw{display:none}
+@keyframes ptrspin{to{transform:rotate(360deg)}}
+html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brightness(.55)}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -2096,6 +2110,21 @@ button,a,input,label,.btn,.tabs a,.subnav a{touch-action:manipulation}
   setTimeout(spy,300);
   function cnt(){document.querySelectorAll('details.grp').forEach(function(d){var b=d.querySelectorAll('input[type=checkbox]'),k=0;b.forEach(function(x){if(x.checked)k++;});var c=d.querySelector('.gc');if(c){c.textContent=k+'/'+b.length;c.classList.toggle('full',k===b.length);}});}
   document.addEventListener('change',function(e){if(e.target.closest('details.grp'))cnt();});setTimeout(cnt,400);setTimeout(cnt,3000);
+})();
+</script>
+<div class="ptr" id="ptr" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none" stroke-width="3"><circle class="trk" cx="15" cy="15" r="11"/><circle class="arc" id="ptr-arc" cx="15" cy="15" r="11" stroke-dasharray="69.1" stroke-dashoffset="69.1"/><path class="arw" d="M15 10v10M11 16l4 4 4-4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<script>
+// Trascina in giù dalla cima per aggiornare
+(function(){
+  var el=document.getElementById('ptr'),arc=document.getElementById('ptr-arc'),y0=null,d=0,busy=false,MAX=110,TH=80,C=69.1;
+  function blocked(t){return document.querySelector('.ar:not([hidden]),.focus:not([hidden]),.ovl:not([hidden])')||(t.closest&&t.closest('.leaflet-container,.rbox,.subnav,.wx-scroll,.tbl,input,textarea,canvas'));}
+  function set(v){d=v;var k=Math.min(1,v/TH);el.style.transform='translateY('+(Math.min(v,MAX)*0.9-46+(env()))+'px)';el.style.opacity=Math.min(1,v/30);arc.setAttribute('stroke-dashoffset',String(C*(1-k*0.85)));el.classList.toggle('ready',v>=TH);}
+  function env(){return 10;}
+  document.addEventListener('touchstart',function(e){if(busy||e.touches.length!==1||window.scrollY>0||blocked(e.target)){y0=null;return;}y0=e.touches[0].clientY;el.classList.remove('anim');},{passive:true});
+  document.addEventListener('touchmove',function(e){if(y0==null)return;var dy=e.touches[0].clientY-y0;if(dy<=0||window.scrollY>0){if(d)set(0);return;}e.preventDefault();set(dy*0.55);},{passive:false});
+  document.addEventListener('touchend',function(){if(y0==null)return;y0=null;el.classList.add('anim');
+    if(d>=TH){busy=true;el.classList.add('spin');el.style.transform='translateY('+(TH*0.9-46+env())+'px)';arc.setAttribute('stroke-dashoffset',String(C*0.7));setTimeout(function(){location.reload();},350);}
+    else{el.style.transform='translateY(-60px)';el.style.opacity=0;d=0;}},{passive:true});
 })();
 </script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
