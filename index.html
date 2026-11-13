@@ -1986,7 +1986,7 @@ h2{display:flex;align-items:center}
   function svg(id,c){return ICO[id]?'<svg class="'+c+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICO[id]+'</svg>':'';}
 
   function mark(nav,id){var on=null;nav.querySelectorAll('a').forEach(function(a){var x=a.getAttribute('data-to')===id;a.classList.toggle('on',x);if(x)on=a;});if(on&&nav.scrollTo)nav.scrollTo({left:on.offsetLeft-nav.clientWidth/2+on.clientWidth/2,behavior:'smooth'});}
-  function spy(){if(Date.now()<lock)return;navs.forEach(function(nav){if(nav.hidden)return;var top=nav.getBoundingClientRect().bottom+12,cur=null;
+  function spy(){if(Date.now()<lock)return;navs.forEach(function(nav){if(nav.hidden)return;var top=nav.getBoundingClientRect().bottom+40,cur=null;
     nav._list.forEach(function(sec){if(sec.hidden)return;if(sec.getBoundingClientRect().top<=top)cur=sec;});
     if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4){var vis=nav._list.filter(function(x){return !x.hidden;});cur=cur||vis[0];}
     if(!cur)cur=nav._list[0];if(nav._cur!==cur.id){nav._cur=cur.id;mark(nav,cur.id);}});}
@@ -2115,7 +2115,7 @@ function __main(){
   (function(){
     var el=document.getElementById('lux-now');if(!el)return;
     function upd(){var now=new Date(),day=now.getFullYear()===2026&&now.getMonth()===10&&now.getDate()===14,mins=now.getHours()*60+now.getMinutes(),t;
-      if(!day){el.innerHTML='<b>Sabato</b><span>tramonto 16:47 · crepuscolo fino alle 17:19 · buio dalle 17:55 circa. Dietro i monti il sole può sparire anche prima.</span>';return;}
+      if(!day){el.innerHTML='<b>Sabato</b><span>tramonto 16:47 · buio dalle 17:55</span>';return;}
       if(mins<16*60+15)t=['Luce del giorno','tramonto alle 16:47'];
       else if(mins<16*60+47)t=['Sole basso','tramonta alle 16:47: luce calda, ma il tornante può già essere in ombra'];
       else if(mins<17*60+19)t=['Crepuscolo','cielo ancora chiaro fino alle 17:19: ISO alti e tempi più lunghi'];
