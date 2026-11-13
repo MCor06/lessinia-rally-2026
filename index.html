@@ -443,6 +443,39 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
 .ar-cross::before,.ar-cross::after{content:"";position:absolute;background:rgba(255,255,255,.75)}
 .ar-cross::before{left:50%;top:-10px;bottom:-10px;width:2px;margin-left:-1px}
 .ar-cross::after{top:50%;left:-10px;right:-10px;height:2px;margin-top:-1px}
+
+/* ===== Avvisi, offline, scatti, nomi foto ===== */
+.opt{display:grid;gap:8px;margin:10px 0}
+.sw{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--soft);border-radius:12px;padding:10px 12px;cursor:pointer}
+.sw span{order:-1}
+.sw b{display:block;font-size:14px}
+.sw small{display:block;color:var(--muted);font-size:12px}
+.sw input{appearance:none;-webkit-appearance:none;width:46px;height:28px;border-radius:999px;background:#3a3a40;position:relative;margin:0;cursor:pointer;transition:background .15s}
+.sw input::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#f4f4f5;transition:transform .15s}
+.sw input:checked{background:var(--accent)}
+.sw input:checked::after{transform:translateX(18px);background:#111}
+.vol{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--muted)}
+.vol input{flex:1;accent-color:var(--accent)}
+.off-list{list-style:none;margin:10px 0;padding:0;display:grid;gap:6px}
+.off-list li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:center;background:var(--soft);border-radius:12px;padding:9px 12px;font-size:13px}
+.off-list i{width:12px;height:12px;border-radius:50%;background:var(--muted);justify-self:center;font-style:normal}
+.off-list li.ok i{background:var(--ok)}.off-list li.no i{background:var(--red)}
+.off-list small{display:block;color:var(--muted);font-size:12px}
+label.btn{cursor:pointer}
+.m-opts{display:grid;gap:4px;margin:12px 0}
+.m-opts label{display:flex;gap:10px;align-items:center;font-size:13px}
+.m-off{max-width:110px}
+.m-imp{margin:4px 0 10px;font-size:13px}
+.m-imp summary{cursor:pointer;color:var(--ink);font-weight:600}
+.m-ta{width:100%;font-family:var(--mono);font-size:12px;margin-top:6px}
+.m-res{display:grid;gap:8px;margin-top:10px}
+.m-g{background:var(--soft);border-radius:12px;padding:10px 12px;display:grid;gap:8px}
+.m-g.mine{box-shadow:inset 3px 0 0 var(--accent)}
+.m-gh{display:flex;gap:10px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.m-gh b{font:800 17px/1.2 var(--display)}
+.m-gh span{font:600 12px/1 var(--mono);color:var(--muted)}
+.m-g small{color:var(--muted);font-size:12px;word-break:break-all}
+.m-g .btns{margin-top:0}
 </style>
 </head>
 <body>
@@ -488,6 +521,20 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
   </div>
   <div class="c39-list" id="c39-list"></div>
   <p class="note">Stima: orario di partenza della prova + un minuto per ogni auto davanti al 39 + circa 9 minuti per arrivare al tornante, che è verso la fine dei 10,5 km. Se segni le auto nel Registro passaggi, la stima si corregge da sola con il ritardo reale. Tieniti comunque pronto 5 minuti prima.</p>
+</section>
+
+<section class="snd" id="snd" data-page="gara">
+  <div class="res-head"><h2>Avvisi del 39: suono e schermo</h2><span class="pill idle" id="wl-pill">schermo normale</span></div>
+  <p class="note">Quando il telefono si blocca, il browser mette in pausa l'app e gli avvisi possono arrivare tardi. Tieni lo schermo acceso nei minuti del 39 e alza il volume multimediale: il suono si sente anche con il telefono in tasca.</p>
+  <div class="opt">
+    <label class="sw"><input type="checkbox" id="wl-auto"><span><b>Schermo acceso vicino al 39</b><small>Da 15 minuti prima a 5 minuti dopo ogni passaggio stimato del 39, solo con l'app aperta</small></span></label>
+    <label class="sw"><input type="checkbox" id="wl-now"><span><b>Schermo sempre acceso adesso</b><small>Si spegne da solo se chiudi l'app</small></span></label>
+    <label class="sw"><input type="checkbox" id="snd-on"><span><b>Avviso sonoro</b><small>Bip a 10 e a 2 minuti, e quando passa l'auto prima del 39</small></span></label>
+    <label class="sw"><input type="checkbox" id="snd-voice"><span><b>Voce</b><small>Dopo il bip una voce dice "Il 39 tra 2 minuti"</small></span></label>
+  </div>
+  <label class="vol">Volume <input type="range" id="snd-vol" min="0.1" max="1" step="0.1" value="0.8"></label>
+  <div class="btns"><button class="btn ghost" type="button" id="snd-test">Prova l'avviso</button></div>
+  <p class="note">La luminosità non la può cambiare l'app: abbassala tu dalla tendina, oppure usa la modalità notte con il pulsante ☾.</p>
 </section>
 
 <section class="arr" id="arr" data-page="gara">
@@ -657,6 +704,13 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
 
 <div class="ptitle" data-page="zaino"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Zaino</h1><div class="sub">Cosa fare prima di partire e cosa mettere nello zaino</div></div>
 
+<section class="offl" id="offl" data-page="zaino">
+  <div class="res-head"><h2>Prepara l'app per l'uso offline</h2><span class="pill idle" id="off-pill">da controllare</span></div>
+  <p class="note">Al tornante il segnale può mancare. Prima di partire, col Wi-Fi di casa, tocca il pulsante: salva nel telefono la vista satellite del tornante, le previsioni e l'ultima classifica. Radar e classifica nuova invece hanno bisogno di rete.</p>
+  <ul class="off-list" id="off-list"></ul>
+  <div class="btns"><button class="btn" type="button" id="off-go">Scarica tutto per l'uso offline</button></div>
+  <div class="note" id="off-msg"></div>
+</section>
 <section class="todo" data-page="zaino">
     <div class="res-head"><h2>Da fare prima di sabato</h2><span class="pill idle" id="todo-count">0 di 0</span></div>
     <ul class="check" data-key="todo">
@@ -875,6 +929,51 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
   <p class="note">I DNG di Expert RAW si sistemano con Lightroom (anche sul telefono): recuperi le ombre del tornante e il cielo bruciato. Pesano molto più dei JPEG, quindi libera spazio prima di partire. Con il freddo la batteria cala in fretta: tieni il telefono in tasca tra un passaggio e l'altro e pulisci gli obiettivi prima di ogni prova.</p>
 </section>
 
+<section data-page="foto" id="shots39">
+  <div class="res-head"><h2>Scatti da fare al 39</h2><span class="pill idle" id="shots-count">0 di 12</span></div>
+  <p class="note">Inquadrature diverse in ogni passaggio, così non torni a casa con 40 foto uguali. Le spunte restano salvate.</p>
+  <h3 class="h3">PS 4 · mattina, luce frontale</h3>
+  <ul class="check" data-key="shots">
+    <li><label><input type="checkbox" id="sh1"><span>Entrata in curva a 3x, nitida a 1/1000</span></label></li>
+    <li><label><input type="checkbox" id="sh2"><span>Punto di corda con la ruota interna vicina al bordo</span></label></li>
+    <li><label><input type="checkbox" id="sh3"><span>Uscita in accelerazione, con polvere o ghiaia</span></label></li>
+    <li><label><input type="checkbox" id="sh4"><span>GoPro ferma su tutto il passaggio (mettila prima della prima auto)</span></label></li>
+  </ul>
+  <h3 class="h3">PS 6 · pomeriggio, luce laterale</h3>
+  <ul class="check" data-key="shots">
+    <li><label><input type="checkbox" id="sh5"><span>Panning a 1/60 sull'uscita: auto nitida, sfondo mosso</span></label></li>
+    <li><label><input type="checkbox" id="sh6"><span>Primo piano dell'abitacolo a 5x, quando rallentano in entrata</span></label></li>
+    <li><label><input type="checkbox" id="sh7"><span>Foto larga a 0,6x con il tornante e il pubblico</span></label></li>
+    <li><label><input type="checkbox" id="sh8"><span>Video verticale per le storie</span></label></li>
+  </ul>
+  <h3 class="h3">PS 8 · buio e arrivo</h3>
+  <ul class="check" data-key="shots">
+    <li><label><input type="checkbox" id="sh9"><span>Fari in arrivo, 1/250 e ISO alti</span></label></li>
+    <li><label><input type="checkbox" id="sh10"><span>Scia di luce col treppiede, 2–4 secondi</span></label></li>
+    <li><label><input type="checkbox" id="sh11"><span>GoPro di notte sul passaggio del 39</span></label></li>
+    <li><label><input type="checkbox" id="sh12"><span>Auto ferma all'arrivo in Piazza Marconi, con l'equipaggio</span></label></li>
+  </ul>
+</section>
+
+<section data-page="foto" id="match">
+  <h2>Dai un nome alle foto</h2>
+  <p class="note">A fine giornata scegli le foto (anche i DNG di Expert RAW e i JPG della GoPro): l'app legge l'orario di scatto dentro ogni file e lo confronta con il Registro passaggi, così sai di quale auto è ogni foto. Le foto non vengono caricate da nessuna parte: tutto resta sul dispositivo.</p>
+  <div class="btns">
+    <label class="btn" for="m-files">Scegli le foto</label>
+    <input type="file" id="m-files" multiple accept="image/*,.dng,.DNG" hidden>
+  </div>
+  <div class="m-opts">
+    <label>Correzione orologio (secondi) <input class="search m-off" id="m-off" type="number" inputmode="numeric" value="0" step="1"></label>
+    <span class="note">Serve per la GoPro se il suo orologio è avanti o indietro: per esempio −40 se segna 40 secondi in più.</span>
+  </div>
+  <details class="m-imp"><summary>Registro da un altro dispositivo</summary>
+    <p class="note">Sul PC il registro del telefono non c'è: sul telefono tocca "Condividi o copia l'elenco" nel Registro passaggi, mandatelo e incollalo qui.</p>
+    <textarea class="search m-ta" id="m-ta" rows="5" placeholder="10:26:14  n. 1 ..."></textarea>
+  </details>
+  <div class="note" id="m-sum"></div>
+  <div class="m-res" id="m-res"></div>
+</section>
+
 <section data-page="foto">
   <h2>Promemoria foto</h2>
   <ul class="check" data-key="foto">
@@ -1079,6 +1178,143 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
   window.__arTest=function(m){Rs=m;running=true;ar.hidden=false;size();draw();};
 })();
 </script>
+<script>
+// ===== Suono, schermo acceso, offline, scatti, nomi delle foto =====
+(function(){
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+  // --- Suono ---
+  var ac=null,on=document.getElementById('snd-on'),vo=document.getElementById('snd-voice'),vol=document.getElementById('snd-vol');
+  on.checked=ls('lrh26-snd')!=='0';vo.checked=ls('lrh26-voice')!=='0';vol.value=ls('lrh26-vol')||'0.8';
+  on.addEventListener('change',function(){ls('lrh26-snd',on.checked?'1':'0');});
+  vo.addEventListener('change',function(){ls('lrh26-voice',vo.checked?'1':'0');});
+  vol.addEventListener('change',function(){ls('lrh26-vol',vol.value);});
+  function unlock(){try{if(!ac){var A=window.AudioContext||window.webkitAudioContext;if(A)ac=new A();}if(ac&&ac.state==='suspended')ac.resume();}catch(e){}}
+  document.addEventListener('pointerdown',unlock,{passive:true});
+  function beep(n,freq,dur){unlock();if(!ac)return 0;var t=ac.currentTime+0.05,v=+vol.value||0.8;
+    for(var i=0;i<n;i++){var o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=freq;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.25*v,t+0.02);g.gain.setValueAtTime(0.25*v,t+dur-0.03);g.gain.linearRampToValueAtTime(0,t+dur);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+dur+0.02);t+=dur+0.12;}
+    return (n*(dur+0.12))*1000;}
+  function say(txt){try{if(!vo.checked||!window.speechSynthesis)return;var u=new SpeechSynthesisUtterance(txt);u.lang='it-IT';u.volume=+vol.value||0.8;u.rate=1;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+  window.lrhSound=function(level,txt){if(!on.checked)return;var ms=level>=2?beep(4,1320,0.18):beep(2,880,0.22);setTimeout(function(){say(txt);},ms+150);};
+  document.getElementById('snd-test').addEventListener('click',function(){unlock();var was=on.checked;on.checked=true;window.lrhSound(2,'Il 39 tra 2 minuti');on.checked=was;});
+  // --- Schermo acceso ---
+  var wl=null,auto=document.getElementById('wl-auto'),now=document.getElementById('wl-now'),pill=document.getElementById('wl-pill');
+  auto.checked=ls('lrh26-wl')!=='0';
+  auto.addEventListener('change',function(){ls('lrh26-wl',auto.checked?'1':'0');upd();});
+  now.addEventListener('change',upd);
+  function near39(){var L=window.LRH;if(!L)return false;var p=L.posOf(39)||1,t=Date.now();
+    return L.ST.some(function(st){var e=L.eta(st,p).getTime();return t>e-15*6e4&&t<e+5*6e4;});}
+  function want(){return now.checked||(auto.checked&&near39());}
+  function upd(){
+    if(!('wakeLock' in navigator)){pill.textContent='non supportato';pill.className='pill idle';return;}
+    if(want()&&!document.hidden){if(!wl)navigator.wakeLock.request('screen').then(function(l){wl=l;l.addEventListener('release',function(){wl=null;show();});show();}).catch(function(){show();});}
+    else if(wl){wl.release().catch(function(){});wl=null;}
+    show();
+  }
+  function show(){pill.className='pill '+(wl?'open':'idle');pill.textContent=wl?'schermo acceso':'schermo normale';}
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)setTimeout(upd,300);});
+  setInterval(upd,30000);setTimeout(upd,2000);
+  // --- Offline ---
+  var oList=document.getElementById('off-list'),oPill=document.getElementById('off-pill'),oMsg=document.getElementById('off-msg'),oGo=document.getElementById('off-go');
+  function tiles(){var out=[],b={s:45.6180,n:45.6222,w:11.0228,e:11.0310};
+    for(var z=14;z<=19;z++){var n=Math.pow(2,z);function tx(lon){return Math.floor((lon+180)/360*n);}function ty(lat){var r=lat*Math.PI/180;return Math.floor((1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*n);}
+      for(var x=tx(b.w);x<=tx(b.e);x++)for(var y=ty(b.n);y<=ty(b.s);y++)out.push('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/'+z+'/'+y+'/'+x);}
+    return out;}
+  var TL=tiles();
+  function row(ok,t,sub){return '<li class="'+(ok===true?'ok':ok===false?'no':'')+'"><i></i><span>'+t+'<small>'+sub+'</small></span></li>';}
+  function check(){
+    var sw=('serviceWorker' in navigator)&&/^https?:/.test(location.protocol)&&window.caches;
+    var wx=null;try{wx=JSON.parse(ls('lrh26-wx'));}catch(e){}
+    var age=wx&&wx.when?Math.round((Date.now()-wx.when)/36e5):null;
+    var dj=null;try{dj=JSON.parse(ls('lrh26-data'));}catch(e){}
+    var p1=sw?caches.open('lrh26-tiles').then(function(c){return Promise.all(TL.map(function(u){return c.match(u).then(function(r){return !!r;});}));}).then(function(a){return a.filter(Boolean).length;}):Promise.resolve(-1);
+    var p2=sw?caches.keys().then(function(k){return k.some(function(x){return /^lrh26-v/.test(x);});}):Promise.resolve(false);
+    Promise.all([p1,p2]).then(function(r){
+      var t=r[0],app=r[1],okT=t>=TL.length*0.95,okW=age!==null&&age<12,okD=!!(dj&&dj.pos39);
+      oList.innerHTML=row(app,'App salvata nel telefono',app?'Si apre anche senza rete':(sw?'Apri l\'app una volta con la rete':'Funziona solo nell\'app installata dal sito'))+
+        row(t<0?null:okT,'Vista satellite del tornante',t<0?'Solo nell\'app installata':t+' di '+TL.length+' pezzi di mappa salvati')+
+        row(okW,'Previsioni meteo',age===null?'Non ancora scaricate':'Salvate '+(age<1?'meno di un\'ora fa':age+' ore fa')+(okW?'':': aggiornale prima di partire'))+
+        row(okD,'Ordine di partenza e ultima classifica',dj?('Copia del '+(dj.updated||'–')+(dj.pos39?'':' · ordine di partenza non ancora uscito')):'Non ancora salvati');
+      var all=app&&okT&&okW&&okD;oPill.className='pill '+(all?'open':'idle');oPill.textContent=all?'pronta offline':'da preparare';
+    });
+  }
+  oGo.addEventListener('click',function(){
+    if(!navigator.onLine){oMsg.textContent='Sei offline: collegati al Wi-Fi e riprova.';return;}
+    if(!('serviceWorker' in navigator)||!/^https?:/.test(location.protocol)){oMsg.textContent='Il download offline funziona nell\'app installata dal sito.';return;}
+    oGo.disabled=true;var done=0,n=TL.length;oMsg.textContent='Scarico la mappa… 0 di '+n;
+    caches.open('lrh26-tiles').then(function(c){
+      var q=TL.slice(),k=0;function next(){var u=q.shift();if(!u)return Promise.resolve();return c.match(u).then(function(h){if(h)return;return fetch(u,{mode:'no-cors'}).then(function(r){return c.put(u,r);});}).catch(function(){}).then(function(){done++;if(done%10===0||done===n)oMsg.textContent='Scarico la mappa… '+done+' di '+n;return next();});}
+      return Promise.all([next(),next(),next(),next()]);
+    }).then(function(){
+      return fetch('data.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){ls('lrh26-data',JSON.stringify(d));}).catch(function(){});
+    }).then(function(){
+      return fetch('index.html',{cache:'no-cache'}).catch(function(){});
+    }).then(function(){
+      if(window.lrhWxRefresh)try{window.lrhWxRefresh();}catch(e){}
+      oMsg.textContent='Fatto. Se le previsioni risultano vecchie, apri la pagina Meteo con la rete e torna qui.';oGo.disabled=false;setTimeout(check,2500);
+    });
+  });
+  check();window.addEventListener('lrh-page',check);
+  // --- Scatti al 39 ---
+  (function(){var b=document.querySelectorAll('input[id^="sh"]'),c=document.getElementById('shots-count');
+    function u(){var k=0;b.forEach(function(x){if(x.checked)k++;});c.textContent=k+' di '+b.length;c.className='pill '+(k===b.length?'open':'idle');}
+    b.forEach(function(x){x.addEventListener('change',u);});setTimeout(u,300);setTimeout(u,3000);})();
+  // --- Dai un nome alle foto ---
+  var fIn=document.getElementById('m-files'),mRes=document.getElementById('m-res'),mSum=document.getElementById('m-sum'),mOff=document.getElementById('m-off'),mTa=document.getElementById('m-ta'),last=null;
+  function exifDate(buf){
+    var v=new DataView(buf),t0=-1;
+    if(v.byteLength<12)return null;
+    if(v.getUint16(0)===0xFFD8){var o=2;while(o+4<v.byteLength){var mk=v.getUint16(o),len=v.getUint16(o+2);if(mk===0xFFE1&&v.getUint32(o+4)===0x45786966){t0=o+10;break;}if((mk&0xFF00)!==0xFF00)break;o+=2+len;}}
+    else{var b0=v.getUint16(0);if(b0===0x4949||b0===0x4D4D)t0=0;}
+    if(t0<0)return null;
+    var le=v.getUint16(t0)===0x4949;function u16(x){return v.getUint16(t0+x,le);}function u32(x){return v.getUint32(t0+x,le);}
+    function str(x,n){var s='';for(var i=0;i<n&&t0+x+i<v.byteLength;i++){var ch=v.getUint8(t0+x+i);if(!ch)break;s+=String.fromCharCode(ch);}return s;}
+    function ifd(off){var r={};if(off+2>v.byteLength-t0)return r;var n=u16(off);for(var i=0;i<n;i++){var e=off+2+i*12;if(t0+e+12>v.byteLength)break;var tag=u16(e),type=u16(e+2),cnt=u32(e+4);r[tag]=(type===2)?(cnt<=4?str(e+8,cnt):str(u32(e+8),cnt)):u32(e+8);}return r;}
+    try{var i0=ifd(u32(4)),d=null;if(i0[0x8769]){var ex=ifd(i0[0x8769]);d=ex[0x9003]||ex[0x9004];}d=d||i0[0x0132];
+      var m=/(\d{4}):(\d\d):(\d\d) (\d\d):(\d\d):(\d\d)/.exec(d||'');if(!m)return null;return new Date(+m[1],+m[2]-1,+m[3],+m[4],+m[5],+m[6]);}catch(e){return null;}
+  }
+  function readDate(f){return f.slice(0,512*1024).arrayBuffer().then(function(b){return {d:exifDate(b),src:'exif'};}).catch(function(){return {d:null};}).then(function(r){if(!r.d){r.d=new Date(f.lastModified);r.src='file';}return r;});}
+  function logs(){var L=[];try{L=JSON.parse(ls('lrh26-log'))||[];}catch(e){}
+    var out=L.map(function(r){var d=(r.d||'').split('-'),t=(r.t||'').split(':');return {n:String(r.n),t:new Date(+d[0],+d[1]-1,+d[2],+t[0],+t[1],+(t[2]||0))};});
+    var ta=(mTa.value||'').trim();if(ta){var day=null;
+      ta.split('\n').forEach(function(l){var m=/(\d{1,2}):(\d\d):(\d\d)\s+n\.\s*(\d+)/.exec(l);if(m){var base=new Date(2026,10,14);if(out.length&&!day)base=out[0].t;out.push({n:m[4],t:new Date(base.getFullYear(),base.getMonth(),base.getDate(),+m[1],+m[2],+m[3])});}});}
+    return out.sort(function(a,b){return a.t-b.t;});}
+  function name(n){var L=window.LRH,e=L&&L.byNum?L.byNum(n):null;return e?(e.d+' · '+e.car):'';}
+  function stage(d){var L=window.LRH;if(!L)return '';var st=null;L.ST.forEach(function(x){var a=x.a.split(':'),b=x.b.split(':');var A=new Date(d.getFullYear(),d.getMonth(),d.getDate(),+a[0],+a[1]),B=new Date(d.getFullYear(),d.getMonth(),d.getDate(),+b[0],+b[1]);if(d>=A&&d<=B)st=x.ps;});return st?st.replace(' ',''):'';}
+  function p2(x){return String(x).padStart(2,'0');}
+  function fname(g,f,d){var ext=(f.name.match(/\.[^.]+$/)||[''])[0];return (g==='?'?'senza-auto':'n'+p2(g))+'_'+(stage(d)||'LRH26')+'_'+p2(d.getHours())+'-'+p2(d.getMinutes())+'-'+p2(d.getSeconds())+'_'+f.name.replace(/\.[^.]+$/,'')+ext;}
+  function run(files){
+    if(!files||!files.length)return;
+    mSum.textContent='Leggo '+files.length+' foto…';mRes.innerHTML='';
+    Promise.all([].map.call(files,function(f){return readDate(f).then(function(r){return {f:f,d:new Date(r.d.getTime()+(+mOff.value||0)*1000),src:r.src};});})).then(function(ph){
+      var L=logs(),G={},noEx=0;
+      ph.forEach(function(x){if(x.src!=='exif')noEx++;var best=null,bd=1e12;L.forEach(function(l){var dt=(x.d-l.t)/1000;if(dt<-180||dt>60)return;var sc=Math.abs(dt+15);if(sc<bd){bd=sc;best=l;}});var k=best?best.n:'?';(G[k]=G[k]||[]).push(x);});
+      var keys=Object.keys(G).sort(function(a,b){if(a==='39')return -1;if(b==='39')return 1;if(a==='?')return 1;if(b==='?')return -1;return G[a][0].d-G[b][0].d;});
+      last={G:G,keys:keys};
+      mSum.textContent=ph.length+' foto, '+(keys.length-(G['?']?1:0))+' auto riconosciute'+(L.length?'':' · il Registro passaggi è vuoto: segna le auto durante la gara oppure incolla il registro')+(noEx?' · '+noEx+' senza orario interno (uso la data del file)':'');
+      mRes.innerHTML=keys.map(function(k){var a=G[k],t0=a[0].d,t1=a[a.length-1].d;function h(d){return d.toLocaleTimeString('it-IT');}
+        return '<div class="m-g'+(k==='39'?' mine':'')+'"><div class="m-gh"><b>'+(k==='?'?'Senza auto':'n. '+k)+'</b><span>'+a.length+' foto · '+h(t0)+(a.length>1?'–'+h(t1):'')+'</span></div>'+(k!=='?'&&name(k)?'<small>'+name(k)+'</small>':'')+
+        '<small>'+a.slice(0,6).map(function(x){return x.f.name;}).join(', ')+(a.length>6?' e altre '+(a.length-6):'')+'</small><div class="btns"><button class="btn ghost sm" type="button" data-share="'+k+'">Condividi</button><button class="btn ghost sm" type="button" data-save="'+k+'">Salva copie rinominate</button></div></div>';}).join('')+
+        '<div class="btns"><button class="btn ghost" type="button" id="m-csv">Scarica l\'elenco (CSV)</button></div>';
+    });
+  }
+  fIn.addEventListener('change',function(){run(fIn.files);});
+  mOff.addEventListener('change',function(){if(fIn.files.length)run(fIn.files);});
+  mTa.addEventListener('change',function(){if(fIn.files.length)run(fIn.files);});
+  mRes.addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b||!last)return;
+    if(b.id==='m-csv'){var rows=['file;auto;orario;nuovo nome'];last.keys.forEach(function(k){last.G[k].forEach(function(x){rows.push(x.f.name+';'+(k==='?'?'':k)+';'+x.d.toLocaleString('it-IT')+';'+fname(k,x.f,x.d));});});
+      var a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+rows.join('\n')],{type:'text/csv'}));a.download='foto-lessinia-rally.csv';a.click();return;}
+    var k=b.getAttribute('data-share')||b.getAttribute('data-save'),arr=last.G[k];if(!arr)return;
+    var files=arr.map(function(x){return new File([x.f],fname(k,x.f,x.d),{type:x.f.type||'application/octet-stream'});});
+    if(b.hasAttribute('data-share')){
+      if(navigator.canShare&&navigator.canShare({files:files}))navigator.share({files:files,title:'Foto n. '+k}).catch(function(){});
+      else mSum.textContent='Questo browser non può condividere i file: usa "Salva copie rinominate".';
+      return;}
+    if(window.showDirectoryPicker){window.showDirectoryPicker({mode:'readwrite'}).then(function(dir){var i=0;return files.reduce(function(p,f){return p.then(function(){return dir.getFileHandle(f.name,{create:true}).then(function(h){return h.createWritable();}).then(function(w){return w.write(f).then(function(){return w.close();});}).then(function(){i++;mSum.textContent='Salvate '+i+' di '+files.length+'…';});});},Promise.resolve()).then(function(){mSum.textContent='Fatto: '+files.length+' copie salvate con il nome dell\'auto. Gli originali non sono stati toccati.';});}).catch(function(){});}
+    else{var i=0;(function nx(){var f=files[i++];if(!f){mSum.textContent='Scaricate '+files.length+' copie rinominate.';return;}var a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;a.click();setTimeout(nx,400);})();}
+  });
+})();
+</script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
 <div class="ovl" id="ovl" hidden><div class="ovl-card"><div class="eyebrow" id="ovl-eye">Arriva il 39</div><div class="ovl-big" id="ovl-big">–</div><div class="ovl-sub" id="ovl-sub"></div><button class="btn" type="button" id="ovl-ok">Pronto!</button></div></div>
 <script>
@@ -1134,7 +1370,7 @@ function __main(){
         document.getElementById('ovl-eye').textContent='Tocca al 39';
         document.getElementById('ovl-big').textContent='è il prossimo';
         document.getElementById('ovl-sub').textContent='Il n. '+num+' è appena passato: il 39 arriva tra circa un minuto. Fotocamera pronta!';
-        ov.hidden=false;buzz([600,200,600,200,600]);
+        ov.hidden=false;buzz([600,200,600,200,600]);if(window.lrhSound)lrhSound(3,'Tocca al 39. È il prossimo');
       }
     }
     return {ST:ST,TO:TO,at:at,hm:hm,ents:ents,byNum:byNum,posOf:posOf,delay:delay,getD:getD,setD:setD,current:current,eta:eta,passed:passed,onLog:onLog};
@@ -1298,7 +1534,7 @@ function __main(){
             document.getElementById('ovl-eye').textContent=RALLY.pos39?'Arriva il 39':'Arriva la prima auto';
             document.getElementById('ovl-big').textContent='tra '+Math.max(1,Math.round(mins))+' min';
             document.getElementById('ovl-sub').textContent=p[0]+' · al tornante verso le '+hm(t)+(w[0]===2?'. Fotocamera pronta!':'. Preparati.');
-            ovl.hidden=false;buzz(w[0]===2?[600,200,600,200,600]:[400,150,400]);
+            ovl.hidden=false;buzz(w[0]===2?[600,200,600,200,600]:[400,150,400]);if(window.lrhSound)lrhSound(w[0]===2?2:1,(RALLY.pos39?'Il 39':'La prima auto')+' tra '+Math.max(1,Math.round(mins))+' minuti');
             try{if('Notification' in window&&Notification.permission==='granted'&&navigator.serviceWorker)navigator.serviceWorker.ready.then(function(r){r.showNotification('Arriva il 39 · '+p[0],{body:'Al tornante verso le '+hm(t),icon:'logo-icon-192.png',vibrate:[400,150,400],tag:key});});}catch(e){}
           }
         });
@@ -1515,6 +1751,7 @@ function __main(){
         t.toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'})+' alle '+t.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})+
         ' · Fonte Open-Meteo, modello '+(data.bosco.icon2i?'ItaliaMeteo-ARPAE ICON-2I':'migliore disponibile')+'. Si aggiorna da solo ogni 30 minuti.';
     }
+    window.lrhWxRefresh=function(){run();};
     function run(){
       Promise.all([load(LOC.bosco,true),load(LOC.velo,false)]).then(function(r){
         var data={bosco:r[0],velo:r[1]},now=Date.now();
