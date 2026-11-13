@@ -659,8 +659,8 @@
   }
  ],
  "offline": {
-  "title": "Classifica provvisoria dopo PS 1",
-  "time": "ven 21:20",
+  "title": "Classifica provvisoria dopo PS 2",
+  "time": "ven 22:05",
   "rows": [
    {
     "pos": 1,
@@ -672,95 +672,95 @@
     "pos": 2,
     "n": 5,
     "crew": "Costaganna Sandro / Rizzi Matteo",
-    "gap": "+3.6"
+    "gap": "+4.6"
    },
    {
     "pos": 3,
-    "n": 7,
-    "crew": "Menegolli Stefano / Zambelli Mattia",
-    "gap": "+4.8"
+    "n": 2,
+    "crew": "Tezza Dennis / Merzari Massimo",
+    "gap": "+10.3"
    },
    {
     "pos": 4,
-    "n": 12,
-    "crew": "Garzotto Fabio / Sbalchiero Andrea",
-    "gap": "+12.3"
-   },
-   {
-    "pos": 5,
-    "n": 2,
-    "crew": "Tezza Dennis / Merzari Massimo",
-    "gap": "+13.5"
-   },
-   {
-    "pos": 6,
     "n": 6,
     "crew": "Patuzzo Nicola / Martini Alberto",
-    "gap": "+13.8"
-   },
-   {
-    "pos": 7,
-    "n": 8,
-    "crew": "Canteri Matteo / Valbusa Nicola",
-    "gap": "+14.0"
-   },
-   {
-    "pos": 8,
-    "n": 22,
-    "crew": "Bombieri Mattia / Tripi Linda",
     "gap": "+14.7"
    },
    {
-    "pos": 9,
-    "n": 10,
-    "crew": "Bergamo Matteo / Simioni Giorgio",
+    "pos": 5,
+    "n": 22,
+    "crew": "Bombieri Mattia / Tripi Linda",
     "gap": "+15.1"
    },
    {
-    "pos": 10,
+    "pos": 6,
+    "n": 8,
+    "crew": "Canteri Matteo / Valbusa Nicola",
+    "gap": "+17.7"
+   },
+   {
+    "pos": 7,
     "n": 14,
     "crew": "Bottoni Giuseppe / Sansone Elisabetta",
-    "gap": "+16.4"
+    "gap": "+34.9"
+   },
+   {
+    "pos": 8,
+    "n": 18,
+    "crew": "Soldà Fabio / Fracasso Massimo",
+    "gap": "+37.0"
+   },
+   {
+    "pos": 9,
+    "n": 45,
+    "crew": "Sbalchiero Stefano / Crivellaro Giovanna",
+    "gap": "+38.2"
+   },
+   {
+    "pos": 10,
+    "n": 12,
+    "crew": "Garzotto Fabio / Sbalchiero Andrea",
+    "gap": "+39.8"
    },
    {
     "pos": 11,
-    "n": 29,
-    "crew": "Bombieri Nicola / Fiocco Elena",
-    "gap": "+21.1"
+    "n": 16,
+    "crew": "Costola Michele / Lorenzi Sofia",
+    "gap": "+40.4"
    },
    {
     "pos": 12,
-    "n": 45,
-    "crew": "Sbalchiero Stefano / Crivellaro Giovanna",
-    "gap": "+21.5"
+    "n": 3,
+    "crew": "\"RAFFA\" / Signorini Andrea",
+    "gap": "+41.7"
    },
    {
     "pos": 13,
-    "n": 18,
-    "crew": "Soldà Fabio / Fracasso Massimo",
-    "gap": "+23.3"
+    "n": 11,
+    "crew": "Dalla Libera Paolo / Zago Emanuele",
+    "gap": "+42.1"
    },
    {
     "pos": 14,
-    "n": 3,
-    "crew": "\"RAFFA\" / Signorini Andrea",
-    "gap": "+23.4"
+    "n": 38,
+    "crew": "Rigon Nicola / Minuzzo Simone",
+    "gap": "+42.9"
    },
    {
     "pos": 15,
     "n": 54,
     "crew": "Iessi Michelangelo / Masin Denis",
-    "gap": "+25.2"
+    "gap": "+44.2"
    },
    {
-    "pos": 38,
+    "pos": 23,
     "n": 39,
     "crew": "Zambelli Agostino / Zambelli Angela",
-    "gap": "+41.4"
+    "gap": "+58.8"
    }
   ]
  },
- "updated": "ven 13 nov, 21:20",
+ "updated": "ven 13 nov, 22:05",
  "r39": [
   {
    "ps": "PS 1",
@@ -768,6 +768,13 @@
    "pos_ps": 38,
    "pos": 38,
    "gap": "+41.4"
+  },
+  {
+   "ps": "PS 2",
+   "time": "4:22.9",
+   "pos_ps": 17,
+   "pos": 23,
+   "gap": "+58.8"
   }
  ],
  "final39": null,
@@ -806,6 +813,12 @@
    "t": "ven 21:20",
    "title": "Classifica dopo PS 1",
    "text": "Il 39 è 38° a 41,4 s da Visintainer/Lonardi (BMW M3). Tempo 4:42.9 con i 20 s di penalità.",
+   "imp": false
+  },
+  {
+   "t": "ven 22:05",
+   "title": "Classifica dopo PS 2",
+   "text": "Il 39 risale al 23° posto (+58.8 da Visintainer/Lonardi). Nella PS 2 è stato 17° con 4:22.9.",
    "imp": false
   }
  ]
