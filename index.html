@@ -392,6 +392,10 @@ html.night .tabs{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) bri
   .wrap>section.warn{order:1}
   .wrap>footer{order:2}
 }
+.roads{display:grid;grid-template-columns:repeat(2,minmax(0,max-content));gap:10px}
+.road{display:flex;align-items:center;gap:10px;background:var(--soft);border-radius:14px;padding:8px 10px 8px 14px}
+.road .pill{white-space:nowrap}
+@media (max-width:599px){.roads{grid-template-columns:repeat(2,minmax(0,1fr))}.road{flex-direction:column;align-items:flex-start;gap:6px;padding:10px 12px}}
 </style>
 </head>
 <body>
@@ -422,9 +426,9 @@ html.night .tabs{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) bri
     <span class="count" id="now-count">–</span>
     <span class="note" id="now-detail"></span>
   </div>
-  <div class="now-row">
-    <span class="note">Strada Calavedo:</span><span class="pill idle" id="pill-cal">–</span>
-    <span class="note">Strada Velo:</span><span class="pill idle" id="pill-velo">–</span>
+  <div class="roads">
+    <div class="road"><span class="note">Strada Calavedo</span><span class="pill idle" id="pill-cal">–</span></div>
+    <div class="road"><span class="note">Strada Velo</span><span class="pill idle" id="pill-velo">–</span></div>
   </div>
   <div class="note">Gli orari di riapertura sono indicativi: la strada riapre solo dopo il passaggio della vettura "scopa".</div>
 </section>
