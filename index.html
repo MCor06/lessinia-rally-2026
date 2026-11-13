@@ -752,6 +752,10 @@ html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brig
 }
 @media (min-width:1600px){#prev .rbox{height:720px!important}}
 .c39-img{display:block;width:100%;border-radius:12px;margin:12px 0 6px;aspect-ratio:900/491;object-fit:cover}
+
+/* niente selezione del testo */
+html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -2684,5 +2688,6 @@ function __main(){
   if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
 })();
 </script>
+<script>document.addEventListener('contextmenu',function(e){var t=e.target;if(!(t.closest&&t.closest('input,textarea,a,img.c39-img')))e.preventDefault();});</script>
 </body>
 </html>
