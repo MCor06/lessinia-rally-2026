@@ -131,7 +131,8 @@ ul.plain{margin:0;padding-left:18px;display:grid;gap:6px}
 .log-list .ln{font:800 16px/1 var(--display)}
 .night-btn{position:fixed;right:16px;bottom:16px;z-index:50;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:#161618;color:#f4f4f5;font-size:22px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.5)}
 html.night .night-btn{background:#3a0b0b;color:#ff6b6b;border-color:#5a1414}
-html.night body{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brightness(.55)}
+html.night .wrap,html.night .ovl-card{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brightness(.55)}
+html.night body{background:#000}
 .ovl{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:20px}
 .ovl[hidden]{display:none}
 .ovl-card{background:#161618;border:2px solid var(--accent);border-radius:22px;padding:24px;max-width:420px;width:100%;display:grid;gap:10px;text-align:center}
