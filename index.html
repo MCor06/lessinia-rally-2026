@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lessinia Rally Historic 2026</title>
 <link rel="manifest" href="manifest.webmanifest?v=3">
 <meta name="theme-color" content="#0b0b0c">
@@ -252,6 +252,75 @@ section.warn{box-shadow:var(--shadow), inset 4px 0 0 var(--red)}
 footer{color:var(--muted);font-size:13px;display:grid;gap:4px}
 @media (max-width:420px){h1{font-size:32px}.big{font-size:26px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ===== Adattamento a telefono, tablet e PC ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:hidden}
+.wrap>*,.cols>*,section>*{min-width:0}
+img,svg,iframe{max-width:100%}
+.tl .w,.tl .d,.poi b,.poi small,.c39-item b{overflow-wrap:anywhere}
+
+/* Telefono */
+@media (max-width:599px){
+  .wrap{padding:12px 10px calc(84px + env(safe-area-inset-bottom,0px));gap:12px}
+  header{padding:16px;border-radius:18px}
+  h1{font-size:28px}
+  h2{font-size:17px}
+  .eyebrow{letter-spacing:.06em;font-size:11px;line-height:1.35}
+  section{padding:14px;border-radius:18px}
+  .big{font-size:24px}
+  .count{font-size:22px}
+  .c39-time,.trip-time{font-size:32px}
+  .c39-count{font-size:20px}
+  .c39-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .c39-item{padding:8px}
+  .c39-item b{font-size:15px}
+  .tl li{grid-template-columns:50px 1fr;gap:10px}
+  .tl .t{font-size:14px}
+  table{min-width:0;font-size:13px}
+  th,td{padding:7px 6px}
+  td.mono{white-space:normal}
+  .wx-hero{padding:14px}
+  .wx-ico-big{width:64px;height:64px}
+  .wx-hero-temp{font-size:36px}
+  .wx-chips{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wx-d{grid-template-columns:46px 26px 1fr auto;gap:8px;padding:8px 10px}
+  .poi li{grid-template-columns:34px 1fr}
+  .poi li .btn{grid-column:1/-1;justify-content:center}
+  .shots{grid-template-columns:1fr}
+  .btns .btn{flex:1 1 auto;justify-content:center}
+  .res-cta b{font-size:16px}
+  .rbox{height:380px}
+  .satmap{height:320px}
+  .log-n{max-width:96px;font-size:20px}
+  .night-btn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+  .ovl-big{font-size:40px}
+}
+
+/* Tablet */
+@media (min-width:600px) and (max-width:1099px){
+  .wrap{max-width:980px;padding:20px 20px 64px;gap:16px}
+  h1{font-size:40px}
+  .cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .shots{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wx-chips{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .rbox{height:560px}
+  .satmap{height:440px}
+}
+
+/* PC */
+@media (min-width:1100px){
+  .wrap{max-width:1320px;padding:28px 28px 72px;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+  .wrap>header,.wrap>.alerts,.wrap>.now,.wrap>.cols,.wrap>footer,.wrap>section:has(#wx-meta),.wrap>section.warn{grid-column:1/-1}
+  h1{font-size:46px}
+  .cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .shots{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wx-chips{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .wx-hours{grid-auto-columns:minmax(0,1fr);min-width:0}
+  section.warn .spot{max-width:none}
+  .rbox{height:600px}
+  .satmap{height:520px}
+}
 </style>
 </head>
 <body>
