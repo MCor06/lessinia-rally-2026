@@ -729,6 +729,18 @@ html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brig
 
 /* PC: riquadri incastrati senza buchi tra uno e l'altro */
 @media (min-width:1100px){.wrap.mas{grid-auto-rows:4px;row-gap:0;align-items:start;grid-auto-flow:row dense}.wrap.mas>#road{grid-column:1/-1}.wrap.mas>section.warn{grid-column:auto;order:0}.wrap.mas>*{margin-bottom:18px}.wrap.mas>.subnav{margin-top:-6px;margin-bottom:12px}}
+
+/* PC: sfrutta tutta la larghezza */
+@media (min-width:1100px){.wrap{max-width:min(1880px,calc(100vw - 48px))}.tabs{justify-content:center}}
+@media (min-width:1600px){.wrap{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:2300px){.wrap{max-width:min(2400px,calc(100vw - 64px));grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* PC: più colonne sugli schermi larghi */
+@media (min-width:1100px){.wrap{max-width:none;padding-left:32px;padding-right:32px}}
+@media (min-width:1600px){.wrap{grid-template-columns:repeat(3,minmax(0,1fr));max-width:2000px}}
+@media (min-width:2200px){.wrap{grid-template-columns:repeat(4,minmax(0,1fr));max-width:2600px}}
+@media (min-width:1600px){.wrap.mas>#cold,.wrap.mas>#wxnow{grid-column:span 2}}
+@media (min-width:2200px){.wrap.mas>#road{grid-column:span 2}}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
