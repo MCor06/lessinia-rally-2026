@@ -625,6 +625,13 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 .ptitle .eyebrow,.ptitle .sub{display:none}
 .ptitle{padding:2px 4px 0}
 @media (max-width:599px){.hlogo{max-width:240px;height:auto}header{padding:16px}}
+
+.subnav{gap:6px}
+.subnav a{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;font-size:12px}
+.subnav .si{width:16px;height:16px;flex:none}
+h2 .hi{width:20px;height:20px;vertical-align:-3px;margin-right:8px;color:var(--accent)}
+h2{display:flex;align-items:center}
+.res-head h2{display:flex;align-items:center}
 </style>
 </head>
 <body>
@@ -734,7 +741,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 </section>
 
 <section data-page="gara" id="prog" data-short="Programma">
-  <h2>Programma di sabato</h2>
+  <h2>Programma</h2>
   <ol class="tl" id="timeline">
     <li data-start="08:30" data-end="09:00"><span class="t">8:30</span><span><span class="w">Parcheggio a Bosco e salita a piedi al tornante</span><span class="d">Lascia l'auto in paese, non sulla strada della prova</span></span></li>
     <li data-start="09:00" data-end="09:01"><span class="t">9:00</span><span><span class="w">Chiude la strada Calavedo</span><span class="d">Da qui in poi resti dentro fino alla riapertura</span></span></li>
@@ -749,7 +756,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 </section>
 
 <section data-page="gara" id="prove" data-short="Prove">
-  <h2>Prove speciali e strade chiuse</h2>
+  <h2>Prove e strade chiuse</h2>
   <div class="tbl">
     <table>
       <thead><tr><th>Prova</th><th>Km</th><th>1ª auto</th><th>Strada chiusa</th></tr></thead>
@@ -822,7 +829,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 </section>
 
 <section data-page="meteo" id="cold" data-short="Sabato">
-  <div class="res-head"><h2>Sabato al tornante: il freddo ora per ora</h2><span class="pill idle" id="cold-pill">–</span></div>
+  <div class="res-head"><h2>Il freddo di sabato</h2><span class="pill idle" id="cold-pill">–</span></div>
   <div class="cold-wrap"><svg id="cold-svg" viewBox="0 0 700 250" role="img" aria-label="Temperatura di sabato al tornante ora per ora, con gli orari dei passaggi"></svg></div>
   <div class="cold-leg"><span><i class="l1"></i>temperatura</span><span><i class="l2"></i>percepita col vento</span><span><i class="b1"></i>prove</span><span><i class="b2"></i>pause: caffè caldo</span></div>
   <p class="note" id="cold-note"></p>
@@ -836,7 +843,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 </section>
 
 <section data-page="meteo" id="prev" data-short="Previsioni">
-  <h2>Meteo al tornante consigliato</h2>
+  <h2>Previsioni</h2>
   <div class="wx-meta note" id="wx-meta">Carico le previsioni…</div>
 
   <div class="wx-hero" id="wx-hero">
@@ -963,7 +970,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 <div class="ptitle" data-page="viaggio"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Viaggio e Spot</h1><div class="sub">Come arrivare, dove parcheggiare, il tornante e la zona intorno</div></div>
 
 <section data-page="viaggio" id="viaggio-s" data-short="Viaggio">
-  <h2>Viaggio, parcheggio e servizi</h2>
+  <h2>Viaggio e servizi</h2>
   <div class="trip">
     <div class="trip-big"><div class="eyebrow">Partenza consigliata da Verona sud</div><div class="trip-time">7:20</div><div class="note">Circa un'ora (45 km) via Grezzana: a Bosco verso le 8:20, prima della chiusura delle 9:00.</div></div>
   </div>
@@ -1005,7 +1012,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 </section>
 
 <section class="warn" id="posto" data-page="viaggio" data-short="Il posto">
-  <h2>Il posto: tornante a fine prova</h2>
+  <h2>Il tornante</h2>
   <figure class="spot">
     <svg class="osm" viewBox="-240 -200 480 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mappa del tornante su Via Saina a Bosco Chiesanuova: la prova arriva da ovest, fa il tornante cerchiato in giallo, scende al secondo tornante e risale verso il paese">
 <defs>
@@ -1091,7 +1098,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 </section>
 
 <section data-page="foto" id="raw" data-short="Expert RAW">
-  <h2>Foto con Expert RAW · Galaxy S24 Ultra</h2>
+  <h2>Expert RAW</h2>
   <div class="lux-now" id="lux-now"></div>
   <p class="note"><b>Expert RAW</b>: imposti S, ISO, EV e MF. Obiettivo migliore <b>3x</b>, <b>5x</b> per i primi piani.</p>
   <details class="more"><summary>4 consigli per Expert RAW</summary><ul class="plain">
@@ -1186,7 +1193,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 </section>
 
 <section data-page="foto" id="post" data-short="Dopo">
-  <div class="res-head"><h2>Dopo il rally, passo per passo</h2><span class="pill idle" id="post-count">0 di 8</span></div>
+  <div class="res-head"><h2>Dopo il rally</h2><span class="pill idle" id="post-count">0 di 8</span></div>
   <ul class="check" data-key="post">
     <li><label><input type="checkbox" id="po1"><span>Sabato sera: copia DNG, JPG e video GoPro sul PC o in cloud, prima di cancellare qualsiasi cosa</span></label></li>
     <li><label><input type="checkbox" id="po2"><span>Svuota la scheda della GoPro solo dopo aver controllato che la copia si apra</span></label></li>
@@ -1220,7 +1227,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
   <ul class="off-list" id="test-res"></ul>
 </section>
 <section class="offl" id="offl" data-page="imp" data-short="Offline">
-  <div class="res-head"><h2>Prepara l'app per l'uso offline</h2><span class="pill idle" id="off-pill">da controllare</span></div>
+  <div class="res-head"><h2>Uso offline</h2><span class="pill idle" id="off-pill">da controllare</span></div>
   <p class="note">Col Wi-Fi, prima di partire: salva mappa, meteo e classifica. Radar e aggiornamenti richiedono rete.</p>
   <ul class="off-list" id="off-list"></ul>
   <div class="btns"><button class="btn" type="button" id="off-go">Scarica tutto per l'uso offline</button></div>
@@ -1228,7 +1235,7 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 </section>
 
 <section class="snd" id="snd" data-page="imp" data-short="Avvisi">
-  <div class="res-head"><h2>Avvisi del 39: suono e schermo</h2><span class="pill idle" id="wl-pill">schermo normale</span></div>
+  <div class="res-head"><h2>Avvisi del 39</h2><span class="pill idle" id="wl-pill">schermo normale</span></div>
   <p class="note">Con lo schermo spento gli avvisi possono arrivare tardi: tienilo acceso vicino al 39.</p>
   <div class="opt">
     <label class="sw"><input type="checkbox" id="wl-auto"><span><b>Schermo acceso vicino al 39</b><small>Da 15 min prima a 5 min dopo il 39</small></span></label>
@@ -1970,6 +1977,9 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
 // Sottocategorie: barra in cima a ogni pagina e contatori dei gruppi
 (function(){
   var wrap=document.querySelector('.wrap'),pages={},navs=[],lock=0;
+  var ICO={"now": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/>", "news": "<path d=\"M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z\"/><path d=\"M16 9a4 4 0 0 1 0 6\"/><path d=\"M19 6a8 8 0 0 1 0 12\"/>", "c39": "<circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>", "arr": "<path d=\"M8 6h13M8 12h13M8 18h13\"/><path d=\"M3.5 6h.01M3.5 12h.01M3.5 18h.01\"/>", "log": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"M14 6l4 4\"/>", "classifica": "<path d=\"M8 4h8v5a4 4 0 0 1-8 0z\"/><path d=\"M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4\"/><path d=\"M12 13v4M9 20h6\"/>", "prog": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"16\" rx=\"2\"/><path d=\"M4 10h16M9 3v4M15 3v4\"/>", "prove": "<circle cx=\"6\" cy=\"18\" r=\"2\"/><circle cx=\"18\" cy=\"6\" r=\"2\"/><path d=\"M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7\"/>", "seq": "<path d=\"M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z\"/>", "r39": "<circle cx=\"12\" cy=\"13\" r=\"8\"/><path d=\"M12 9v4l2 2M10 2h4M12 2v3\"/>", "ent": "<circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20a6.5 6.5 0 0 1 13 0\"/><path d=\"M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 4 6\"/>", "contatti": "<path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z\"/>", "wxnow": "<path d=\"M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z\"/>", "cold": "<path d=\"M3 3v18h18\"/><path d=\"M7 15l4-5 4 3 5-6\"/>", "road": "<path d=\"M12 3l10 18H2z\"/><path d=\"M12 10v4M12 17.5h.01\"/>", "prev": "<path d=\"M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z\"/>", "todo": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M8 12l3 3 5-6\"/>", "portare": "<path d=\"M4 12a8 7 0 0 1 16 0v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\"/><path d=\"M9.5 5.4V4.5a2.5 2.5 0 0 1 5 0v.9\"/><path d=\"M8 14.5h8v3.5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z\"/>", "viaggio-s": "<path d=\"M3 16v-3l2-5h14l2 5v3z\"/><circle cx=\"7.5\" cy=\"16.5\" r=\"2\"/><circle cx=\"16.5\" cy=\"16.5\" r=\"2\"/>", "car": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M10 17V7h3a3 3 0 0 1 0 6h-3\"/>", "posto": "<path d=\"M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/>", "sos": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>", "raw": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M14.3 3.3L9 12M20.4 9H11M18.4 18L13 9M9.7 20.7L15 12M3.6 15H13M5.6 6L11 15\"/>", "shots39": "<rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/>", "match": "<path d=\"M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\"1.5\"/>", "lr": "<path d=\"M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12\"/><circle cx=\"16\" cy=\"6\" r=\"2\"/><circle cx=\"10\" cy=\"12\" r=\"2\"/><circle cx=\"18\" cy=\"18\" r=\"2\"/>", "exp": "<path d=\"M12 15V3M7 8l5-5 5 5\"/><path d=\"M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6\"/>", "post": "<path d=\"M3 6l2 2 3-3M3 13l2 2 3-3M11 7h10M11 14h10M11 20h10\"/>", "story": "<rect x=\"6\" y=\"2\" width=\"12\" height=\"20\" rx=\"3\"/><circle cx=\"12\" cy=\"11\" r=\"3\"/>", "test": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M10 8l6 4-6 4z\"/>", "offl": "<path d=\"M12 3v12M7 10l5 5 5-5\"/><path d=\"M5 21h14\"/>", "snd": "<path d=\"M6 16V11a6 6 0 0 1 12 0v5l2 2H4z\"/><path d=\"M10 21h4\"/>", "batt": "<rect x=\"2\" y=\"7\" width=\"18\" height=\"10\" rx=\"2\"/><path d=\"M22 11v2M6 10v4M10 10v4\"/>", "backup": "<path d=\"M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z\"/><path d=\"M7 3v6h8V3M7 21v-6h10v6\"/>"},LAB={"now": "Ora", "news": "News", "c39": "39", "arr": "Arrivi", "log": "Registro", "classifica": "Classifica", "prog": "Orari", "prove": "Prove", "seq": "Sicurezza", "r39": "Tempi", "ent": "Iscritti", "contatti": "Contatti", "wxnow": "Ora", "cold": "Sabato", "road": "Strada", "prev": "Previsioni", "todo": "Da fare", "portare": "Zaino", "viaggio-s": "Viaggio", "car": "Parcheggio", "posto": "Tornante", "sos": "SOS", "sun": "Sole", "raw": "RAW", "shots39": "Scatti", "match": "Nomi", "lr": "Lightroom", "exp": "Esporta", "post": "Dopo", "story": "Storia", "test": "Prova", "offl": "Offline", "snd": "Avvisi", "batt": "Batteria", "backup": "Backup"};
+  function svg(id,c){return ICO[id]?'<svg class="'+c+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICO[id]+'</svg>':'';}
+
   function mark(nav,id){var on=null;nav.querySelectorAll('a').forEach(function(a){var x=a.getAttribute('data-to')===id;a.classList.toggle('on',x);if(x)on=a;});if(on&&nav.scrollTo)nav.scrollTo({left:on.offsetLeft-nav.clientWidth/2+on.clientWidth/2,behavior:'smooth'});}
   function spy(){if(Date.now()<lock)return;navs.forEach(function(nav){if(nav.hidden)return;var top=nav.getBoundingClientRect().bottom+12,cur=null;
     nav._list.forEach(function(sec){if(sec.hidden)return;if(sec.getBoundingClientRect().top<=top)cur=sec;});
@@ -1978,10 +1988,11 @@ header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
   window.addEventListener('scroll',function(){if(!spy._t)spy._t=requestAnimationFrame(function(){spy._t=0;spy();});},{passive:true});
   window.addEventListener('lrh-page',function(){navs.forEach(function(n){n._cur=null;});setTimeout(spy,50);});
   document.querySelectorAll('.wrap>section[data-short]').forEach(function(sec){var p=sec.getAttribute('data-page');(pages[p]=pages[p]||[]).push(sec);});
+  document.querySelectorAll('.wrap>section[data-short]').forEach(function(sec){var h=sec.querySelector('h2');if(h&&ICO[sec.id]&&!h.querySelector('.hi'))h.insertAdjacentHTML('afterbegin',svg(sec.id,'hi'));});
   Object.keys(pages).forEach(function(p){
     var list=pages[p];if(list.length<2)return;
     var nav=document.createElement('nav');nav.className='subnav';nav.setAttribute('data-page',p);nav.setAttribute('aria-label','Sezioni della pagina');
-    nav.innerHTML=list.map(function(sec){return '<a href="#'+p+'/'+sec.id+'" data-to="'+sec.id+'">'+sec.getAttribute('data-short')+'</a>';}).join('');
+    nav.innerHTML=list.map(function(sec){return '<a href="#'+p+'/'+sec.id+'" data-to="'+sec.id+'" title="'+sec.getAttribute('data-short')+'">'+svg(sec.id,'si')+'<span>'+(LAB[sec.id]||sec.getAttribute('data-short'))+'</span></a>';}).join('');
     var first=document.querySelector('.wrap>.ptitle[data-page="'+p+'"]')||document.querySelector('.wrap>header[data-page="'+p+'"]');
     if(first&&first.nextSibling)wrap.insertBefore(nav,first.nextSibling);else wrap.insertBefore(nav,list[0]);
     nav.addEventListener('click',function(e){var a=e.target.closest('a[data-to]');if(!a)return;e.preventDefault();var el=document.getElementById(a.getAttribute('data-to'));if(!el)return;lock=Date.now()+1200;mark(nav,el.id);el.scrollIntoView({behavior:'smooth',block:'start'});});
