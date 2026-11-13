@@ -410,6 +410,9 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
 .btn:active,.tabs a:active,.night-btn:active{transform:scale(.96);opacity:.85}
 
 /* ===== Sole in AR ===== */
+.er-tips{margin:10px 0 14px;font-size:13px}
+.er-tips li{color:var(--muted)}
+.er-tips b{color:var(--ink)}
 .sun-open{width:100%;justify-content:center;font-size:16px;padding:14px;margin:4px 0 12px;cursor:pointer}
 .sun-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-bottom:10px}
 .sun-card{background:var(--soft);border-radius:14px;padding:12px;display:grid;gap:6px}
@@ -847,13 +850,19 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
 </section>
 
 <section data-page="foto">
-  <h2>Foto con il Galaxy S24 Ultra</h2>
+  <h2>Foto con Expert RAW · Galaxy S24 Ultra</h2>
   <div class="lux-now" id="lux-now"></div>
-  <p class="note">Usa la modalità <b>Pro</b> (in Fotocamera → Altro → Pro) per scegliere tu tempo e ISO. Dal tornante l'obiettivo migliore è il <b>3x</b>; il <b>5x</b> serve per i primi piani da lontano. Per la raffica imposta in Impostazioni fotocamera → "Scorri il tasto di scatto verso" → Scatta foto a raffica, poi trascina il tasto verso il basso.</p>
+  <p class="note">In <b>Expert RAW</b> imposti tu <b>S</b> (tempo), <b>ISO</b>, <b>EV</b> e la messa a fuoco manuale <b>MF</b>; ogni scatto salva un DNG da sistemare dopo, più il JPEG. Dal tornante l'obiettivo migliore è il <b>3x</b>; il <b>5x</b> serve per i primi piani da lontano.</p>
+  <ul class="plain er-tips">
+    <li><b>Attenzione alla velocità:</b> Expert RAW unisce più fotogrammi per ogni scatto, quindi tra una foto e l'altra è più lento della fotocamera normale e la raffica è limitata. Con le auto che passano a un minuto l'una dall'altra va benissimo; per avere la sequenza completa del 39 tieni pronta come riserva la Fotocamera in modalità Pro con la raffica.</li>
+    <li><b>Messa a fuoco:</b> in MF metti a fuoco sul punto di corda con un'auto di prova, poi non toccare più: l'autofocus su un'auto veloce a volte arriva tardi.</li>
+    <li><b>Bilanciamento del bianco:</b> fissalo (circa 5500 K di giorno) così tutte le foto della giornata hanno gli stessi colori; nel DNG lo cambi comunque dopo.</li>
+    <li><b>Prova prima:</b> oggi fai qualche scatto ad auto in movimento sulla strada di casa, così vedi se a 1/1000 ti vengono mosse o con artefatti.</li>
+  </ul>
   <div class="shots">
     <div class="shot"><div class="shot-h"><span class="tag2">PS 4 · 10:17</span><b>Luce piena del mattino</b></div>
       <p class="lux">Sole a circa 23° · luce piena ma bassa, ombre lunghe</p>
-      <ul><li><b>Nitide:</b> 3x, tempo 1/1000, ISO auto, raffica</li><li><b>Panning:</b> 1x o 3x, tempo 1/60–1/125, ISO 50–100, segui l'auto con tutto il busto</li><li>Messa a fuoco manuale sul punto di corda della curva, poi aspetta lì</li><li><b>GoPro:</b> video 4K a 60 fps, oppure 2.7K a 120 fps per il rallentatore. Protune con ISO massimo 400</li></ul></div>
+      <ul><li><b>Nitide:</b> 3x, S 1/1000, ISO auto, scatti in sequenza seguendo l'auto</li><li><b>Panning:</b> 1x o 3x, tempo 1/60–1/125, ISO 50–100, segui l'auto con tutto il busto</li><li>Messa a fuoco manuale sul punto di corda della curva, poi aspetta lì</li><li><b>GoPro:</b> video 4K a 60 fps, oppure 2.7K a 120 fps per il rallentatore. Protune con ISO massimo 400</li></ul></div>
     <div class="shot"><div class="shot-h"><span class="tag2">PS 6 · 14:14</span><b>Luce più bassa e ombre</b></div>
       <p class="lux">Sole a circa 18° e in discesa · tramonto alle 16:47</p>
       <ul><li><b>Nitide:</b> 3x, tempo 1/800, ISO auto (fino a 800)</li><li><b>Panning:</b> tempo 1/60, ISO 50–100</li><li>Il tornante è in parte in ombra: esposizione +0,3 se le auto bianche vengono scure</li><li><b>GoPro:</b> 4K a 60 fps, ISO massimo 800. Se la inquadri contro il sole, EV −0,5</li></ul></div>
@@ -863,7 +872,7 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
     <div class="shot"><div class="shot-h"><span class="tag2">Video</span><b>Per le storie</b></div>
       <ul><li>4K a 60 fps, oppure Super Slow-mo per l'entrata in curva</li><li>Verticale se è per le storie di Instagram</li><li>Blocca l'esposizione toccando a lungo lo schermo</li></ul></div>
   </div>
-  <p class="note">Salva anche in RAW (Impostazioni → Opzioni immagine Pro → RAW e JPEG) se vuoi sistemarle dopo. Con il freddo la batteria cala in fretta: tieni il telefono in tasca tra un passaggio e l'altro e pulisci gli obiettivi prima di ogni prova.</p>
+  <p class="note">I DNG di Expert RAW si sistemano con Lightroom (anche sul telefono): recuperi le ombre del tornante e il cielo bruciato. Pesano molto più dei JPEG, quindi libera spazio prima di partire. Con il freddo la batteria cala in fretta: tieni il telefono in tasca tra un passaggio e l'altro e pulisci gli obiettivi prima di ogni prova.</p>
 </section>
 
 <section data-page="foto">
@@ -872,7 +881,7 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
     <li><label><input type="checkbox" id="f1"><span>Il <b>n. 39</b>: Ford Sierra 4x4 bianca e blu, livrea Mobil 1. Manca solo l'orario di partenza</span></label></li>
     <li><label><input type="checkbox" id="f2"><span>Video anche in verticale per Instagram</span></label></li>
     <li><label><input type="checkbox" id="f3"><span>Allenarsi sulle prime auto</span></label></li>
-    <li><label><input type="checkbox" id="f4"><span>Nitide: da 1/1000 s in su, a raffica</span></label></li>
+    <li><label><input type="checkbox" id="f4"><span>Nitide: da 1/1000 s in su, scatti in sequenza</span></label></li>
     <li><label><input type="checkbox" id="f5"><span>Panning: tra 1/60 e 1/125 s, seguendo l'auto</span></label></li>
     <li><label><input type="checkbox" id="f6"><span>PS 8 al buio: fari e scie di luce</span></label></li>
   </ul>
