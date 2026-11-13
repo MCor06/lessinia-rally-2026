@@ -554,6 +554,28 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 .exp span{font:700 14px/1.2 var(--mono);color:var(--accent)}
 .exp small{color:var(--muted);font-size:12px}
 @media (max-width:599px){.wn-temp span{font-size:56px}}
+
+/* ===== Stato gara, freddo, strada ===== */
+.news-i{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.news-i:first-child{border-top:0}
+.news-i .t{font:700 13px/1.3 var(--mono);color:var(--accent)}
+.news-i.imp b{color:var(--red)}
+.seg{display:inline-grid;grid-auto-flow:column;gap:4px;background:var(--soft);border-radius:12px;padding:4px;margin:0 0 10px}
+.seg button{border:0;background:none;color:var(--muted);font:600 13px/1 var(--body);padding:9px 12px;border-radius:9px;cursor:pointer}
+.seg button.on{background:var(--panel);color:var(--ink)}
+.wrap>#cold{grid-column:1/-1}
+.cold-wrap{overflow:hidden}
+#cold-svg{width:100%;height:auto;display:block}
+.cold-leg{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);margin-top:6px}
+.cold-leg i{display:inline-block;width:16px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.cold-leg .l1{background:var(--accent);height:3px;vertical-align:2px}.cold-leg .l2{background:#7dd3fc;height:3px;vertical-align:2px}
+.cold-leg .b1{background:rgba(245,192,79,.18)}.cold-leg .b2{background:rgba(125,211,252,.14)}
+.road-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:10px 0}
+.road-c{background:var(--soft);border-radius:12px;padding:10px 12px;display:grid;gap:4px}
+.road-c b{font:700 14px/1.2 var(--display)}
+.road-c .st{font:700 14px/1.2 var(--mono)}
+.road-c .st.ok{color:var(--ok)}.road-c .st.ice{color:#93c5fd}.road-c .st.fog{color:#d4d4d8}
+.road-c small{color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
@@ -591,6 +613,11 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <div class="road"><span class="note">Strada Velo</span><span class="pill idle" id="pill-velo">–</span></div>
   </div>
   <div class="note">Gli orari di riapertura sono indicativi: la strada riapre solo dopo il passaggio della vettura "scopa".</div>
+</section>
+
+<section data-page="gara" id="news">
+  <div class="res-head"><h2>Stato della gara</h2><span class="pill idle" id="news-pill">nessun comunicato</span></div>
+  <div id="news-list"><p class="note">Ritardi, prove annullate o cambi di orario dai comunicati ufficiali: Claude li riporta qui a ogni controllo, insieme alle classifiche. Se arriva una novità ti compare un avviso.</p></div>
 </section>
 
 <section class="c39" id="c39" data-page="gara">
@@ -732,7 +759,8 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 <div class="ptitle" data-page="meteo"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Meteo</h1><div class="sub">Previsioni per il tornante e per Velo Veronese, radar in diretta</div></div>
 
 <section data-page="meteo" class="wxnow" id="wxnow">
-  <div class="res-head"><h2>Adesso al tornante</h2><span class="pill idle" id="wn-pill">–</span></div>
+  <div class="res-head"><h2 id="wn-h">Adesso al tornante</h2><span class="pill idle" id="wn-pill">–</span></div>
+  <div class="seg" role="tablist" aria-label="Luogo"><button type="button" class="on" data-loc="cal">Tornante · Calavedo</button><button type="button" data-loc="velo">Velo Veronese</button></div>
   <div class="wn-main">
     <div class="wn-temp"><span id="wn-t">–</span><small>percepiti <b id="wn-f">–</b></small></div>
     <div class="wn-cond"><b id="wn-c">–</b><span class="note" id="wn-w"></span></div>
@@ -740,6 +768,20 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   <div class="wn-chips" id="wn-chips"></div>
   <div class="wn-rain"><div class="wn-rh"><b>Pioggia nelle prossime 2 ore</b><span class="note" id="wn-rs"></span></div><div class="wn-bars" id="wn-bars"></div></div>
   <p class="note" id="wn-meta">Stima del modello meteo per il punto esatto del tornante (1.100 m circa), non una stazione: si aggiorna ogni 10 minuti con l'app aperta.</p>
+</section>
+
+<section data-page="meteo" id="cold">
+  <div class="res-head"><h2>Sabato al tornante: il freddo ora per ora</h2><span class="pill idle" id="cold-pill">–</span></div>
+  <div class="cold-wrap"><svg id="cold-svg" viewBox="0 0 700 250" role="img" aria-label="Temperatura di sabato al tornante ora per ora, con gli orari dei passaggi"></svg></div>
+  <div class="cold-leg"><span><i class="l1"></i>temperatura</span><span><i class="l2"></i>percepita col vento</span><span><i class="b1"></i>prove</span><span><i class="b2"></i>pause: caffè caldo</span></div>
+  <p class="note" id="cold-note"></p>
+</section>
+
+<section data-page="meteo" id="road">
+  <div class="res-head"><h2>Strada: ghiaccio e nebbia</h2><span class="pill idle" id="road-pill">–</span></div>
+  <p class="note">Controllo del tornante e della salita (Cerro Veronese) per stanotte e per sabato mattina, quando sarai in strada. Se c'è rischio ti compare un avviso.</p>
+  <div class="road-g" id="road-g"></div>
+  <p class="note">"Ghiaccio possibile" vuol dire temperatura vicina o sotto lo zero con umidità alta o dopo la pioggia: nelle curve in ombra la strada può essere scivolosa anche se il resto è asciutto.</p>
 </section>
 
 <section data-page="meteo">
@@ -1562,7 +1604,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 // ===== Meteo adesso al tornante e ricette Lightroom =====
 (function(){
   // --- Meteo adesso ---
-  var LAT=45.619783,LON=11.026997,K='lrh26-now';
+  var LOCS={cal:{lat:45.619783,lon:11.026997,h:'Adesso al tornante'},velo:{lat:45.6063,lon:11.0956,h:'Adesso a Velo Veronese'}},loc='cal';try{loc=localStorage.getItem('lrh26-nowloc')||'cal';}catch(e){}if(!LOCS[loc])loc='cal';var LAT,LON,K;function setLoc(l){loc=l;LAT=LOCS[l].lat;LON=LOCS[l].lon;K='lrh26-now-'+l;try{localStorage.setItem('lrh26-nowloc',l);}catch(e){}document.getElementById('wn-h').textContent=LOCS[l].h;document.querySelectorAll('.seg [data-loc]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-loc')===l);});}setLoc(loc);
   var WMO={0:'Sereno',1:'Quasi sereno',2:'Poco nuvoloso',3:'Coperto',45:'Nebbia',48:'Nebbia con brina',51:'Pioviggine debole',53:'Pioviggine',55:'Pioviggine forte',56:'Pioviggine gelata',57:'Pioviggine gelata',61:'Pioggia debole',63:'Pioggia',65:'Pioggia forte',66:'Pioggia gelata',67:'Pioggia gelata forte',71:'Neve debole',73:'Neve',75:'Neve forte',77:'Granelli di neve',80:'Rovesci deboli',81:'Rovesci',82:'Rovesci forti',85:'Rovesci di neve',86:'Rovesci di neve forti',95:'Temporale',96:'Temporale con grandine',99:'Temporale con grandine'};
   var DIR=['N','NE','E','SE','S','SO','O','NO'];
   function f1(v){return v==null?'–':(Math.round(v*10)/10).toFixed(1).replace('.',',').replace('-','−');}
@@ -1585,7 +1627,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     document.getElementById('wn-rs').textContent=bars.length?(wet.length?'pioggia dalle '+hm(wet[0][0])+(wet.length>1?' · fino a '+f1(Math.max.apply(null,wet.map(function(b){return b[1];})))+' mm in 15′':''):'niente pioggia prevista'):'';
     var p=document.getElementById('wn-pill');p.className='pill '+(old?'idle':'open');
     var mins=Math.round((Date.now()-when)/6e4);p.textContent=old?('salvato '+(mins<60?mins+' min':Math.round(mins/60)+' h')+' fa'):'aggiornato '+hm(c.time);
-    var nw=document.getElementById('now-wx');if(nw){nw.hidden=false;document.getElementById('nw-t').textContent=f1(c.temperature_2m)+'°';document.getElementById('nw-s').textContent='percepiti '+f1(c.apparent_temperature)+'° · '+(WMO[c.weather_code]||'').toLowerCase();}
+    var nw=document.getElementById('now-wx');if(nw&&loc==='cal'){nw.hidden=false;document.getElementById('nw-t').textContent=f1(c.temperature_2m)+'°';document.getElementById('nw-s').textContent='percepiti '+f1(c.apparent_temperature)+'° · '+(WMO[c.weather_code]||'').toLowerCase();}
   }
   function url(model){return 'https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m&minutely_15=precipitation&forecast_minutely_15=10&past_minutely_15=1&timezone=Europe%2FRome'+(model?'&models='+model:'');}
   function load(){
@@ -1599,6 +1641,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   try{var c0=JSON.parse(localStorage.getItem(K));if(c0)draw(c0.data,c0.when,true);}catch(e){}
   load();setInterval(load,10*6e4);document.addEventListener('visibilitychange',function(){if(!document.hidden){var c=null;try{c=JSON.parse(localStorage.getItem(K));}catch(e){}if(!c||Date.now()-c.when>5*6e4)load();}});
   window.lrhNowRefresh=load;
+  document.querySelectorAll('.seg [data-loc]').forEach(function(b){b.addEventListener('click',function(){setLoc(b.getAttribute('data-loc'));var c=null;try{c=JSON.parse(localStorage.getItem(K));}catch(e){}if(c)draw(c.data,c.when,true);load();});});
 
   // --- Ricette Lightroom ---
   var R=[
@@ -1624,6 +1667,83 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   (function(){var b=document.querySelectorAll('input[id^="po"]'),c=document.getElementById('post-count');
     function u(){var k=0;b.forEach(function(x){if(x.checked)k++;});c.textContent=k+' di '+b.length;c.className='pill '+(k===b.length?'open':'idle');}
     b.forEach(function(x){x.addEventListener('change',u);});setTimeout(u,300);setTimeout(u,3000);})();
+})();
+</script>
+<script>
+// ===== Stato della gara, freddo di sabato, ghiaccio e nebbia =====
+(function(){
+  function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+  // --- Stato della gara ---
+  function getData(){var d=window.RALLY_LOCAL||window.RALLY_DATA||null;try{if(!d)d=JSON.parse(ls('lrh26-data'));}catch(e){}return d||{};}
+  function drawNews(d){
+    var n=(d&&d.news)||[],pill=document.getElementById('news-pill'),box=document.getElementById('news-list');
+    if(!n.length)return;
+    box.innerHTML=n.slice().reverse().map(function(x){return '<div class="news-i'+(x.imp?' imp':'')+'"><span class="t">'+esc(x.t)+'</span><span>'+(x.title?'<b>'+esc(x.title)+'</b> ':'')+esc(x.text)+'</span></div>';}).join('');
+    var last=n[n.length-1];pill.className='pill '+(last.imp?'closed':'open');pill.textContent='ultimo '+last.t;
+  }
+  function newsAlert(d,live){
+    var n=(d&&d.news)||[];if(!n.length)return;var last=n[n.length-1],key=last.t+'|'+(last.title||last.text);
+    if(ls('lrh26-seennews')===key)return;
+    if(window.lrhAlert)lrhAlert('al-news'+n.length,last.imp?'':'', 'Comunicato '+last.t+': '+(last.title||'novità sulla gara'),last.text,live?'Aggiorna':'Vedi',function(){ls('lrh26-seennews',key);if(live){location.reload();return;}if(window.lrhGoTo)lrhGoTo('#news');var a=document.getElementById('al-news'+n.length);if(a)a.remove();});
+    if(live&&window.lrhBuzz)lrhBuzz();
+    if(live&&window.lrhSound&&last.imp)lrhSound(1,'Comunicato della gara');
+  }
+  setTimeout(function(){var d=getData();drawNews(d);newsAlert(d,false);},900);
+  if(/^https?:/.test(location.protocol)&&!window.RALLY_LOCAL){
+    setInterval(function(){if(document.hidden)return;fetch('data.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){if(!d)return;var o=getData();var a=(o.news||[]).length,b=(d.news||[]).length;if(b>a){newsAlert(d,true);}}).catch(function(){});},180000);
+  }
+
+  // --- Previsioni orarie per freddo e strada ---
+  var P={cal:{lat:45.619783,lon:11.026997,name:'Tornante · Bosco Chiesanuova'},cerro:{lat:45.5745,lon:11.0435,name:'Salita · Cerro Veronese'}};
+  function url(pt,model){return 'https://api.open-meteo.com/v1/forecast?latitude='+pt.lat+'&longitude='+pt.lon+'&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,visibility&forecast_days=3&past_days=1&timezone=Europe%2FRome'+(model?'&models='+model:'');}
+  function get(pt){return fetch(url(pt,'italia_meteo_arpae_icon_2i')).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){if(!d.hourly||d.hourly.temperature_2m.filter(function(x){return x!=null;}).length<24)throw 0;
+      return fetch(url(pt,'')).then(function(r){return r.json();}).then(function(b){['visibility','apparent_temperature'].forEach(function(k){if(b.hourly&&b.hourly[k])d.hourly[k]=d.hourly[k]&&d.hourly[k].some(function(x){return x!=null;})?d.hourly[k]:b.hourly[k];});return d;}).catch(function(){return d;});})
+    .catch(function(){return fetch(url(pt,'')).then(function(r){if(!r.ok)throw 0;return r.json();});});}
+  function f1(v){return v==null?'–':(Math.round(v*10)/10).toFixed(1).replace('.',',').replace('-','−');}
+  function idx(h,t){return h.time.indexOf(t);}
+  function risk(h,i){var t=h.temperature_2m[i],rh=h.relative_humidity_2m[i],c=h.weather_code[i],v=h.visibility?h.visibility[i]:null,wet=false;
+    for(var k=Math.max(0,i-6);k<=i;k++)if((h.precipitation[k]||0)>=0.1)wet=true;
+    var ice=t!=null&&(t<=-1||(t<=1.5&&(wet||rh>=90||(c>=71&&c<=86))));var fog=c===45||c===48||(v!=null&&v<1000);return {ice:ice,fog:fog,t:t};}
+  function windowCheck(h,day,h0,h1){var out={ice:false,fog:false,min:99,iceAt:null,fogAt:null};
+    for(var hh=h0;hh<=h1;hh++){var i=idx(h,day+'T'+String(hh).padStart(2,'0')+':00');if(i<0)continue;var r=risk(h,i);if(r.t!=null&&r.t<out.min)out.min=r.t;if(r.ice&&!out.ice){out.ice=true;out.iceAt=hh;}if(r.fog&&!out.fog){out.fog=true;out.fogAt=hh;}}
+    return out;}
+  function drawRoad(D){
+    var g=document.getElementById('road-g'),rows=[],any=false;
+    var W=[['Stanotte','2026-11-13',22,23,'2026-11-14',0,6],['Sabato mattina, in salita','2026-11-14',6,10],['Sabato sera, rientro','2026-11-14',18,22]];
+    Object.keys(P).forEach(function(k){var h=D[k]&&D[k].hourly;if(!h)return;
+      W.forEach(function(w){var a=windowCheck(h,w[1],w[2],w[3]);if(w[4]){var b=windowCheck(h,w[4],w[5],w[6]);a={ice:a.ice||b.ice,fog:a.fog||b.fog,min:Math.min(a.min,b.min),iceAt:a.iceAt!=null?a.iceAt:b.iceAt,fogAt:a.fogAt!=null?a.fogAt:b.fogAt};}
+        if(a.min===99)return;var bad=a.ice||a.fog;if(bad&&w[1]!=='2026-11-14'||bad&&w[2]<=10)any=any||bad;
+        rows.push('<div class="road-c"><b>'+P[k].name+'</b><small>'+w[0]+'</small><span class="st '+(a.ice?'ice':a.fog?'fog':'ok')+'">'+(a.ice?'Ghiaccio possibile'+(a.iceAt!=null?' dalle '+a.iceAt+':00':''):'')+(a.ice&&a.fog?' · ':'')+(a.fog?'Nebbia'+(a.fogAt!=null?' dalle '+a.fogAt+':00':''):'')+(!a.ice&&!a.fog?'Nessun rischio previsto':'')+'</span><small>minima '+f1(a.min)+'°</small></div>');});});
+    if(!rows.length)return;g.innerHTML=rows.join('');
+    var p=document.getElementById('road-pill');p.className='pill '+(any?'closed':'open');p.textContent=any?'attenzione':'strada ok';
+    if(any&&window.lrhAlert){var k='lrh26-icealert-'+new Date().toDateString();if(!ls(k)){lrhAlert('al-ice','wx','Possibile ghiaccio o nebbia sulla strada','Guarda la pagina Meteo: parti con qualche minuto di margine e vai piano nelle curve in ombra.','Vedi',function(){ls(k,'1');if(window.lrhGoTo)lrhGoTo('#road');var a=document.getElementById('al-ice');if(a)a.remove();});}}
+  }
+  function drawCold(D){
+    var h=D.cal&&D.cal.hourly;if(!h)return;var svg=document.getElementById('cold-svg'),T=[],A=[];
+    for(var hh=7;hh<=20;hh++){var i=idx(h,'2026-11-14T'+String(hh).padStart(2,'0')+':00');if(i<0)return;T.push(h.temperature_2m[i]);A.push(h.apparent_temperature?h.apparent_temperature[i]:null);}
+    var all=T.concat(A).filter(function(v){return v!=null;}),lo=Math.floor(Math.min.apply(null,all))-1,hi=Math.ceil(Math.max.apply(null,all))+1;
+    var X0=40,X1=690,Y0=30,Y1=210;function x(hr){return X0+(hr-7)/13*(X1-X0);}function y(v){return Y1-(v-lo)/(hi-lo)*(Y1-Y0);}
+    function tm(s){var p=s.split(':');return +p[0]+p[1]/60;}
+    var B=[['PS 4','10:17','11:45',1],['pausa','11:45','13:00',2],['PS 6','14:14','15:45',1],['pausa','15:45','16:30',2],['PS 8','17:42','19:40',1]],o='';
+    B.forEach(function(b){var a=x(tm(b[1])),c=x(tm(b[2]));o+='<rect x="'+a+'" y="'+Y0+'" width="'+(c-a)+'" height="'+(Y1-Y0)+'" fill="'+(b[3]===1?'rgba(245,192,79,.16)':'rgba(125,211,252,.12)')+'"/><text x="'+(a+c)/2+'" y="'+(Y0-8)+'" text-anchor="middle" font-size="12" font-weight="700" fill="'+(b[3]===1?'#f5c04f':'#7dd3fc')+'" font-family="Plus Jakarta Sans,sans-serif">'+(b[3]===1?b[0]:'☕')+'</text>';});
+    for(var v=Math.ceil(lo);v<=hi;v++){if((v-lo)%2&&hi-lo>8)continue;o+='<line x1="'+X0+'" x2="'+X1+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="'+(v===0?'#93c5fd':'#29292d')+'" stroke-width="1"'+(v===0?' stroke-dasharray="4 4"':'')+'/><text x="'+(X0-8)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="#8e8e95" font-family="JetBrains Mono,monospace">'+String(v).replace('-','−')+'°</text>';}
+    for(hh=7;hh<=20;hh+=1){o+='<text x="'+x(hh)+'" y="'+(Y1+18)+'" text-anchor="middle" font-size="11" fill="#8e8e95" font-family="JetBrains Mono,monospace">'+hh+'</text>';}
+    function path(arr){var d='';arr.forEach(function(v,i){if(v==null)return;d+=(d?'L':'M')+x(7+i).toFixed(1)+' '+y(v).toFixed(1);});return d;}
+    o+='<path d="'+path(A)+'" fill="none" stroke="#7dd3fc" stroke-width="2.5" stroke-dasharray="6 5"/><path d="'+path(T)+'" fill="none" stroke="#f5c04f" stroke-width="3.5" stroke-linejoin="round"/>';
+    var mi=0;T.forEach(function(v,i){if(v<T[mi])mi=i;});var ma=0;T.forEach(function(v,i){if(v>T[ma])ma=i;});
+    [[ma,'max'],[mi,'min']].forEach(function(z){o+='<circle cx="'+x(7+z[0])+'" cy="'+y(T[z[0]])+'" r="4.5" fill="#f5c04f"/><text x="'+x(7+z[0])+'" y="'+(y(T[z[0]])+(z[1]==='max'?-10:18))+'" text-anchor="middle" font-size="12" font-weight="700" fill="#f4f4f5" font-family="JetBrains Mono,monospace">'+f1(T[z[0]])+'°</text>';});
+    svg.innerHTML=o;
+    var aMin=Math.min.apply(null,A.filter(function(v){return v!=null;}).slice(10));
+    document.getElementById('cold-pill').textContent=f1(Math.min.apply(null,T))+'° / '+f1(Math.max.apply(null,T))+'°';
+    var pm=A.slice(10).filter(function(v){return v!=null;});
+    document.getElementById('cold-note').textContent='Il momento più caldo è verso le '+(7+ma)+':00. Alla PS 8 la percepita scende fino a '+f1(pm.length?Math.min.apply(null,pm):null)+'°: piumino chiuso, scaldamani e il termos tenuto per la sera. Le pause tra le prove sono il momento per scaldarsi al bar in paese.';
+  }
+  var K='lrh26-wx2';
+  function show(c,old){drawCold(c);drawRoad(c);}
+  function load(){if(document.hidden)return;Promise.all([get(P.cal),get(P.cerro)]).then(function(r){var c={cal:r[0],cerro:r[1],when:Date.now()};ls(K,JSON.stringify(c));show(c);}).catch(function(){});}
+  try{var c0=JSON.parse(ls(K));if(c0)show(c0,true);}catch(e){}
+  load();setInterval(load,30*6e4);
 })();
 </script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
@@ -1824,6 +1944,7 @@ function __main(){
     try{if(sessionStorage.getItem('lrh26-dismiss-'+id))return;}catch(e){}
     ALERTS.appendChild(d);
   }
+  window.lrhAlert=function(){return addAlert.apply(null,arguments);};window.lrhBuzz=function(p){buzz(p);};
   function buzz(p){try{if(navigator.vibrate)navigator.vibrate(p||[400,150,400]);}catch(e){}}
 
   // 1. Avviso "Arriva il 39" (10 e 2 minuti prima)
