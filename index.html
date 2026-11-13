@@ -576,6 +576,12 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 .road-c .st{font:700 14px/1.2 var(--mono)}
 .road-c .st.ok{color:var(--ok)}.road-c .st.ice{color:#93c5fd}.road-c .st.fog{color:#d4d4d8}
 .road-c small{color:var(--muted);font-size:12px}
+
+/* ===== Prova generale, batteria, backup ===== */
+.bat{display:flex;gap:12px;align-items:center;margin-top:10px}
+.bat-bar{flex:1;height:18px;border-radius:6px;background:var(--soft);overflow:hidden;border:1px solid var(--line)}
+.bat-bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.bat-bar i.mid{background:var(--accent)}.bat-bar i.low{background:var(--red)}
 </style>
 </head>
 <body>
@@ -1153,6 +1159,12 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 </section>
 
 <div class="ptitle" data-page="imp"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Impostazioni</h1><div class="sub">Uso offline, avvisi del 39 e schermo</div></div>
+<section data-page="imp" id="test">
+  <div class="res-head"><h2>Prova generale</h2><span class="pill idle" id="test-pill">da fare</span></div>
+  <p class="note">Simula sabato in circa 30 secondi: avviso del 39 a 10 e a 2 minuti, "Tocca al 39", suono, voce, vibrazione, schermo acceso e notifica. Alza il volume multimediale e tieni l'app aperta. Alla fine trovi qui sotto cosa funziona sul tuo telefono.</p>
+  <div class="btns"><button class="btn" type="button" id="test-go">Avvia la prova generale</button></div>
+  <ul class="off-list" id="test-res"></ul>
+</section>
 <section class="offl" id="offl" data-page="imp">
   <div class="res-head"><h2>Prepara l'app per l'uso offline</h2><span class="pill idle" id="off-pill">da controllare</span></div>
   <p class="note">Al tornante il segnale può mancare. Prima di partire, col Wi-Fi di casa, tocca il pulsante: salva nel telefono la vista satellite del tornante, le previsioni e l'ultima classifica. Radar e classifica nuova invece hanno bisogno di rete.</p>
@@ -1173,6 +1185,22 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   <label class="vol">Volume <input type="range" id="snd-vol" min="0.1" max="1" step="0.1" value="0.8"></label>
   <div class="btns"><button class="btn ghost" type="button" id="snd-test">Prova l'avviso</button></div>
   <p class="note">La luminosità non la può cambiare l'app: abbassala tu dalla tendina, oppure usa la modalità notte con il pulsante ☾.</p>
+</section>
+
+<section data-page="imp" id="batt">
+  <div class="res-head"><h2>Batteria</h2><span class="pill idle" id="bat-pill">–</span></div>
+  <p class="note">Con il freddo la batteria cala in fretta. Sabato l'app ti avvisa se sei sotto il 40% prima della PS 6 o sotto il 30% prima della PS 8, così attacchi il powerbank nella pausa. Sotto il 15% spegne lo schermo sempre acceso per risparmiare.</p>
+  <div class="bat"><div class="bat-bar"><i id="bat-fill"></i></div><span class="mono" id="bat-txt">–</span></div>
+</section>
+
+<section data-page="imp" id="backup">
+  <h2>Backup dei tuoi dati</h2>
+  <p class="note">Registro passaggi, spunte, calibrazione del sole e impostazioni stanno solo nella memoria dell'app: se la disinstalli si perdono. Salva un backup prima di reinstallarla e sabato sera, poi ripristinalo quando serve (anche sul PC, per dare il nome alle foto).</p>
+  <div class="btns">
+    <button class="btn" type="button" id="bk-save">Salva backup</button>
+    <label class="btn ghost" for="bk-file">Ripristina da un file</label><input type="file" id="bk-file" accept=".json,application/json" hidden>
+  </div>
+  <div class="note" id="bk-msg"></div>
 </section>
 
 <footer>
@@ -1393,7 +1421,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   now.addEventListener('change',upd);
   function near39(){var L=window.LRH;if(!L)return false;var p=L.posOf(39)||1,t=Date.now();
     return L.ST.some(function(st){var e=L.eta(st,p).getTime();return t>e-15*6e4&&t<e+5*6e4;});}
-  function want(){return now.checked||(auto.checked&&near39());}
+  function want(){if(window.lrhLowBatt)return false;return now.checked||(auto.checked&&near39());}
   function upd(){
     if(!('wakeLock' in navigator)){pill.textContent='non supportato';pill.className='pill idle';return;}
     if(want()&&!document.hidden){if(!wl)navigator.wakeLock.request('screen').then(function(l){wl=l;l.addEventListener('release',function(){wl=null;show();});show();}).catch(function(){show();});}
@@ -1744,6 +1772,93 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   function load(){if(document.hidden)return;Promise.all([get(P.cal),get(P.cerro)]).then(function(r){var c={cal:r[0],cerro:r[1],when:Date.now()};ls(K,JSON.stringify(c));show(c);}).catch(function(){});}
   try{var c0=JSON.parse(ls(K));if(c0)show(c0,true);}catch(e){}
   load();setInterval(load,30*6e4);
+})();
+</script>
+<script>
+// ===== Prova generale, batteria, backup =====
+(function(){
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+  function row(ok,t,sub){return '<li class="'+(ok===true?'ok':ok===false?'no':'')+'"><i></i><span>'+t+'<small>'+sub+'</small></span></li>';}
+  // --- Prova generale ---
+  var go=document.getElementById('test-go'),res=document.getElementById('test-res'),pill=document.getElementById('test-pill');
+  function ovl(eye,big,sub){var o=document.getElementById('ovl');document.getElementById('ovl-eye').textContent=eye;document.getElementById('ovl-big').textContent=big;document.getElementById('ovl-sub').textContent=sub;o.hidden=false;}
+  function vib(p){try{return navigator.vibrate?navigator.vibrate(p):false;}catch(e){return false;}}
+  go.addEventListener('click',function(){
+    go.disabled=true;pill.className='pill closed';pill.textContent='in corso';res.innerHTML='';
+    var R={},orient=false,h=function(){orient=true;};
+    window.addEventListener('deviceorientationabsolute',h);window.addEventListener('deviceorientation',function(e){if(e.alpha!=null&&(e.absolute||typeof e.webkitCompassHeading==='number'))orient=true;});
+    try{if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();}catch(e){}
+    // 1. avviso 10 minuti
+    R.vib=vib([400,150,400]);
+    ovl('Prova · Arriva il 39','tra 10 min','PS 4 · al tornante verso le 10:56. Preparati.');
+    var sndOn=document.getElementById('snd-on'),was=sndOn.checked;sndOn.checked=true;
+    if(window.lrhSound)lrhSound(1,'Prova. Il 39 tra 10 minuti');
+    setTimeout(function(){
+      ovl('Prova · Arriva il 39','tra 2 min','PS 4 · al tornante verso le 10:56. Fotocamera pronta!');vib([600,200,600,200,600]);
+      if(window.lrhSound)lrhSound(2,'Prova. Il 39 tra 2 minuti');
+    },8000);
+    setTimeout(function(){
+      ovl('Prova · Tocca al 39','è il prossimo','Il n. 38 è appena passato: il 39 arriva tra circa un minuto.');vib([600,200,600,200,600]);
+      if(window.lrhSound)lrhSound(3,'Prova. Tocca al 39. È il prossimo');
+    },16000);
+    setTimeout(function(){
+      try{if('Notification' in window&&Notification.permission==='granted'&&navigator.serviceWorker)navigator.serviceWorker.ready.then(function(r){r.showNotification('Prova · Arriva il 39',{body:'Questa è una notifica di prova dell\'app del rally',icon:'logo-icon-192.png',vibrate:[300,100,300],tag:'lrh-test'});});}catch(e){}
+    },20000);
+    var wlOk=null;
+    if('wakeLock' in navigator){navigator.wakeLock.request('screen').then(function(l){wlOk=true;setTimeout(function(){l.release().catch(function(){});},25000);}).catch(function(){wlOk=false;});}else wlOk=false;
+    setTimeout(function(){
+      document.getElementById('ovl').hidden=true;sndOn.checked=was;
+      var voices=[];try{voices=speechSynthesis.getVoices().filter(function(v){return /^it/i.test(v.lang);});}catch(e){}
+      var np=('Notification' in window)?Notification.permission:'none',bat=!!navigator.getBattery;
+      res.innerHTML=
+        row(R.vib!==false,'Vibrazione',R.vib!==false?'Supportata: dovresti averla sentita 3 volte':'Non supportata da questo browser')+
+        row(true,'Bip','Hai sentito 3 serie di bip? Se no, alza il volume multimediale (non quello della suoneria)')+
+        row(voices.length>0,'Voce in italiano',voices.length?'Disponibile':'Nessuna voce italiana trovata: restano i bip. Si installa da Impostazioni del telefono → Sintesi vocale')+
+        row(wlOk,'Schermo acceso',wlOk?'Funziona: lo schermo è rimasto acceso durante la prova':'Non disponibile: imposta lo spegnimento schermo a 10 minuti nelle impostazioni del telefono per sabato')+
+        row(np==='granted','Notifiche',np==='granted'?'Permesse: dovrebbe essere arrivata una notifica di prova':(np==='denied'?'Bloccate: attivale nelle impostazioni dell\'app sul telefono':'Non ancora permesse: tocca "Consenti" quando te lo chiede'))+
+        row(orient,'Bussola per il sole in AR',orient?'Funziona':'Nessun dato: apri il sole in AR e muovi il telefono a forma di 8')+
+        row(bat,'Lettura batteria',bat?'Funziona':'Non disponibile su questo browser');
+      var bad=res.querySelectorAll('li.no').length;pill.className='pill '+(bad?'idle':'open');pill.textContent=bad?(bad+' da sistemare'):'tutto ok';go.disabled=false;go.textContent='Ripeti la prova';ls('lrh26-tested',String(Date.now()));
+    },26000);
+  });
+  // --- Batteria ---
+  var bp=document.getElementById('bat-pill'),bf=document.getElementById('bat-fill'),bt=document.getElementById('bat-txt');
+  if(!navigator.getBattery){bp.textContent='non disponibile';bt.textContent='Questo browser non fa leggere la batteria';}
+  else navigator.getBattery().then(function(b){
+    function at(h,m){return new Date(2026,10,14,h,m);}
+    function upd(){
+      var l=Math.round(b.level*100),ch=b.charging;bf.style.width=l+'%';bf.className=l<30?'low':l<50?'mid':'';
+      bt.textContent=l+'%'+(ch?' · in carica':'');bp.className='pill '+(l<30&&!ch?'closed':'open');bp.textContent=l+'%'+(ch?' ⚡':'');
+      window.lrhLowBatt=(l<15&&!ch);
+      if(ch)return;var now=new Date(),key=null,msg=null;
+      if(now>=at(11,40)&&now<at(14,10)&&l<40){key='ps6';msg='Sei al '+l+'%: attacca il powerbank adesso, nella pausa prima della PS 6.';}
+      else if(now>=at(15,40)&&now<at(17,40)&&l<30){key='ps8';msg='Sei al '+l+'%: attacca il powerbank prima della PS 8, al buio consumi di più.';}
+      else if(l<15){key='low'+new Date().toDateString();msg='Sei al '+l+'%: lo schermo sempre acceso è stato disattivato per risparmiare.';}
+      if(key&&!ls('lrh26-bat-'+key)&&window.lrhAlert){ls('lrh26-bat-'+key,'1');lrhAlert('al-bat','','Batteria bassa',msg,null,null);if(window.lrhBuzz)lrhBuzz([300,100,300]);}
+    }
+    upd();b.addEventListener('levelchange',upd);b.addEventListener('chargingchange',upd);setInterval(upd,60000);
+  }).catch(function(){bp.textContent='non disponibile';});
+  // --- Backup ---
+  var msg=document.getElementById('bk-msg'),SKIP=/^lrh26-(wx|wx2|now|data|al-|dismiss)/;
+  document.getElementById('bk-save').addEventListener('click',function(){
+    var o={app:'lessinia-rally-2026',when:new Date().toISOString(),data:{}};
+    try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(/^lrh26-/.test(k)&&!SKIP.test(k))o.data[k]=localStorage.getItem(k);}}catch(e){}
+    var n=Object.keys(o.data).length,d=new Date(),name='backup-lessinia-rally-'+String(d.getDate()).padStart(2,'0')+'-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+'.json';
+    var f=new File([JSON.stringify(o,null,1)],name,{type:'application/json'});
+    var lg=0;try{lg=(JSON.parse(o.data['lrh26-log']||'[]')||[]).length;}catch(e){}
+    if(navigator.canShare&&navigator.canShare({files:[f]})&&/Android|iPhone|iPad/i.test(navigator.userAgent)){navigator.share({files:[f],title:'Backup app rally'}).catch(function(){});}
+    else{var a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=name;a.click();}
+    msg.textContent='Backup creato: '+n+' dati salvati, '+lg+' auto nel registro. Mettilo su Drive o mandatelo, così non si perde col telefono.';
+  });
+  document.getElementById('bk-file').addEventListener('change',function(){
+    var f=this.files[0];if(!f)return;f.text().then(function(t){var o=JSON.parse(t);if(!o||o.app!=='lessinia-rally-2026'||!o.data)throw 0;
+      var cur=[];try{cur=JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){}
+      Object.keys(o.data).forEach(function(k){if(!/^lrh26-/.test(k))return;
+        if(k==='lrh26-log'){var inc=[];try{inc=JSON.parse(o.data[k])||[];}catch(e){}var seen={};cur.concat(inc).forEach(function(r){seen[r.d+' '+r.t+' '+r.n]=r;});var m=Object.keys(seen).map(function(x){return seen[x];}).sort(function(a,b){return (a.d+a.t)<(b.d+b.t)?-1:1;});localStorage.setItem(k,JSON.stringify(m));}
+        else localStorage.setItem(k,o.data[k]);});
+      msg.textContent='Ripristinato il backup del '+new Date(o.when).toLocaleString('it-IT')+'. Ricarico l\'app…';setTimeout(function(){location.reload();},1200);
+    }).catch(function(){msg.textContent='Questo file non è un backup dell\'app del rally.';});
+  });
 })();
 </script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
