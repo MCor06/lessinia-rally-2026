@@ -114,6 +114,30 @@ ul.plain{margin:0;padding-left:18px;display:grid;gap:6px}
 /* Meteo su misura */
 .hlogo{display:block;width:min(260px,70%);height:auto;margin:0 0 10px;position:relative;z-index:1}
 .todo{box-shadow:var(--shadow), inset 4px 0 0 var(--accent)}
+.alerts{display:grid;gap:10px}
+.alerts:empty{display:none}
+.alert{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 16px;border-radius:16px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow), inset 4px 0 0 var(--accent)}
+.alert.wx{box-shadow:var(--shadow), inset 4px 0 0 #7dd3fc}
+.alert b{display:block;font:700 16px/1.25 var(--display)}
+.alert span{color:var(--muted);font-size:13px}
+.log-row{display:flex;gap:8px;align-items:center;margin-top:10px}
+.log-n{margin:0;font:700 22px/1 var(--mono);text-align:center;max-width:120px}
+.log-go{flex:1;justify-content:center;padding:16px;font-size:18px;font-weight:700;background:var(--accent);border-color:var(--accent);color:#141414}
+.log-hint{min-height:18px;margin:6px 0}
+.log-list{list-style:none;margin:8px 0;padding:0;display:grid;gap:4px;max-height:300px;overflow:auto}
+.log-list li{display:grid;grid-template-columns:76px 48px 1fr;gap:8px;align-items:center;padding:7px 10px;border-radius:10px;background:var(--soft);font-size:13px}
+.log-list li.mine{box-shadow:inset 3px 0 0 var(--accent)}
+.log-list .lt{font:600 13px/1 var(--mono);color:var(--muted)}
+.log-list .ln{font:800 16px/1 var(--display)}
+.night-btn{position:fixed;right:16px;bottom:16px;z-index:50;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:#161618;color:#f4f4f5;font-size:22px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.5)}
+html.night .night-btn{background:#3a0b0b;color:#ff6b6b;border-color:#5a1414}
+html.night body{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brightness(.55)}
+.ovl{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:20px}
+.ovl[hidden]{display:none}
+.ovl-card{background:#161618;border:2px solid var(--accent);border-radius:22px;padding:24px;max-width:420px;width:100%;display:grid;gap:10px;text-align:center}
+.ovl-big{font:800 48px/1 var(--display);color:var(--accent)}
+.ovl-sub{color:var(--ink)}
+.ovl .btn{justify-content:center;font-size:18px;padding:14px}
 .c39{box-shadow:var(--shadow), inset 4px 0 0 var(--accent)}
 .c39-next{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin:12px 0}
 .c39-time{font:800 40px/1 var(--display);letter-spacing:-.02em;margin:6px 0 4px;font-variant-numeric:tabular-nums}
@@ -239,6 +263,8 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:4px}
   <div class="sub">Sabato 14 novembre 2026 · Tornante consigliato: fine PS 4/6/8 "Calavedo", Bosco Chiesanuova</div>
 </header>
 
+<div id="alerts" class="alerts" aria-live="polite"></div>
+
 <section class="now" aria-live="polite">
   <div class="eyebrow">Adesso</div>
   <div class="now-row">
@@ -263,6 +289,22 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:4px}
   </div>
   <div class="c39-list" id="c39-list"></div>
   <p class="note">Stima: orario di partenza della prova + un minuto per ogni auto davanti al 39 + circa 9 minuti per arrivare al tornante, che è verso la fine dei 10,5 km. Ritardi e ritiri possono spostarla di qualche minuto: tieniti pronto 5 minuti prima.</p>
+</section>
+
+<section class="log" id="log">
+  <div class="res-head"><h2>Registro passaggi</h2><span class="pill idle" id="log-count">0 auto</span></div>
+  <p class="note">Quando passa un'auto scrivi il numero e tocca "Passata". L'orario viene salvato su questo telefono: a fine giornata ti serve per dare un nome alle foto.</p>
+  <div class="log-row">
+    <input class="search log-n" id="log-n" type="number" inputmode="numeric" min="1" max="999" placeholder="N°" aria-label="Numero di gara">
+    <button class="btn log-go" type="button" id="log-go">Passata</button>
+  </div>
+  <div class="log-hint note" id="log-hint"></div>
+  <ol class="log-list" id="log-list"></ol>
+  <div class="btns">
+    <button class="btn ghost" type="button" id="log-undo">Annulla l'ultima</button>
+    <button class="btn ghost" type="button" id="log-share">Condividi o copia l'elenco</button>
+    <button class="btn ghost" type="button" id="log-clear">Svuota</button>
+  </div>
 </section>
 
 <section>
@@ -577,6 +619,8 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:4px}
 </footer>
 </div>
 
+<button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
+<div class="ovl" id="ovl" hidden><div class="ovl-card"><div class="eyebrow" id="ovl-eye">Arriva il 39</div><div class="ovl-big" id="ovl-big">–</div><div class="ovl-sub" id="ovl-sub"></div><button class="btn" type="button" id="ovl-ok">Pronto!</button></div></div>
 <script>
 window.RALLY_DATA=null;
 function __main(){
@@ -657,6 +701,120 @@ function __main(){
     boxes.forEach(function(b){b.addEventListener('change',upd);});
     setTimeout(upd,0);
   })();
+
+  // ===== Avvisi, registro, modalità notte =====
+  var ALERTS=document.getElementById('alerts');
+  function addAlert(id,cls,title,sub,btnTxt,btnFn){
+    if(!ALERTS||document.getElementById(id)) return;
+    var d=document.createElement('div');d.className='alert '+(cls||'');d.id=id;
+    d.innerHTML='<div><b></b><span></span></div>';d.querySelector('b').textContent=title;d.querySelector('span').textContent=sub||'';
+    if(btnTxt){var b=document.createElement('button');b.className='btn';b.type='button';b.textContent=btnTxt;b.addEventListener('click',btnFn);d.appendChild(b);}
+    var x=document.createElement('button');x.className='btn ghost';x.type='button';x.textContent='Chiudi';x.addEventListener('click',function(){d.remove();try{sessionStorage.setItem('lrh26-dismiss-'+id,'1');}catch(e){}});d.appendChild(x);
+    try{if(sessionStorage.getItem('lrh26-dismiss-'+id))return;}catch(e){}
+    ALERTS.appendChild(d);
+  }
+  function buzz(p){try{if(navigator.vibrate)navigator.vibrate(p||[400,150,400]);}catch(e){}}
+
+  // 1. Avviso "Arriva il 39" (10 e 2 minuti prima)
+  (function(){
+    var PSL=[['PS 4','10:17'],['PS 6','14:14'],['PS 8','17:42']],TO=9,ovl=document.getElementById('ovl');
+    document.getElementById('ovl-ok').addEventListener('click',function(){ovl.hidden=true;});
+    function at(hm,add){var p=hm.split(':');return new Date(2026,10,14,+p[0],+p[1]+add);}
+    function hm(d){return d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
+    function check(){
+      var off=(RALLY.pos39?RALLY.pos39-1:0)+TO,now=new Date();
+      PSL.forEach(function(p){
+        var t=at(p[1],off),mins=(t-now)/60000;
+        [[10,'10'],[2,'2']].forEach(function(w){
+          var key='lrh26-al-'+p[0]+'-'+w[1];
+          if(mins<=w[0]&&mins>w[0]-3){
+            var done=false;try{done=!!localStorage.getItem(key);}catch(e){}
+            if(done) return;
+            try{localStorage.setItem(key,'1');}catch(e){}
+            document.getElementById('ovl-eye').textContent=RALLY.pos39?'Arriva il 39':'Arriva la prima auto';
+            document.getElementById('ovl-big').textContent='tra '+Math.max(1,Math.round(mins))+' min';
+            document.getElementById('ovl-sub').textContent=p[0]+' · al tornante verso le '+hm(t)+(w[0]===2?'. Fotocamera pronta!':'. Preparati.');
+            ovl.hidden=false;buzz(w[0]===2?[600,200,600,200,600]:[400,150,400]);
+            try{if('Notification' in window&&Notification.permission==='granted'&&navigator.serviceWorker)navigator.serviceWorker.ready.then(function(r){r.showNotification('Arriva il 39 · '+p[0],{body:'Al tornante verso le '+hm(t),icon:'logo-icon-192.png',vibrate:[400,150,400],tag:key});});}catch(e){}
+          }
+        });
+      });
+    }
+    check();setInterval(check,20000);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)check();});
+    // chiede il permesso per le notifiche al primo tocco (solo nell'app installata)
+    document.addEventListener('click',function ask(){document.removeEventListener('click',ask);try{if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();}catch(e){}},{once:true});
+  })();
+
+  // 2. Registro passaggi
+  (function(){
+    var K='lrh26-log',L=[],n=document.getElementById('log-n'),list=document.getElementById('log-list'),hint=document.getElementById('log-hint'),cnt=document.getElementById('log-count');
+    try{L=JSON.parse(localStorage.getItem(K))||[];}catch(e){L=[];}
+    function name(num){var e=(RALLY.entries||[]).filter(function(x){return String(x.n)===String(num);})[0];return e?(e.d+' · '+e.car):'';}
+    function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+    function save(){try{localStorage.setItem(K,JSON.stringify(L));}catch(e){}}
+    function draw(){cnt.textContent=L.length+(L.length===1?' auto':' auto');list.innerHTML=L.slice().reverse().map(function(r){return '<li'+(String(r.n)==='39'?' class="mine"':'')+'><span class="lt">'+r.t+'</span><span class="ln">'+esc(r.n)+'</span><span>'+esc(name(r.n))+'</span></li>';}).join('');}
+    n.addEventListener('input',function(){hint.textContent=name(n.value)||'';});
+    function add(){var v=n.value.trim();if(!v)return;var d=new Date();L.push({n:v,t:d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),d:d.toISOString().slice(0,10)});save();draw();buzz(60);n.value='';hint.textContent='';n.focus();}
+    document.getElementById('log-go').addEventListener('click',add);
+    n.addEventListener('keydown',function(e){if(e.key==='Enter')add();});
+    document.getElementById('log-undo').addEventListener('click',function(){L.pop();save();draw();});
+    document.getElementById('log-clear').addEventListener('click',function(){var b=this;if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Tocca ancora per svuotare';setTimeout(function(){b.dataset.c='';b.textContent='Svuota';},3000);return;}L=[];save();draw();b.dataset.c='';b.textContent='Svuota';});
+    document.getElementById('log-share').addEventListener('click',function(){
+      var txt='Passaggi al tornante · Lessinia Rally Historic 2026\n'+L.map(function(r){var nm=name(r.n);return r.t+'  n. '+r.n+(nm?'  '+nm:'');}).join('\n');
+      var b=this;
+      if(navigator.share){navigator.share({title:'Registro passaggi',text:txt}).catch(function(){});return;}
+      if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){b.textContent='Copiato!';setTimeout(function(){b.textContent='Condividi o copia l\'elenco';},2000);}).catch(function(){});}
+    });
+    draw();
+  })();
+
+  // 3. Modalità notte rossa
+  (function(){
+    var b=document.getElementById('night-btn'),r=document.documentElement;
+    function set(on){r.classList.toggle('night',on);b.setAttribute('aria-pressed',on?'true':'false');try{localStorage.setItem('lrh26-night',on?'1':'0');}catch(e){}}
+    try{if(localStorage.getItem('lrh26-night')==='1')set(true);}catch(e){}
+    b.addEventListener('click',function(){set(!r.classList.contains('night'));});
+  })();
+
+  // 4. Avviso "Nuova classifica"
+  (function(){
+    function pos39(o){var r=(o.rows||[]).filter(function(x){return String(x.n)==='39';})[0];return r?(' · il 39 è '+r.pos+'°'):'';}
+    function show(o,live){
+      if(!o||!o.title) return;
+      var seen=null;try{seen=localStorage.getItem('lrh26-seenclass');}catch(e){}
+      if(seen===o.title) return;
+      addAlert('al-class','', 'Nuova classifica: '+o.title+pos39(o), live?'Tocca "Aggiorna" per vederla nell\'app.':'La trovi nella sezione Classifica live.', live?'Aggiorna':'Vedi', function(){
+        try{localStorage.setItem('lrh26-seenclass',o.title);}catch(e){}
+        if(live){location.reload();return;}
+        var s=document.querySelector('.live-res'); if(s) s.scrollIntoView({behavior:'smooth'}); var a=document.getElementById('al-class'); if(a) a.remove();
+      });
+      if(live) buzz();
+    }
+    show(RALLY.offline,false);
+    if(/^https?:/.test(location.protocol)){
+      setInterval(function(){
+        if(document.hidden) return;
+        fetch('data.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
+          if(d&&d.offline&&(!RALLY.offline||d.offline.title!==RALLY.offline.title)) show(d.offline,true);
+          if(d&&d.pos39&&!RALLY.pos39) addAlert('al-start','','Ordine di partenza pubblicato','Il timer del 39 è pronto: aggiorna l\'app.','Aggiorna',function(){location.reload();});
+        }).catch(function(){});
+      },180000);
+    }
+  })();
+
+  // 5. Allerta meteo nelle ore dei passaggi
+  window.wxAlert=function(h){
+    try{
+      var hrs=[9,10,11,12,13,14,15,16,17,18,19],bad=[];
+      hrs.forEach(function(x){var j=h.time.indexOf('2026-11-14T'+String(x).padStart(2,'0')+':00');if(j<0)return;var p=h.precipitation[j]||0,s=h.snowfall[j]||0,c=h.weather_code[j];if(s>0||p>=0.2||c>=51)bad.push({h:x,s:s,p:p,c:c});});
+      var old=document.getElementById('al-wx'); if(old) old.remove();
+      if(!bad.length) return;
+      var snow=bad.some(function(b){return b.s>0||(b.c>=71&&b.c<=86);});
+      var from=bad[0].h,to=bad[bad.length-1].h;
+      addAlert('al-wx','wx',(snow?'Possibile neve':'Possibile pioggia')+' sabato tra le '+from+' e le '+(to+1),'Porta il telo e la busta impermeabile per il telefono. Controlla il radar prima di partire.','Radar',function(){window.open('https://www.3bmeteo.com/radar/italia','_blank');});
+    }catch(e){}
+  };
 
   // Vista satellite (Leaflet + immagini Esri)
   (function(){
@@ -787,6 +945,7 @@ function __main(){
       renderHours(data.bosco.hourly);
       renderDays('wx-days-bosco',data.bosco.daily);
       renderDays('wx-days-velo',data.velo.daily);
+      if(window.wxAlert) window.wxAlert(data.bosco.hourly);
       var t=new Date(when);
       document.getElementById('wx-meta').innerHTML=(cached?'<b style="color:var(--accent)">Senza connessione:</b> mostro le previsioni salvate ':'Aggiornato ')+
         t.toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'})+' alle '+t.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})+
