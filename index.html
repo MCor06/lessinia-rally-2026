@@ -583,6 +583,13 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 .bat-bar{flex:1;height:18px;border-radius:6px;background:var(--soft);overflow:hidden;border:1px solid var(--line)}
 .bat-bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
 .bat-bar i.mid{background:var(--accent)}.bat-bar i.low{background:var(--red)}
+
+/* ===== Dov'è la macchina ===== */
+.car-info{display:grid;gap:4px;margin-top:10px;font-size:14px}
+.car-info b{font:700 22px/1.2 var(--display);color:var(--accent)}
+.car-info .mono{color:var(--muted);font-size:12px}
+.car-map{height:260px;border-radius:14px;overflow:hidden;margin-top:10px;border:1px solid var(--line)}
+.car-map[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -940,6 +947,20 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <li><span class="poi-ic sos">112</span><span><b>Emergenze</b><small>Numero unico europeo: soccorso, carabinieri, vigili del fuoco</small></span></li>
     <li><span class="poi-ic">☎</span><span><b>Organizzazione Rally Club Valpantena</b><small class="mono">Bob +39 348 081 1712 · Gian +39 347 252 9415</small></span></li>
   </ul>
+</section>
+
+<section data-page="viaggio" id="car">
+  <div class="res-head"><h2>Dov'è la macchina</h2><span class="pill idle" id="car-pill">non salvata</span></div>
+  <p class="note">Quando parcheggi tocca "Ho parcheggiato qui": la posizione resta salvata nel telefono, anche senza rete. Stasera al buio ti riporta alla macchina.</p>
+  <input class="search" id="car-note" type="text" placeholder="Nota facoltativa (es. dietro la chiesa, seconda fila)" aria-label="Nota sul parcheggio">
+  <div class="btns">
+    <button class="btn" type="button" id="car-save">Ho parcheggiato qui</button>
+    <button class="btn ghost" type="button" id="car-go" disabled>Riportami alla macchina</button>
+    <button class="btn ghost" type="button" id="car-where" disabled>Quanto è lontana?</button>
+  </div>
+  <div class="car-info" id="car-info"></div>
+  <div id="car-map" class="car-map" hidden></div>
+  <div class="btns"><button class="btn ghost sm" type="button" id="car-del" hidden>Cancella posizione</button></div>
 </section>
 
 <section class="warn" data-page="viaggio">
@@ -1434,7 +1455,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   setInterval(upd,30000);setTimeout(upd,2000);
   // --- Offline ---
   var oList=document.getElementById('off-list'),oPill=document.getElementById('off-pill'),oMsg=document.getElementById('off-msg'),oGo=document.getElementById('off-go');
-  function tiles(){var out=[],b={s:45.6180,n:45.6222,w:11.0228,e:11.0310};
+  function tiles(){var out=[],b={s:45.6180,n:45.6255,w:11.0228,e:11.0325};
     for(var z=14;z<=19;z++){var n=Math.pow(2,z);function tx(lon){return Math.floor((lon+180)/360*n);}function ty(lat){var r=lat*Math.PI/180;return Math.floor((1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*n);}
       for(var x=tx(b.w);x<=tx(b.e);x++)for(var y=ty(b.n);y<=ty(b.s);y++)out.push('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/'+z+'/'+y+'/'+x);}
     return out;}
@@ -1540,7 +1561,8 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   <div class="fo-next" id="fo-next"></div>
   <div class="fo-log"><div class="eyebrow">Passata adesso</div><div class="fo-btns" id="fo-btns"></div>
     <div class="fo-man"><input class="search" id="fo-n" type="number" inputmode="numeric" placeholder="Altro numero" aria-label="Altro numero"><button class="btn" type="button" id="fo-go">Passata</button></div>
-    <div class="note" id="fo-last"></div></div>
+    <div class="note" id="fo-last"></div>
+    <button class="btn ghost" type="button" id="fo-car" style="justify-content:center">Riportami alla macchina</button></div>
 </div>
 <script>
 // ===== Registro rapido, schermata "in prova", riepilogo del 39, storia Instagram =====
@@ -1860,6 +1882,56 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
       msg.textContent='Ripristinato il backup del '+new Date(o.when).toLocaleString('it-IT')+'. Ricarico l\'app…';setTimeout(function(){location.reload();},1200);
     }).catch(function(){msg.textContent='Questo file non è un backup dell\'app del rally.';});
   });
+})();
+</script>
+<script>
+// ===== Dov'è la macchina =====
+(function(){
+  var K='lrh26-car',car=null,map=null,mk=null,me=null,watch=null;
+  try{car=JSON.parse(localStorage.getItem(K));}catch(e){}
+  var info=document.getElementById('car-info'),pill=document.getElementById('car-pill'),note=document.getElementById('car-note');
+  var DIR=['nord','nord-est','est','sud-est','sud','sud-ovest','ovest','nord-ovest'];
+  function dist(a,b,c,d){var R=6371000,r=Math.PI/180,x=(d-b)*r*Math.cos((a+c)/2*r),y=(c-a)*r;return R*Math.sqrt(x*x+y*y);}
+  function bear(a,b,c,d){var r=Math.PI/180,y=Math.sin((d-b)*r)*Math.cos(c*r),x=Math.cos(a*r)*Math.sin(c*r)-Math.sin(a*r)*Math.cos(c*r)*Math.cos((d-b)*r);return (Math.atan2(y,x)/r+360)%360;}
+  function fmt(m){return m<1000?Math.round(m/10)*10+' m':(m/1000).toFixed(1).replace('.',',')+' km';}
+  function drawMap(){
+    if(!car||!window.L)return;var el=document.getElementById('car-map');el.hidden=false;
+    if(!map){map=L.map('car-map',{zoomControl:true,attributionControl:true,scrollWheelZoom:false,maxZoom:19});map.attributionControl.setPrefix(false);
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Immagini © Esri, Maxar'}).addTo(map);
+      L.circleMarker([45.619756,11.027023],{radius:9,color:'#f5c04f',weight:3,fill:false}).addTo(map).bindTooltip('Tornante',{permanent:true,direction:'right',className:'lbl'});}
+    if(mk)mk.remove();mk=L.circleMarker([car.lat,car.lon],{radius:10,color:'#0b0b0c',weight:3,fillColor:'#4ade80',fillOpacity:1}).addTo(map).bindTooltip('Macchina',{permanent:true,direction:'right',className:'lbl'});
+    setTimeout(function(){map.invalidateSize();var b=L.latLngBounds([[car.lat,car.lon],[45.619756,11.027023]]);if(me)b.extend(me.getLatLng());map.fitBounds(b,{padding:[40,40],maxZoom:18});},60);
+  }
+  function show(){
+    var has=!!car;document.getElementById('car-go').disabled=!has;document.getElementById('car-where').disabled=!has;document.getElementById('car-del').hidden=!has;
+    if(!has){pill.className='pill idle';pill.textContent='non salvata';info.innerHTML='';document.getElementById('car-map').hidden=true;return;}
+    var d=new Date(car.t),dd=dist(45.619783,11.026997,car.lat,car.lon);
+    pill.className='pill open';pill.textContent='salvata alle '+d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+    info.innerHTML='<span>A '+fmt(dd)+' dal tornante, verso '+DIR[Math.round(bear(45.619783,11.026997,car.lat,car.lon)/45)%8]+(car.note?' · <b style="font-size:15px;color:var(--ink)">'+car.note.replace(/[<>&]/g,'')+'</b>':'')+'</span><span class="mono">'+car.lat.toFixed(6)+', '+car.lon.toFixed(6)+' · precisione circa '+Math.round(car.acc)+' m</span><span id="car-live"></span>';
+    if(!document.getElementById('car').hidden&&document.getElementById('car').offsetParent)drawMap();
+  }
+  document.getElementById('car-save').addEventListener('click',function(){
+    if(!navigator.geolocation){info.textContent='Il GPS non è disponibile su questo dispositivo.';return;}
+    var b=this;b.disabled=true;info.textContent='Cerco la posizione… resta all\'aperto qualche secondo.';
+    navigator.geolocation.getCurrentPosition(function(p){car={lat:p.coords.latitude,lon:p.coords.longitude,acc:p.coords.accuracy,t:Date.now(),note:note.value.trim()};try{localStorage.setItem(K,JSON.stringify(car));}catch(e){}b.disabled=false;show();if(window.lrhBuzz)lrhBuzz(80);},
+      function(){b.disabled=false;info.textContent='Posizione non disponibile: attiva la localizzazione del telefono e riprova.';},{enableHighAccuracy:true,timeout:20000,maximumAge:0});
+  });
+  note.addEventListener('change',function(){if(car){car.note=note.value.trim();try{localStorage.setItem(K,JSON.stringify(car));}catch(e){}show();}});
+  function go(){if(!car)return;window.open('https://www.google.com/maps/dir/?api=1&destination='+car.lat+','+car.lon+'&travelmode=walking','_blank');}
+  document.getElementById('car-go').addEventListener('click',go);
+  var fc=document.getElementById('fo-car');if(fc)fc.addEventListener('click',function(){if(!car){if(window.lrhGoTo){var x=document.getElementById('fo-close');if(x)x.click();lrhGoTo('#car');}return;}go();});
+  document.getElementById('car-where').addEventListener('click',function(){
+    if(!car||!navigator.geolocation)return;var live=document.getElementById('car-live');if(live)live.textContent='Cerco dove sei…';
+    if(watch!=null)navigator.geolocation.clearWatch(watch);
+    watch=navigator.geolocation.watchPosition(function(p){var la=p.coords.latitude,lo=p.coords.longitude,d=dist(la,lo,car.lat,car.lon),br=bear(la,lo,car.lat,car.lon);
+      var l=document.getElementById('car-live');if(l)l.innerHTML='<b>'+(d<25?'Sei arrivato: la macchina è qui intorno':fmt(d)+' verso '+DIR[Math.round(br/45)%8])+'</b>';
+      if(map&&window.L){if(me)me.setLatLng([la,lo]);else me=L.circleMarker([la,lo],{radius:7,color:'#fff',weight:2,fillColor:'#60a5fa',fillOpacity:1}).addTo(map);}},
+      function(){var l=document.getElementById('car-live');if(l)l.textContent='Posizione non disponibile.';},{enableHighAccuracy:true,maximumAge:5000,timeout:20000});
+    setTimeout(function(){if(watch!=null){navigator.geolocation.clearWatch(watch);watch=null;}},10*60000);
+  });
+  document.getElementById('car-del').addEventListener('click',function(){var b=this;if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Tocca ancora per cancellare';setTimeout(function(){b.dataset.c='';b.textContent='Cancella posizione';},3000);return;}car=null;try{localStorage.removeItem(K);}catch(e){}b.dataset.c='';b.textContent='Cancella posizione';show();});
+  if(car&&car.note)note.value=car.note;
+  show();window.addEventListener('lrh-page',function(){if(car&&document.getElementById('car').offsetParent)drawMap();});
 })();
 </script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
