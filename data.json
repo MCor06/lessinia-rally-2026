@@ -659,7 +659,7 @@
   }
  ],
  "offline": null,
- "updated": "ven 13 nov, 18:40",
+ "updated": "ven 13 nov, 18:58",
  "r39": [],
  "final39": null,
  "news": [
@@ -680,6 +680,12 @@
    "title": "Ordine di partenza pubblicato",
    "text": "Il n. 39 parte 39° (ore 17:08 nella prova di venerdì). Orari sabato provvisori: ordine di venerdì finché non esce quello di sabato.",
    "imp": true
+  },
+  {
+   "t": "ven 18:58",
+   "title": "Altre penalità slow zone PS 1",
+   "text": "Notifiche 10-14: 1 min 30 s ciascuno ai n. 19, 20, 21, 23 e 24 per velocità nella slow zone della PS 1.",
+   "imp": false
   }
  ]
 }
