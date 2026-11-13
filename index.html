@@ -312,7 +312,7 @@ img,svg,iframe{max-width:100%}
 /* PC */
 @media (min-width:1100px){
   .wrap{max-width:1320px;padding:28px 28px 72px;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
-  .wrap>header,.wrap>.alerts,.wrap>.now,.wrap>.cols,.wrap>footer,.wrap>section:has(#wx-meta),.wrap>section.warn{grid-column:1/-1}
+  .wrap>header,.wrap>.alerts,.wrap>.now,.wrap>footer,.wrap>section:has(#wx-meta),.wrap>section.warn{grid-column:1/-1}
   h1{font-size:46px}
   .cols{grid-template-columns:repeat(2,minmax(0,1fr))}
   .shots{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -367,21 +367,53 @@ button.btn.sm{cursor:pointer}
   .seq li{grid-template-columns:64px minmax(0,1fr)}
   .dly .btn{flex:1 1 40%;justify-content:center}
 }
+
+/* ===== Pagine e barra di navigazione ===== */
+[data-page][hidden]{display:none!important}
+.ptitle{display:grid;gap:4px;padding:6px 4px 0}
+.ptitle .eyebrow{color:var(--accent)}
+.ptitle h1{margin:2px 0 0}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:45;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;background:rgba(14,14,16,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs a{display:grid;justify-items:center;align-content:center;gap:4px;min-height:52px;padding:6px 2px;border-radius:14px;color:var(--muted);text-decoration:none;font:600 11px/1.1 var(--body);text-align:center;-webkit-tap-highlight-color:transparent}
+.tabs svg{width:23px;height:23px}
+.tabs a[aria-current="page"]{color:var(--accent);background:var(--soft)}
+.tabs .l-l{display:none}
+body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+.night-btn{bottom:calc(80px + env(safe-area-inset-bottom,0px))!important}
+html.night .tabs{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brightness(.55)}
+@media (min-width:600px){.tabs a{font-size:13px}.tabs .l-s{display:none}.tabs .l-l{display:inline}}
+@media (min-width:1100px){
+  .tabs{position:sticky;top:0;bottom:auto;display:flex;justify-content:center;gap:6px;border-top:0;border-bottom:1px solid var(--line);padding:10px 16px}
+  .tabs a{display:inline-flex;align-items:center;gap:8px;min-height:0;font-size:14px;padding:10px 18px}
+  .tabs svg{width:20px;height:20px}
+  body{padding-bottom:0}
+  .night-btn{bottom:16px!important}
+  .wrap>.ptitle{grid-column:1/-1}
+  .wrap>section.warn{order:1}
+  .wrap>footer{order:2}
+}
 </style>
 </head>
 <body>
+<nav class="tabs" id="tabs" aria-label="Sezioni dell'app">
+  <a href="#gara" data-p="gara"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/></svg><span>Gara e PS</span></a>
+  <a href="#meteo" data-p="meteo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z"/></svg><span>Meteo</span></a>
+  <a href="#zaino" data-p="zaino"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><path d="M9 5V4a3 3 0 0 1 6 0v1"/><path d="M9 14h6v4H9z"/></svg><span>Zaino</span></a>
+  <a href="#viaggio" data-p="viaggio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="l-s">Viaggio</span><span class="l-l">Viaggio e Spot</span></a>
+  <a href="#foto" data-p="foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg><span class="l-s">Foto</span><span class="l-l">Fotografie</span></a>
+</nav>
 <div class="wrap">
 
-<header>
+<div id="alerts" class="alerts" aria-live="polite"></div>
+
+<header data-page="gara">
   <img class="hlogo" src="logo.png" alt="8° Lessinia Rally Historic, 13–14 novembre 2026, Rally Club Valpantena" width="650" height="296">
   <div class="eyebrow">Trofeo Banca Valsabbina · Rally Club Valpantena</div>
   <h1>8° Lessinia Rally Historic</h1>
   <div class="sub">Sabato 14 novembre 2026 · Tornante consigliato: fine PS 4/6/8 "Calavedo", Bosco Chiesanuova</div>
 </header>
 
-<div id="alerts" class="alerts" aria-live="polite"></div>
-
-<section class="now" aria-live="polite">
+<section class="now" aria-live="polite" data-page="gara">
   <div class="eyebrow">Adesso</div>
   <div class="now-row">
     <span class="big" id="now-title">Prossimo passaggio</span>
@@ -397,7 +429,7 @@ button.btn.sm{cursor:pointer}
   <div class="note">Gli orari di riapertura sono indicativi: la strada riapre solo dopo il passaggio della vettura "scopa".</div>
 </section>
 
-<section class="c39" id="c39">
+<section class="c39" id="c39" data-page="gara">
   <div class="res-head"><h2>Quando passa il 39</h2><span class="pill idle" id="c39-pill">in attesa dell'ordine di partenza</span></div>
   <div class="c39-next" id="c39-next">
     <div><div class="eyebrow">Prossimo passaggio del 39 al tornante</div><div class="c39-time" id="c39-time">–</div><div class="note" id="c39-sub">L'ordine di partenza esce venerdì: Claude aggiorna la dashboard e qui compare l'orario stimato.</div></div>
@@ -407,7 +439,22 @@ button.btn.sm{cursor:pointer}
   <p class="note">Stima: orario di partenza della prova + un minuto per ogni auto davanti al 39 + circa 9 minuti per arrivare al tornante, che è verso la fine dei 10,5 km. Se segni le auto nel Registro passaggi, la stima si corregge da sola con il ritardo reale. Tieniti comunque pronto 5 minuti prima.</p>
 </section>
 
-<section class="log" id="log">
+<section class="arr" id="arr" data-page="gara">
+  <div class="res-head"><h2>Chi sta arrivando</h2><span class="pill idle" id="arr-pill">–</span></div>
+  <div class="note" id="arr-sub">Le prossime auto al tornante, con l'orario stimato.</div>
+  <ol class="arr-list" id="arr-list"></ol>
+  <div class="arr-stats" id="arr-stats"></div>
+  <div class="dly">
+    <span class="note">Ritardo sulla tabella:</span><span class="dly-v" id="dly-v">in orario</span>
+    <button class="btn ghost sm" type="button" data-dly="-5">−5 min</button>
+    <button class="btn ghost sm" type="button" data-dly="5">+5 min</button>
+    <button class="btn ghost sm" type="button" data-dly="15">Prova interrotta +15</button>
+    <button class="btn ghost sm" type="button" data-dly="0">Azzera</button>
+  </div>
+  <p class="note">Ogni volta che segni un'auto nel Registro passaggi l'app capisce di quanto la gara è in anticipo o in ritardo e riallinea tutti gli orari, anche quello del 39. Se la prova viene fermata usa i pulsanti. Le auto ritirate vengono saltate quando Claude aggiorna l'elenco.</p>
+</section>
+
+<section class="log" id="log" data-page="gara">
   <div class="res-head"><h2>Registro passaggi</h2><span class="pill idle" id="log-count">0 auto</span></div>
   <p class="note">Quando passa un'auto scrivi il numero e tocca "Passata". L'orario viene salvato su questo telefono: a fine giornata ti serve per dare un nome alle foto.</p>
   <div class="log-row">
@@ -423,90 +470,7 @@ button.btn.sm{cursor:pointer}
   </div>
 </section>
 
-<section class="arr" id="arr">
-  <div class="res-head"><h2>Chi sta arrivando</h2><span class="pill idle" id="arr-pill">–</span></div>
-  <div class="note" id="arr-sub">Le prossime auto al tornante, con l'orario stimato.</div>
-  <ol class="arr-list" id="arr-list"></ol>
-  <div class="arr-stats" id="arr-stats"></div>
-  <div class="dly">
-    <span class="note">Ritardo sulla tabella:</span><span class="dly-v" id="dly-v">in orario</span>
-    <button class="btn ghost sm" type="button" data-dly="-5">−5 min</button>
-    <button class="btn ghost sm" type="button" data-dly="5">+5 min</button>
-    <button class="btn ghost sm" type="button" data-dly="15">Prova interrotta +15</button>
-    <button class="btn ghost sm" type="button" data-dly="0">Azzera</button>
-  </div>
-  <p class="note">Ogni volta che segni un'auto nel Registro passaggi l'app capisce di quanto la gara è in anticipo o in ritardo e riallinea tutti gli orari, anche quello del 39. Se la prova viene fermata usa i pulsanti. Le auto ritirate vengono saltate quando Claude aggiorna l'elenco.</p>
-</section>
-
-<section id="seq">
-  <h2>Prima e dopo ogni prova</h2>
-  <ol class="seq" id="seq-list">
-    <li><span class="sq" id="sq-000">~40 min</span><span><b>Auto "000"</b><small>Prima vettura di sicurezza: controlla che la strada sia chiusa e il pubblico al sicuro. Se sei in un punto vietato ti fanno spostare.</small></span></li>
-    <li><span class="sq" id="sq-00">~20 min</span><span><b>Auto "00"</b><small>Seconda vettura di sicurezza, spesso con il direttore di prova.</small></span></li>
-    <li><span class="sq" id="sq-0">~10 min</span><span><b>Auto "0"</b><small>Ultima apripista, fa il percorso come un'auto in gara. Dopo di lei arrivano le auto vere: ottima per provare inquadratura e messa a fuoco.</small></span></li>
-    <li><span class="sq" id="sq-1">1ª auto</span><span><b>Auto in gara, una al minuto</b><small>Gli orari esatti sono in "Chi sta arrivando".</small></span></li>
-    <li><span class="sq">Fine</span><span><b>Vettura "scopa"</b><small>Chiude la prova dopo l'ultima auto, di solito con una bandiera a scacchi o un cartello di fine gara. Solo dopo il suo passaggio si può attraversare o lasciare la strada.</small></span></li>
-  </ol>
-  <h3 class="h3">Se qualcosa va storto</h3>
-  <div class="flags">
-    <div class="flag"><i style="background:#ef4444"></i><span><b>Bandiera rossa</b><small>Prova fermata, di solito per un incidente. Le auto rallentano e possono restare ferme a lungo. Tocca "Prova interrotta +15" in "Chi sta arrivando".</small></span></div>
-    <div class="flag"><i style="background:#facc15"></i><span><b>Bandiera gialla</b><small>Pericolo più avanti: le auto passano piano. Le foto di quel passaggio non saranno di gara.</small></span></div>
-    <div class="flag"><i style="background:#f4f4f5"></i><span><b>Ambulanza o carro attrezzi</b><small>Se entrano in prova, il passaggio è sospeso. Resta dove sei e lascia libera la strada.</small></span></div>
-    <div class="flag"><i style="background:#8e8e95"></i><span><b>Commissari col fischietto</b><small>Fischio lungo: un'auto sta arrivando, stai al tuo posto. Segui sempre le loro indicazioni.</small></span></div>
-  </div>
-  <p class="note">Gli intervalli delle auto di sicurezza sono quelli tipici dei rally italiani e possono cambiare: per gli orari vale il passaggio dell'auto "0".</p>
-</section>
-
-<section id="sos">
-  <h2>Posizione e SOS</h2>
-  <p class="note">Se vi perdete, se qualcuno deve raggiungervi o in caso di emergenza.</p>
-  <div class="btns">
-    <button class="btn" type="button" id="sos-gps">Invia la mia posizione GPS</button>
-    <button class="btn ghost" type="button" id="sos-spot">Invia il punto del tornante</button>
-    <a class="btn sos-call" href="tel:112">Chiama il 112</a>
-  </div>
-  <div class="note sos-out" id="sos-out"></div>
-  <ul class="plain" style="margin-top:12px">
-    <li>Al 112 di': <b>"Bosco Chiesanuova, Via Saina, tornante a fine prova speciale del rally"</b> e leggi le coordinate <span class="mono">45.61978, 11.02700</span>.</li>
-    <li>Se un'auto esce di strada, <b>non entrare in prova</b>: possono arrivarne altre. Avvisa il commissario più vicino, che ha la radio e fa fermare la gara.</li>
-    <li>In montagna il segnale può essere debole: il 112 funziona anche con qualunque rete disponibile.</li>
-  </ul>
-</section>
-
-<section>
-  <h2>Programma di sabato</h2>
-  <ol class="tl" id="timeline">
-    <li data-start="08:30" data-end="09:00"><span class="t">8:30</span><span><span class="w">Parcheggio a Bosco e salita a piedi al tornante</span><span class="d">Lascia l'auto in paese, non sulla strada della prova</span></span></li>
-    <li data-start="09:00" data-end="09:01"><span class="t">9:00</span><span><span class="w">Chiude la strada Calavedo</span><span class="d">Da qui in poi resti dentro fino alla riapertura</span></span></li>
-    <li class="ps" data-start="10:17" data-end="11:45"><span class="t">10:17</span><span><span class="w">PS 4 · Calavedo "Banca Valsabbina"</span><span class="d">Prima auto. 82 iscritti, passaggio di circa 1h30</span></span></li>
-    <li data-start="11:45" data-end="13:00"><span class="t">11:45</span><span><span class="w">Strada riaperta · pausa pranzo in paese</span><span class="d">Fino alle 13:00 circa</span></span></li>
-    <li class="ps" data-start="14:14" data-end="15:45"><span class="t">14:14</span><span><span class="w">PS 6 · Calavedo "F.lli Scala Marmi"</span><span class="d">Secondo passaggio</span></span></li>
-    <li data-start="15:45" data-end="16:30"><span class="t">15:45</span><span><span class="w">Strada riaperta · caffè caldo</span><span class="d">Richiude alle 16:30. Il sole tramonta verso le 16:50</span></span></li>
-    <li class="ps" data-start="17:42" data-end="18:00"><span class="t">17:42</span><span><span class="w">PS 8 · Calavedo "M.T.S." al buio</span><span class="d">Fari accesi: il passaggio più scenografico</span></span></li>
-    <li data-start="18:00" data-end="19:40"><span class="t">18:00</span><span><span class="w">Arrivo a Bosco Chiesanuova, Piazza Marconi</span><span class="d">Si arriva a piedi</span></span></li>
-    <li data-start="19:40" data-end="23:59"><span class="t">19:40</span><span><span class="w">Strade riaperte · rientro a casa</span><span class="d">Orario indicativo</span></span></li>
-  </ol>
-</section>
-
-<section>
-  <h2>Prove speciali e strade chiuse</h2>
-  <div class="tbl">
-    <table>
-      <thead><tr><th>Prova</th><th>Km</th><th>1ª auto</th><th>Strada chiusa</th></tr></thead>
-      <tbody>
-        <tr><td>PS 3 · Velo Veronese</td><td class="mono">7,24</td><td class="mono">9:39</td><td class="mono">8:20–11:10</td></tr>
-        <tr class="mine"><td>PS 4 · Calavedo</td><td class="mono">10,53</td><td class="mono">10:17</td><td class="mono">9:00–11:45</td></tr>
-        <tr><td>PS 5 · Velo Veronese</td><td class="mono">7,24</td><td class="mono">13:36</td><td class="mono">12:30–15:00</td></tr>
-        <tr class="mine"><td>PS 6 · Calavedo</td><td class="mono">10,53</td><td class="mono">14:14</td><td class="mono">13:00–15:45</td></tr>
-        <tr><td>PS 7 · Velo Veronese</td><td class="mono">7,24</td><td class="mono">17:04</td><td class="mono">16:00–19:00</td></tr>
-        <tr class="mine"><td>PS 8 · Calavedo</td><td class="mono">10,53</td><td class="mono">17:42</td><td class="mono">16:30–19:40</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p class="note">Venerdì 13: PS 1 e PS 2 Romagnano/Azzago (5,52 km) alle 16:44 e alle 19:27. Strade chiuse dalle 15:30 alle 18:15 e dalle 19:00 alle 21:25. Partenza da Grezzana, Piazza C. Ederle.</p>
-</section>
-
-<section class="live-res">
+<section class="live-res" data-page="gara">
   <div class="res-head">
     <h2>Classifica live</h2>
     <span class="pill open">aggiornata da Claude</span>
@@ -526,7 +490,77 @@ button.btn.sm{cursor:pointer}
   </div>
 </section>
 
-<section>
+<section data-page="gara">
+  <h2>Programma di sabato</h2>
+  <ol class="tl" id="timeline">
+    <li data-start="08:30" data-end="09:00"><span class="t">8:30</span><span><span class="w">Parcheggio a Bosco e salita a piedi al tornante</span><span class="d">Lascia l'auto in paese, non sulla strada della prova</span></span></li>
+    <li data-start="09:00" data-end="09:01"><span class="t">9:00</span><span><span class="w">Chiude la strada Calavedo</span><span class="d">Da qui in poi resti dentro fino alla riapertura</span></span></li>
+    <li class="ps" data-start="10:17" data-end="11:45"><span class="t">10:17</span><span><span class="w">PS 4 · Calavedo "Banca Valsabbina"</span><span class="d">Prima auto. 82 iscritti, passaggio di circa 1h30</span></span></li>
+    <li data-start="11:45" data-end="13:00"><span class="t">11:45</span><span><span class="w">Strada riaperta · pausa pranzo in paese</span><span class="d">Fino alle 13:00 circa</span></span></li>
+    <li class="ps" data-start="14:14" data-end="15:45"><span class="t">14:14</span><span><span class="w">PS 6 · Calavedo "F.lli Scala Marmi"</span><span class="d">Secondo passaggio</span></span></li>
+    <li data-start="15:45" data-end="16:30"><span class="t">15:45</span><span><span class="w">Strada riaperta · caffè caldo</span><span class="d">Richiude alle 16:30. Il sole tramonta verso le 16:50</span></span></li>
+    <li class="ps" data-start="17:42" data-end="18:00"><span class="t">17:42</span><span><span class="w">PS 8 · Calavedo "M.T.S." al buio</span><span class="d">Fari accesi: il passaggio più scenografico</span></span></li>
+    <li data-start="18:00" data-end="19:40"><span class="t">18:00</span><span><span class="w">Arrivo a Bosco Chiesanuova, Piazza Marconi</span><span class="d">Si arriva a piedi</span></span></li>
+    <li data-start="19:40" data-end="23:59"><span class="t">19:40</span><span><span class="w">Strade riaperte · rientro a casa</span><span class="d">Orario indicativo</span></span></li>
+  </ol>
+</section>
+
+<section data-page="gara">
+  <h2>Prove speciali e strade chiuse</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Prova</th><th>Km</th><th>1ª auto</th><th>Strada chiusa</th></tr></thead>
+      <tbody>
+        <tr><td>PS 3 · Velo Veronese</td><td class="mono">7,24</td><td class="mono">9:39</td><td class="mono">8:20–11:10</td></tr>
+        <tr class="mine"><td>PS 4 · Calavedo</td><td class="mono">10,53</td><td class="mono">10:17</td><td class="mono">9:00–11:45</td></tr>
+        <tr><td>PS 5 · Velo Veronese</td><td class="mono">7,24</td><td class="mono">13:36</td><td class="mono">12:30–15:00</td></tr>
+        <tr class="mine"><td>PS 6 · Calavedo</td><td class="mono">10,53</td><td class="mono">14:14</td><td class="mono">13:00–15:45</td></tr>
+        <tr><td>PS 7 · Velo Veronese</td><td class="mono">7,24</td><td class="mono">17:04</td><td class="mono">16:00–19:00</td></tr>
+        <tr class="mine"><td>PS 8 · Calavedo</td><td class="mono">10,53</td><td class="mono">17:42</td><td class="mono">16:30–19:40</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Venerdì 13: PS 1 e PS 2 Romagnano/Azzago (5,52 km) alle 16:44 e alle 19:27. Strade chiuse dalle 15:30 alle 18:15 e dalle 19:00 alle 21:25. Partenza da Grezzana, Piazza C. Ederle.</p>
+</section>
+
+<section id="seq" data-page="gara">
+  <h2>Prima e dopo ogni prova</h2>
+  <ol class="seq" id="seq-list">
+    <li><span class="sq" id="sq-000">~40 min</span><span><b>Auto "000"</b><small>Prima vettura di sicurezza: controlla che la strada sia chiusa e il pubblico al sicuro. Se sei in un punto vietato ti fanno spostare.</small></span></li>
+    <li><span class="sq" id="sq-00">~20 min</span><span><b>Auto "00"</b><small>Seconda vettura di sicurezza, spesso con il direttore di prova.</small></span></li>
+    <li><span class="sq" id="sq-0">~10 min</span><span><b>Auto "0"</b><small>Ultima apripista, fa il percorso come un'auto in gara. Dopo di lei arrivano le auto vere: ottima per provare inquadratura e messa a fuoco.</small></span></li>
+    <li><span class="sq" id="sq-1">1ª auto</span><span><b>Auto in gara, una al minuto</b><small>Gli orari esatti sono in "Chi sta arrivando".</small></span></li>
+    <li><span class="sq">Fine</span><span><b>Vettura "scopa"</b><small>Chiude la prova dopo l'ultima auto, di solito con una bandiera a scacchi o un cartello di fine gara. Solo dopo il suo passaggio si può attraversare o lasciare la strada.</small></span></li>
+  </ol>
+  <h3 class="h3">Se qualcosa va storto</h3>
+  <div class="flags">
+    <div class="flag"><i style="background:#ef4444"></i><span><b>Bandiera rossa</b><small>Prova fermata, di solito per un incidente. Le auto rallentano e possono restare ferme a lungo. Tocca "Prova interrotta +15" in "Chi sta arrivando".</small></span></div>
+    <div class="flag"><i style="background:#facc15"></i><span><b>Bandiera gialla</b><small>Pericolo più avanti: le auto passano piano. Le foto di quel passaggio non saranno di gara.</small></span></div>
+    <div class="flag"><i style="background:#f4f4f5"></i><span><b>Ambulanza o carro attrezzi</b><small>Se entrano in prova, il passaggio è sospeso. Resta dove sei e lascia libera la strada.</small></span></div>
+    <div class="flag"><i style="background:#8e8e95"></i><span><b>Commissari col fischietto</b><small>Fischio lungo: un'auto sta arrivando, stai al tuo posto. Segui sempre le loro indicazioni.</small></span></div>
+  </div>
+  <p class="note">Gli intervalli delle auto di sicurezza sono quelli tipici dei rally italiani e possono cambiare: per gli orari vale il passaggio dell'auto "0".</p>
+</section>
+
+<section data-page="gara">
+  <div class="res-head"><h2>Elenco partenti</h2><span class="note" id="ent-count"></span></div>
+  <input class="search" id="ent-q" type="search" inputmode="numeric" placeholder="Cerca numero, pilota o auto" aria-label="Cerca nell'elenco partenti">
+  <div id="ent-list" class="ent"><p class="note">L'elenco iscritti esce venerdì sull'albo di gara: Claude lo inserisce qui e ti rimanda il file.</p></div>
+</section>
+
+<section data-page="gara">
+  <h2>Contatti e documenti</h2>
+  <ul class="plain">
+    <li>Organizzazione: Bob <span class="mono">+39 348 081 1712</span> · Gian <span class="mono">+39 347 252 9415</span></li>
+    <li><a href="https://www.rallyclubvalpantena.it/documenti">Documenti e orari chiusura strade, Rally Club Valpantena</a></li>
+    <li><a href="https://webapp.sportity.com/event/Lessinia2026/9fe650ba-6cee-48be-a23d-24445bf119bf">Sportity: comunicati, iscritti, classifiche</a></li>
+    <li><a href="https://app-cdn.sportity.com/aa15abe4-02be-463f-8979-b71db9051b03/cdfaf294-f52a-4417-aace-e55be7c08b41_8LRH2026%20CARTINA%20Rev.260820%20RPG.pdf">Cartina del percorso (PDF)</a></li>
+  </ul>
+</section>
+
+<div class="ptitle" data-page="meteo"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Meteo</h1><div class="sub">Previsioni per il tornante e per Velo Veronese, radar in diretta</div></div>
+
+<section data-page="meteo">
   <h2>Meteo al tornante consigliato</h2>
   <div class="wx-meta note" id="wx-meta">Carico le previsioni…</div>
 
@@ -570,7 +604,114 @@ button.btn.sm{cursor:pointer}
   </div>
 </section>
 
-<section class="warn">
+<div class="ptitle" data-page="zaino"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Zaino</h1><div class="sub">Cosa fare prima di partire e cosa mettere nello zaino</div></div>
+
+<section class="todo" data-page="zaino">
+    <div class="res-head"><h2>Da fare prima di sabato</h2><span class="pill idle" id="todo-count">0 di 0</span></div>
+    <ul class="check" data-key="todo">
+      <li><label><input type="checkbox" id="td1"><span>Comprare la frontale Simond HL500 USB V3 nera (Decathlon San Giovanni Lupatoto o Villafranca, 29,99 €)</span></label></li>
+      <li><label><input type="checkbox" id="td2"><span>Caricare la frontale al 100%</span></label></li>
+      <li><label><input type="checkbox" id="td3"><span>Recuperare la sedia da campeggio con schienale (in prestito, Brico di Soave o Decathlon)</span></label></li>
+      <li><label><input type="checkbox" id="td4"><span>Impermeabilizzare gli scarponi con grasso o spray</span></label></li>
+      <li><label><input type="checkbox" id="td5"><span>Mettere in carica telefono, powerbank e batterie GoPro</span></label></li>
+      <li><label><input type="checkbox" id="td6"><span>Aprire l'app col Wi-Fi, così salva tutto per l'uso offline</span></label></li>
+      <li><label><input type="checkbox" id="td7"><span>Lasciare il PC acceso con l'app di Claude aperta e senza standby (serve per le classifiche)</span></label></li>
+      <li><label><input type="checkbox" id="td8"><span>Sveglia per partire alle 7:20</span></label></li>
+    </ul>
+</section>
+
+<section data-page="zaino">
+  <div class="res-head"><h2>Da portare</h2><span class="pill idle" id="pack-count">0 di 0</span></div>
+  <p class="note">Le spunte restano salvate su questo telefono.</p>
+  <h3 class="h3">Indosso e ai piedi</h3>
+  <ul class="check" data-key="zaino">
+    <li><label><input type="checkbox" id="pk1"><span>Maglia termica</span></label></li>
+    <li><label><input type="checkbox" id="pk2"><span>Pile</span></label></li>
+    <li><label><input type="checkbox" id="pk3"><span>Piumino</span></label></li>
+    <li><label><input type="checkbox" id="pk4"><span>Giacca impermeabile sopra a tutto</span></label></li>
+    <li><label><input type="checkbox" id="pk5"><span>Berretto</span></label></li>
+    <li><label><input type="checkbox" id="pk6"><span>Scaldacollo</span></label></li>
+    <li><label><input type="checkbox" id="pk7"><span>Guanti touch per usare il telefono</span></label></li>
+    <li><label><input type="checkbox" id="pk8"><span>Calze di lana pesanti</span></label></li>
+    <li><label><input type="checkbox" id="pk9"><span>Scarponi Crispi impermeabilizzati (per stare al tornante, cambio al parcheggio)</span></label></li>
+    <li><label><input type="checkbox" id="pk10"><span>Adidas Samba (per guidare)</span></label></li>
+  </ul>
+  <h3 class="h3">Foto e video</h3>
+  <ul class="check" data-key="zaino">
+    <li><label><input type="checkbox" id="pk11"><span>Telefono Galaxy S24 Ultra carico</span></label></li>
+    <li><label><input type="checkbox" id="pk12"><span>GoPro con custodia e cornici</span></label></li>
+    <li><label><input type="checkbox" id="pk13"><span>Batterie di riserva GoPro</span></label></li>
+    <li><label><input type="checkbox" id="pk14"><span>MicroSD in più</span></label></li>
+    <li><label><input type="checkbox" id="pk15"><span>Ventosa per GoPro</span></label></li>
+    <li><label><input type="checkbox" id="pk16"><span>Treppiede Velbon + attacco per il telefono (scie dei fari alla PS 8)</span></label></li>
+    <li><label><input type="checkbox" id="pk17"><span>Panno in microfibra per gli obiettivi</span></label></li>
+    <li><label><input type="checkbox" id="pk18"><span>Powerbank carico</span></label></li>
+    <li><label><input type="checkbox" id="pk19"><span>Cavi USB-C per telefono e GoPro</span></label></li>
+  </ul>
+  <h3 class="h3">Giornata al tornante</h3>
+  <ul class="check" data-key="zaino">
+    <li><label><input type="checkbox" id="pk20"><span>Zaino Mil-Tec</span></label></li>
+    <li><label><input type="checkbox" id="pk21"><span>Sedia da campeggio + seggiolino pieghevole</span></label></li>
+    <li><label><input type="checkbox" id="pk22"><span>Termos con bevanda calda</span></label></li>
+    <li><label><input type="checkbox" id="pk23"><span>Acqua</span></label></li>
+    <li><label><input type="checkbox" id="pk24"><span>Panini, barrette e frutta secca</span></label></li>
+    <li><label><input type="checkbox" id="pk25"><span>Scaldamani usa e getta</span></label></li>
+    <li><label><input type="checkbox" id="pk26"><span>Frontale Simond HL500 nera (carica al 100%)</span></label></li>
+    <li><label><input type="checkbox" id="pk27"><span>Occhiali da sole</span></label></li>
+    <li><label><input type="checkbox" id="pk28"><span>Ombrello</span></label></li>
+    <li><label><input type="checkbox" id="pk36"><span>Occhiali protettivi o avvolgenti (ghiaia in uscita di curva)</span></label></li>
+    <li><label><input type="checkbox" id="pk37"><span>Tappi per le orecchie (2 paia)</span></label></li>
+    <li><label><input type="checkbox" id="pk38"><span>Plaid o coperta in pile</span></label></li>
+    <li><label><input type="checkbox" id="pk39"><span>Telo impermeabile o sacco grande</span></label></li>
+  </ul>
+  <h3 class="h3">Varie</h3>
+  <ul class="check" data-key="zaino">
+    <li><label><input type="checkbox" id="pk29"><span>Contanti per bar e parcheggio</span></label></li>
+    <li><label><input type="checkbox" id="pk30"><span>Carta d'identità</span></label></li>
+    <li><label><input type="checkbox" id="pk31"><span>Fazzoletti</span></label></li>
+    <li><label><input type="checkbox" id="pk32"><span>Sacchetto per i rifiuti</span></label></li>
+    <li><label><input type="checkbox" id="pk33"><span>Calze di ricambio</span></label></li>
+    <li><label><input type="checkbox" id="pk34"><span>Borsa per gli scarponi sporchi in macchina</span></label></li>
+    <li><label><input type="checkbox" id="pk40"><span>Burrocacao e crema mani</span></label></li>
+    <li><label><input type="checkbox" id="pk41"><span>Salviette umidificate e carta igienica</span></label></li>
+    <li><label><input type="checkbox" id="pk42"><span>Kit primo soccorso (cerotti, disinfettante, antidolorifico)</span></label></li>
+    <li><label><input type="checkbox" id="pk43"><span>Busta impermeabile per telefono e documenti</span></label></li>
+    <li><label><input type="checkbox" id="pk44"><span>Patente e documenti dell'auto</span></label></li>
+    <li><label><input type="checkbox" id="pk45"><span>Pieno di benzina prima di salire</span></label></li>
+  </ul>
+</section>
+
+<div class="ptitle" data-page="viaggio"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Viaggio e Spot</h1><div class="sub">Come arrivare, dove parcheggiare, il tornante e la zona intorno</div></div>
+
+<section data-page="viaggio">
+  <h2>Viaggio, parcheggio e servizi</h2>
+  <div class="trip">
+    <div class="trip-big"><div class="eyebrow">Partenza consigliata da Verona sud</div><div class="trip-time">7:20</div><div class="note">Circa 45 km e un'ora di strada, in salita da Verona verso Grezzana e la Lessinia. Così arrivi a Bosco verso le 8:20, parcheggi con calma e sei al tornante prima che la strada chiuda alle 9:00.</div></div>
+  </div>
+  <h3 class="h3">Parcheggi gratuiti vicino al tornante</h3>
+  <ul class="poi">
+    <li><span class="poi-ic">P</span><span><b>Zona Piazza della Chiesa</b><small>gratuito · circa 260 m dal tornante</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.621969,11.028267">Portami lì</a></li>
+    <li><span class="poi-ic">P</span><span><b>Vicino a Piazza Borgo</b><small>gratuito · circa 380 m</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.622102,11.030511">Portami lì</a></li>
+    <li><span class="poi-ic">P</span><span><b>Parcheggio grande, circa 90 posti</b><small>gratuito · circa 580 m · utile se in centro è pieno</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.624376,11.030623">Portami lì</a></li>
+  </ul>
+  <p class="note">Il giorno del rally alcuni parcheggi in centro possono essere riservati all'organizzazione: segui i cartelli e i commissari. Dal parcheggio scendi a piedi su Via Saina, 5 minuti.</p>
+  <h3 class="h3">Bar, bagni e servizi</h3>
+  <ul class="poi">
+    <li><span class="poi-ic">☕</span><span><b>Osteria La Baita</b><small>Largo Jenna · circa 100 m, la più vicina</small></span></li>
+    <li><span class="poi-ic">☕</span><span><b>Bar Brunelli · Dal Campe</b><small>Piazza della Chiesa · circa 350 m</small></span></li>
+    <li><span class="poi-ic">☕</span><span><b>Bar centrale · Frac · La Creperie</b><small>Piazza Borgo e Piazza Marconi · circa 370–400 m</small></span></li>
+    <li><span class="poi-ic">WC</span><span><b>Bagni pubblici</b><small>vicino a Piazza della Chiesa · circa 300 m</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.621837,11.029428">Portami lì</a></li>
+    <li><span class="poi-ic">+</span><span><b>Farmacia</b><small>circa 540 m, verso Via General Cantore</small></span></li>
+  </ul>
+  <p class="note">Posizioni da OpenStreetMap; gli orari di apertura non sono indicati, verificali sul posto.</p>
+  <h3 class="h3">Numeri utili</h3>
+  <ul class="poi">
+    <li><span class="poi-ic sos">112</span><span><b>Emergenze</b><small>Numero unico europeo: soccorso, carabinieri, vigili del fuoco</small></span></li>
+    <li><span class="poi-ic">☎</span><span><b>Organizzazione Rally Club Valpantena</b><small class="mono">Bob +39 348 081 1712 · Gian +39 347 252 9415</small></span></li>
+  </ul>
+</section>
+
+<section class="warn" data-page="viaggio">
   <h2>Il posto: tornante a fine prova</h2>
   <figure class="spot">
     <svg class="osm" viewBox="-240 -200 480 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mappa del tornante su Via Saina a Bosco Chiesanuova: la prova arriva da ovest, fa il tornante cerchiato in giallo, scende al secondo tornante e risale verso il paese">
@@ -631,7 +772,25 @@ button.btn.sm{cursor:pointer}
   </ul>
 </section>
 
-<section>
+<section id="sos" data-page="viaggio">
+  <h2>Posizione e SOS</h2>
+  <p class="note">Se vi perdete, se qualcuno deve raggiungervi o in caso di emergenza.</p>
+  <div class="btns">
+    <button class="btn" type="button" id="sos-gps">Invia la mia posizione GPS</button>
+    <button class="btn ghost" type="button" id="sos-spot">Invia il punto del tornante</button>
+    <a class="btn sos-call" href="tel:112">Chiama il 112</a>
+  </div>
+  <div class="note sos-out" id="sos-out"></div>
+  <ul class="plain" style="margin-top:12px">
+    <li>Al 112 di': <b>"Bosco Chiesanuova, Via Saina, tornante a fine prova speciale del rally"</b> e leggi le coordinate <span class="mono">45.61978, 11.02700</span>.</li>
+    <li>Se un'auto esce di strada, <b>non entrare in prova</b>: possono arrivarne altre. Avvisa il commissario più vicino, che ha la radio e fa fermare la gara.</li>
+    <li>In montagna il segnale può essere debole: il 112 funziona anche con qualunque rete disponibile.</li>
+  </ul>
+</section>
+
+<div class="ptitle" data-page="foto"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Fotografie</h1><div class="sub">Impostazioni, luce di ogni passaggio e scatti da non perdere</div></div>
+
+<section data-page="foto">
   <h2>Foto con il Galaxy S24 Ultra</h2>
   <div class="lux-now" id="lux-now"></div>
   <p class="note">Usa la modalità <b>Pro</b> (in Fotocamera → Altro → Pro) per scegliere tu tempo e ISO. Dal tornante l'obiettivo migliore è il <b>3x</b>; il <b>5x</b> serve per i primi piani da lontano. Per la raffica imposta in Impostazioni fotocamera → "Scorri il tasto di scatto verso" → Scatta foto a raffica, poi trascina il tasto verso il basso.</p>
@@ -651,135 +810,15 @@ button.btn.sm{cursor:pointer}
   <p class="note">Salva anche in RAW (Impostazioni → Opzioni immagine Pro → RAW e JPEG) se vuoi sistemarle dopo. Con il freddo la batteria cala in fretta: tieni il telefono in tasca tra un passaggio e l'altro e pulisci gli obiettivi prima di ogni prova.</p>
 </section>
 
-<section>
-  <h2>Viaggio, parcheggio e servizi</h2>
-  <div class="trip">
-    <div class="trip-big"><div class="eyebrow">Partenza consigliata da Verona sud</div><div class="trip-time">7:20</div><div class="note">Circa 45 km e un'ora di strada, in salita da Verona verso Grezzana e la Lessinia. Così arrivi a Bosco verso le 8:20, parcheggi con calma e sei al tornante prima che la strada chiuda alle 9:00.</div></div>
-  </div>
-  <h3 class="h3">Parcheggi gratuiti vicino al tornante</h3>
-  <ul class="poi">
-    <li><span class="poi-ic">P</span><span><b>Zona Piazza della Chiesa</b><small>gratuito · circa 260 m dal tornante</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.621969,11.028267">Portami lì</a></li>
-    <li><span class="poi-ic">P</span><span><b>Vicino a Piazza Borgo</b><small>gratuito · circa 380 m</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.622102,11.030511">Portami lì</a></li>
-    <li><span class="poi-ic">P</span><span><b>Parcheggio grande, circa 90 posti</b><small>gratuito · circa 580 m · utile se in centro è pieno</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.624376,11.030623">Portami lì</a></li>
-  </ul>
-  <p class="note">Il giorno del rally alcuni parcheggi in centro possono essere riservati all'organizzazione: segui i cartelli e i commissari. Dal parcheggio scendi a piedi su Via Saina, 5 minuti.</p>
-  <h3 class="h3">Bar, bagni e servizi</h3>
-  <ul class="poi">
-    <li><span class="poi-ic">☕</span><span><b>Osteria La Baita</b><small>Largo Jenna · circa 100 m, la più vicina</small></span></li>
-    <li><span class="poi-ic">☕</span><span><b>Bar Brunelli · Dal Campe</b><small>Piazza della Chiesa · circa 350 m</small></span></li>
-    <li><span class="poi-ic">☕</span><span><b>Bar centrale · Frac · La Creperie</b><small>Piazza Borgo e Piazza Marconi · circa 370–400 m</small></span></li>
-    <li><span class="poi-ic">WC</span><span><b>Bagni pubblici</b><small>vicino a Piazza della Chiesa · circa 300 m</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.621837,11.029428">Portami lì</a></li>
-    <li><span class="poi-ic">+</span><span><b>Farmacia</b><small>circa 540 m, verso Via General Cantore</small></span></li>
-  </ul>
-  <p class="note">Posizioni da OpenStreetMap; gli orari di apertura non sono indicati, verificali sul posto.</p>
-  <h3 class="h3">Numeri utili</h3>
-  <ul class="poi">
-    <li><span class="poi-ic sos">112</span><span><b>Emergenze</b><small>Numero unico europeo: soccorso, carabinieri, vigili del fuoco</small></span></li>
-    <li><span class="poi-ic">☎</span><span><b>Organizzazione Rally Club Valpantena</b><small class="mono">Bob +39 348 081 1712 · Gian +39 347 252 9415</small></span></li>
-  </ul>
-</section>
-
-<section class="todo">
-    <div class="res-head"><h2>Da fare prima di sabato</h2><span class="pill idle" id="todo-count">0 di 0</span></div>
-    <ul class="check" data-key="todo">
-      <li><label><input type="checkbox" id="td1"><span>Comprare la frontale Simond HL500 USB V3 nera (Decathlon San Giovanni Lupatoto o Villafranca, 29,99 €)</span></label></li>
-      <li><label><input type="checkbox" id="td2"><span>Caricare la frontale al 100%</span></label></li>
-      <li><label><input type="checkbox" id="td3"><span>Recuperare la sedia da campeggio con schienale (in prestito, Brico di Soave o Decathlon)</span></label></li>
-      <li><label><input type="checkbox" id="td4"><span>Impermeabilizzare gli scarponi con grasso o spray</span></label></li>
-      <li><label><input type="checkbox" id="td5"><span>Mettere in carica telefono, powerbank e batterie GoPro</span></label></li>
-      <li><label><input type="checkbox" id="td6"><span>Aprire l'app col Wi-Fi, così salva tutto per l'uso offline</span></label></li>
-      <li><label><input type="checkbox" id="td7"><span>Lasciare il PC acceso con l'app di Claude aperta e senza standby (serve per le classifiche)</span></label></li>
-      <li><label><input type="checkbox" id="td8"><span>Sveglia per partire alle 7:20</span></label></li>
-    </ul>
-</section>
-
-<div class="cols">
-  <section>
-    <h2>Promemoria foto</h2>
-    <ul class="check" data-key="foto">
-      <li><label><input type="checkbox" id="f1"><span>Il <b>n. 39</b>: Ford Sierra 4x4 bianca e blu, livrea Mobil 1. Manca solo l'orario di partenza</span></label></li>
-      <li><label><input type="checkbox" id="f2"><span>Video anche in verticale per Instagram</span></label></li>
-      <li><label><input type="checkbox" id="f3"><span>Allenarsi sulle prime auto</span></label></li>
-      <li><label><input type="checkbox" id="f4"><span>Nitide: da 1/1000 s in su, a raffica</span></label></li>
-      <li><label><input type="checkbox" id="f5"><span>Panning: tra 1/60 e 1/125 s, seguendo l'auto</span></label></li>
-      <li><label><input type="checkbox" id="f6"><span>PS 8 al buio: fari e scie di luce</span></label></li>
-    </ul>
-  </section>
-  <section>
-    <div class="res-head"><h2>Da portare</h2><span class="pill idle" id="pack-count">0 di 0</span></div>
-    <p class="note">Le spunte restano salvate su questo telefono.</p>
-    <h3 class="h3">Indosso e ai piedi</h3>
-    <ul class="check" data-key="zaino">
-      <li><label><input type="checkbox" id="pk1"><span>Maglia termica</span></label></li>
-      <li><label><input type="checkbox" id="pk2"><span>Pile</span></label></li>
-      <li><label><input type="checkbox" id="pk3"><span>Piumino</span></label></li>
-      <li><label><input type="checkbox" id="pk4"><span>Giacca impermeabile sopra a tutto</span></label></li>
-      <li><label><input type="checkbox" id="pk5"><span>Berretto</span></label></li>
-      <li><label><input type="checkbox" id="pk6"><span>Scaldacollo</span></label></li>
-      <li><label><input type="checkbox" id="pk7"><span>Guanti touch per usare il telefono</span></label></li>
-      <li><label><input type="checkbox" id="pk8"><span>Calze di lana pesanti</span></label></li>
-      <li><label><input type="checkbox" id="pk9"><span>Scarponi Crispi impermeabilizzati (per stare al tornante, cambio al parcheggio)</span></label></li>
-      <li><label><input type="checkbox" id="pk10"><span>Adidas Samba (per guidare)</span></label></li>
-    </ul>
-    <h3 class="h3">Foto e video</h3>
-    <ul class="check" data-key="zaino">
-      <li><label><input type="checkbox" id="pk11"><span>Telefono Galaxy S24 Ultra carico</span></label></li>
-      <li><label><input type="checkbox" id="pk12"><span>GoPro con custodia e cornici</span></label></li>
-      <li><label><input type="checkbox" id="pk13"><span>Batterie di riserva GoPro</span></label></li>
-      <li><label><input type="checkbox" id="pk14"><span>MicroSD in più</span></label></li>
-      <li><label><input type="checkbox" id="pk15"><span>Ventosa per GoPro</span></label></li>
-      <li><label><input type="checkbox" id="pk16"><span>Treppiede Velbon + attacco per il telefono (scie dei fari alla PS 8)</span></label></li>
-      <li><label><input type="checkbox" id="pk17"><span>Panno in microfibra per gli obiettivi</span></label></li>
-      <li><label><input type="checkbox" id="pk18"><span>Powerbank carico</span></label></li>
-      <li><label><input type="checkbox" id="pk19"><span>Cavi USB-C per telefono e GoPro</span></label></li>
-    </ul>
-    <h3 class="h3">Giornata al tornante</h3>
-    <ul class="check" data-key="zaino">
-      <li><label><input type="checkbox" id="pk20"><span>Zaino Mil-Tec</span></label></li>
-      <li><label><input type="checkbox" id="pk21"><span>Sedia da campeggio + seggiolino pieghevole</span></label></li>
-      <li><label><input type="checkbox" id="pk22"><span>Termos con bevanda calda</span></label></li>
-      <li><label><input type="checkbox" id="pk23"><span>Acqua</span></label></li>
-      <li><label><input type="checkbox" id="pk24"><span>Panini, barrette e frutta secca</span></label></li>
-      <li><label><input type="checkbox" id="pk25"><span>Scaldamani usa e getta</span></label></li>
-      <li><label><input type="checkbox" id="pk26"><span>Frontale Simond HL500 nera (carica al 100%)</span></label></li>
-      <li><label><input type="checkbox" id="pk27"><span>Occhiali da sole</span></label></li>
-      <li><label><input type="checkbox" id="pk28"><span>Ombrello</span></label></li>
-      <li><label><input type="checkbox" id="pk36"><span>Occhiali protettivi o avvolgenti (ghiaia in uscita di curva)</span></label></li>
-      <li><label><input type="checkbox" id="pk37"><span>Tappi per le orecchie (2 paia)</span></label></li>
-      <li><label><input type="checkbox" id="pk38"><span>Plaid o coperta in pile</span></label></li>
-      <li><label><input type="checkbox" id="pk39"><span>Telo impermeabile o sacco grande</span></label></li>
-    </ul>
-    <h3 class="h3">Varie</h3>
-    <ul class="check" data-key="zaino">
-      <li><label><input type="checkbox" id="pk29"><span>Contanti per bar e parcheggio</span></label></li>
-      <li><label><input type="checkbox" id="pk30"><span>Carta d'identità</span></label></li>
-      <li><label><input type="checkbox" id="pk31"><span>Fazzoletti</span></label></li>
-      <li><label><input type="checkbox" id="pk32"><span>Sacchetto per i rifiuti</span></label></li>
-      <li><label><input type="checkbox" id="pk33"><span>Calze di ricambio</span></label></li>
-      <li><label><input type="checkbox" id="pk34"><span>Borsa per gli scarponi sporchi in macchina</span></label></li>
-      <li><label><input type="checkbox" id="pk40"><span>Burrocacao e crema mani</span></label></li>
-      <li><label><input type="checkbox" id="pk41"><span>Salviette umidificate e carta igienica</span></label></li>
-      <li><label><input type="checkbox" id="pk42"><span>Kit primo soccorso (cerotti, disinfettante, antidolorifico)</span></label></li>
-      <li><label><input type="checkbox" id="pk43"><span>Busta impermeabile per telefono e documenti</span></label></li>
-      <li><label><input type="checkbox" id="pk44"><span>Patente e documenti dell'auto</span></label></li>
-      <li><label><input type="checkbox" id="pk45"><span>Pieno di benzina prima di salire</span></label></li>
-    </ul>
-  </section>
-</div>
-
-<section>
-  <div class="res-head"><h2>Elenco partenti</h2><span class="note" id="ent-count"></span></div>
-  <input class="search" id="ent-q" type="search" inputmode="numeric" placeholder="Cerca numero, pilota o auto" aria-label="Cerca nell'elenco partenti">
-  <div id="ent-list" class="ent"><p class="note">L'elenco iscritti esce venerdì sull'albo di gara: Claude lo inserisce qui e ti rimanda il file.</p></div>
-</section>
-
-<section>
-  <h2>Contatti e documenti</h2>
-  <ul class="plain">
-    <li>Organizzazione: Bob <span class="mono">+39 348 081 1712</span> · Gian <span class="mono">+39 347 252 9415</span></li>
-    <li><a href="https://www.rallyclubvalpantena.it/documenti">Documenti e orari chiusura strade, Rally Club Valpantena</a></li>
-    <li><a href="https://webapp.sportity.com/event/Lessinia2026/9fe650ba-6cee-48be-a23d-24445bf119bf">Sportity: comunicati, iscritti, classifiche</a></li>
-    <li><a href="https://app-cdn.sportity.com/aa15abe4-02be-463f-8979-b71db9051b03/cdfaf294-f52a-4417-aace-e55be7c08b41_8LRH2026%20CARTINA%20Rev.260820%20RPG.pdf">Cartina del percorso (PDF)</a></li>
+<section data-page="foto">
+  <h2>Promemoria foto</h2>
+  <ul class="check" data-key="foto">
+    <li><label><input type="checkbox" id="f1"><span>Il <b>n. 39</b>: Ford Sierra 4x4 bianca e blu, livrea Mobil 1. Manca solo l'orario di partenza</span></label></li>
+    <li><label><input type="checkbox" id="f2"><span>Video anche in verticale per Instagram</span></label></li>
+    <li><label><input type="checkbox" id="f3"><span>Allenarsi sulle prime auto</span></label></li>
+    <li><label><input type="checkbox" id="f4"><span>Nitide: da 1/1000 s in su, a raffica</span></label></li>
+    <li><label><input type="checkbox" id="f5"><span>Panning: tra 1/60 e 1/125 s, seguendo l'auto</span></label></li>
+    <li><label><input type="checkbox" id="f6"><span>PS 8 al buio: fari e scie di luce</span></label></li>
   </ul>
 </section>
 
@@ -789,6 +828,26 @@ button.btn.sm{cursor:pointer}
 </footer>
 </div>
 
+<script>
+// Pagine: Gara e PS, Meteo, Zaino, Viaggio e Spot, Fotografie
+(function(){
+  var P=['gara','meteo','zaino','viaggio','foto'],cur=null;
+  function show(p,keep){
+    if(P.indexOf(p)<0)p='gara';
+    document.querySelectorAll('.wrap [data-page]').forEach(function(el){el.hidden=el.getAttribute('data-page')!==p;});
+    document.querySelectorAll('#tabs a').forEach(function(a){if(a.getAttribute('data-p')===p)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    var changed=cur!==p;cur=p;
+    if(changed&&!keep)window.scrollTo(0,0);
+    window.dispatchEvent(new Event('lrh-page'));
+  }
+  window.lrhShow=show;
+  window.lrhGoTo=function(sel){var el=document.querySelector(sel);if(!el)return;var pg=el.closest('[data-page]');if(pg)show(pg.getAttribute('data-page'),true);setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},40);};
+  function fromHash(){var h=location.hash.slice(1);return P.indexOf(h)>=0?h:null;}
+  window.addEventListener('hashchange',function(){var h=fromHash();if(h)show(h);});
+  document.querySelectorAll('#tabs a').forEach(function(a){a.addEventListener('click',function(e){var p=a.getAttribute('data-p');if(p===cur){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}});});
+  show(fromHash()||'gara',true);
+})();
+</script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
 <div class="ovl" id="ovl" hidden><div class="ovl-card"><div class="eyebrow" id="ovl-eye">Arriva il 39</div><div class="ovl-big" id="ovl-big">–</div><div class="ovl-sub" id="ovl-sub"></div><button class="btn" type="button" id="ovl-ok">Pronto!</button></div></div>
 <script>
@@ -1061,7 +1120,7 @@ function __main(){
       addAlert('al-class','', 'Nuova classifica: '+o.title+pos39(o), live?'Tocca "Aggiorna" per vederla nell\'app.':'La trovi nella sezione Classifica live.', live?'Aggiorna':'Vedi', function(){
         try{localStorage.setItem('lrh26-seenclass',o.title);}catch(e){}
         if(live){location.reload();return;}
-        var s=document.querySelector('.live-res'); if(s) s.scrollIntoView({behavior:'smooth'}); var a=document.getElementById('al-class'); if(a) a.remove();
+        if(window.lrhGoTo)lrhGoTo('.live-res'); var a=document.getElementById('al-class'); if(a) a.remove();
       });
       if(live) buzz();
     }
@@ -1094,7 +1153,7 @@ function __main(){
   (function(){
     if(!window.L||!document.getElementById('sat')) return;
     var stage=[[45.619675, 11.023658], [45.619693, 11.023799], [45.619846, 11.024171], [45.619999, 11.024582], [45.620079, 11.024749], [45.620124, 11.024929], [45.620133, 11.025096], [45.620097, 11.025212], [45.620052, 11.02534], [45.620017, 11.025494], [45.620008, 11.025661], [45.620017, 11.025803], [45.619954, 11.026034], [45.619828, 11.026445], [45.619756, 11.02674], [45.619729, 11.026843], [45.619711, 11.026907], [45.619693, 11.026971], [45.619693, 11.027023], [45.619711, 11.027048], [45.619747, 11.027061], [45.619765, 11.027061], [45.619783, 11.027061], [45.619819, 11.026997], [45.619873, 11.026817], [45.619945, 11.026599], [45.619999, 11.026393], [45.62007, 11.026278], [45.62016, 11.026136], [45.620286, 11.025957], [45.620421, 11.02579], [45.620484, 11.025725], [45.620538, 11.025713], [45.620582, 11.025738], [45.620582, 11.02579], [45.620574, 11.025854], [45.620529, 11.025944], [45.620439, 11.026047], [45.620331, 11.026201], [45.620178, 11.026432], [45.620142, 11.026586], [45.620124, 11.02683], [45.620106, 11.027036], [45.620106, 11.027459], [45.620115, 11.027588], [45.620115, 11.027883], [45.620133, 11.028114], [45.620178, 11.028281], [45.620214, 11.028371], [45.620277, 11.028474], [45.620322, 11.028654], [45.620358, 11.028846], [45.620358, 11.029001], [45.620322, 11.029168]];
-    var map=L.map('sat',{zoomControl:true,attributionControl:true,scrollWheelZoom:false,maxZoom:19});
+    var map=L.map('sat',{zoomControl:true,attributionControl:true,scrollWheelZoom:false,maxZoom:19});window.addEventListener('lrh-page',function(){var el=document.getElementById('sat');if(!el||!el.offsetWidth)return;map.invalidateSize();if(!map._lrhFit){map._lrhFit=1;map.fitBounds([[45.619700,11.025650],[45.620620,11.027250]],{padding:[30,30],maxZoom:18});}});
     map.fitBounds([[45.619700,11.025650],[45.620620,11.027250]],{padding:[30,30],maxZoom:18});
     map.attributionControl.setPrefix(false);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:19,attribution:'Immagini © Esri, Maxar'}).addTo(map);
