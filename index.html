@@ -373,7 +373,7 @@ button.btn.sm{cursor:pointer}
 .ptitle{display:grid;gap:4px;padding:6px 4px 0}
 .ptitle .eyebrow{color:var(--accent)}
 .ptitle h1{margin:2px 0 0}
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:45;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;background:rgba(14,14,16,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:45;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;background:rgba(14,14,16,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
 .tabs a{display:grid;justify-items:center;align-content:center;gap:4px;min-height:52px;padding:6px 2px;border-radius:14px;color:var(--muted);text-decoration:none;font:600 11px/1.1 var(--body);text-align:center;-webkit-tap-highlight-color:transparent}
 .tabs svg{width:23px;height:23px}
 .tabs a[aria-current="page"]{color:var(--accent);background:var(--soft)}
@@ -485,6 +485,7 @@ label.btn{cursor:pointer}
   <a href="#zaino" data-p="zaino"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><path d="M9 5V4a3 3 0 0 1 6 0v1"/><path d="M9 14h6v4H9z"/></svg><span>Zaino</span></a>
   <a href="#viaggio" data-p="viaggio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="l-s">Viaggio</span><span class="l-l">Viaggio e Spot</span></a>
   <a href="#foto" data-p="foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg><span class="l-s">Foto</span><span class="l-l">Fotografie</span></a>
+  <a href="#imp" data-p="imp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span class="l-s">Opzioni</span><span class="l-l">Impostazioni</span></a>
 </nav>
 <div class="wrap">
 
@@ -521,20 +522,6 @@ label.btn{cursor:pointer}
   </div>
   <div class="c39-list" id="c39-list"></div>
   <p class="note">Stima: orario di partenza della prova + un minuto per ogni auto davanti al 39 + circa 9 minuti per arrivare al tornante, che è verso la fine dei 10,5 km. Se segni le auto nel Registro passaggi, la stima si corregge da sola con il ritardo reale. Tieniti comunque pronto 5 minuti prima.</p>
-</section>
-
-<section class="snd" id="snd" data-page="gara">
-  <div class="res-head"><h2>Avvisi del 39: suono e schermo</h2><span class="pill idle" id="wl-pill">schermo normale</span></div>
-  <p class="note">Quando il telefono si blocca, il browser mette in pausa l'app e gli avvisi possono arrivare tardi. Tieni lo schermo acceso nei minuti del 39 e alza il volume multimediale: il suono si sente anche con il telefono in tasca.</p>
-  <div class="opt">
-    <label class="sw"><input type="checkbox" id="wl-auto"><span><b>Schermo acceso vicino al 39</b><small>Da 15 minuti prima a 5 minuti dopo ogni passaggio stimato del 39, solo con l'app aperta</small></span></label>
-    <label class="sw"><input type="checkbox" id="wl-now"><span><b>Schermo sempre acceso adesso</b><small>Si spegne da solo se chiudi l'app</small></span></label>
-    <label class="sw"><input type="checkbox" id="snd-on"><span><b>Avviso sonoro</b><small>Bip a 10 e a 2 minuti, e quando passa l'auto prima del 39</small></span></label>
-    <label class="sw"><input type="checkbox" id="snd-voice"><span><b>Voce</b><small>Dopo il bip una voce dice "Il 39 tra 2 minuti"</small></span></label>
-  </div>
-  <label class="vol">Volume <input type="range" id="snd-vol" min="0.1" max="1" step="0.1" value="0.8"></label>
-  <div class="btns"><button class="btn ghost" type="button" id="snd-test">Prova l'avviso</button></div>
-  <p class="note">La luminosità non la può cambiare l'app: abbassala tu dalla tendina, oppure usa la modalità notte con il pulsante ☾.</p>
 </section>
 
 <section class="arr" id="arr" data-page="gara">
@@ -704,13 +691,6 @@ label.btn{cursor:pointer}
 
 <div class="ptitle" data-page="zaino"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Zaino</h1><div class="sub">Cosa fare prima di partire e cosa mettere nello zaino</div></div>
 
-<section class="offl" id="offl" data-page="zaino">
-  <div class="res-head"><h2>Prepara l'app per l'uso offline</h2><span class="pill idle" id="off-pill">da controllare</span></div>
-  <p class="note">Al tornante il segnale può mancare. Prima di partire, col Wi-Fi di casa, tocca il pulsante: salva nel telefono la vista satellite del tornante, le previsioni e l'ultima classifica. Radar e classifica nuova invece hanno bisogno di rete.</p>
-  <ul class="off-list" id="off-list"></ul>
-  <div class="btns"><button class="btn" type="button" id="off-go">Scarica tutto per l'uso offline</button></div>
-  <div class="note" id="off-msg"></div>
-</section>
 <section class="todo" data-page="zaino">
     <div class="res-head"><h2>Da fare prima di sabato</h2><span class="pill idle" id="todo-count">0 di 0</span></div>
     <ul class="check" data-key="todo">
@@ -719,7 +699,7 @@ label.btn{cursor:pointer}
       <li><label><input type="checkbox" id="td3"><span>Recuperare la sedia da campeggio con schienale (in prestito, Brico di Soave o Decathlon)</span></label></li>
       <li><label><input type="checkbox" id="td4"><span>Impermeabilizzare gli scarponi con grasso o spray</span></label></li>
       <li><label><input type="checkbox" id="td5"><span>Mettere in carica telefono, powerbank e batterie GoPro</span></label></li>
-      <li><label><input type="checkbox" id="td6"><span>Aprire l'app col Wi-Fi, così salva tutto per l'uso offline</span></label></li>
+      <li><label><input type="checkbox" id="td6"><span>In Impostazioni: "Scarica tutto per l'uso offline" col Wi-Fi, finché le spie sono verdi</span></label></li>
       <li><label><input type="checkbox" id="td7"><span>Lasciare il PC acceso con l'app di Claude aperta e senza standby (serve per le classifiche)</span></label></li>
       <li><label><input type="checkbox" id="td8"><span>Sveglia per partire alle 7:20</span></label></li>
     </ul>
@@ -986,6 +966,29 @@ label.btn{cursor:pointer}
   </ul>
 </section>
 
+<div class="ptitle" data-page="imp"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Impostazioni</h1><div class="sub">Uso offline, avvisi del 39 e schermo</div></div>
+<section class="offl" id="offl" data-page="imp">
+  <div class="res-head"><h2>Prepara l'app per l'uso offline</h2><span class="pill idle" id="off-pill">da controllare</span></div>
+  <p class="note">Al tornante il segnale può mancare. Prima di partire, col Wi-Fi di casa, tocca il pulsante: salva nel telefono la vista satellite del tornante, le previsioni e l'ultima classifica. Radar e classifica nuova invece hanno bisogno di rete.</p>
+  <ul class="off-list" id="off-list"></ul>
+  <div class="btns"><button class="btn" type="button" id="off-go">Scarica tutto per l'uso offline</button></div>
+  <div class="note" id="off-msg"></div>
+</section>
+
+<section class="snd" id="snd" data-page="imp">
+  <div class="res-head"><h2>Avvisi del 39: suono e schermo</h2><span class="pill idle" id="wl-pill">schermo normale</span></div>
+  <p class="note">Quando il telefono si blocca, il browser mette in pausa l'app e gli avvisi possono arrivare tardi. Tieni lo schermo acceso nei minuti del 39 e alza il volume multimediale: il suono si sente anche con il telefono in tasca.</p>
+  <div class="opt">
+    <label class="sw"><input type="checkbox" id="wl-auto"><span><b>Schermo acceso vicino al 39</b><small>Da 15 minuti prima a 5 minuti dopo ogni passaggio stimato del 39, solo con l'app aperta</small></span></label>
+    <label class="sw"><input type="checkbox" id="wl-now"><span><b>Schermo sempre acceso adesso</b><small>Si spegne da solo se chiudi l'app</small></span></label>
+    <label class="sw"><input type="checkbox" id="snd-on"><span><b>Avviso sonoro</b><small>Bip a 10 e a 2 minuti, e quando passa l'auto prima del 39</small></span></label>
+    <label class="sw"><input type="checkbox" id="snd-voice"><span><b>Voce</b><small>Dopo il bip una voce dice "Il 39 tra 2 minuti"</small></span></label>
+  </div>
+  <label class="vol">Volume <input type="range" id="snd-vol" min="0.1" max="1" step="0.1" value="0.8"></label>
+  <div class="btns"><button class="btn ghost" type="button" id="snd-test">Prova l'avviso</button></div>
+  <p class="note">La luminosità non la può cambiare l'app: abbassala tu dalla tendina, oppure usa la modalità notte con il pulsante ☾.</p>
+</section>
+
 <footer>
   <span>Dashboard personale non ufficiale per seguire la gara: per orari, percorso e classifiche fanno fede i documenti del Rally Club Valpantena sull'albo di gara.</span>
   <span>Fonti: tabella distanze e tempi Rev. 260909, orari chiusura strade dal sito del Rally Club Valpantena, previsioni Open-Meteo (ItaliaMeteo-ARPAE ICON-2I) confrontate con 3B Meteo, radar 3B Meteo, mappa © OpenStreetMap contributors, immagini satellitari © Esri.</span>
@@ -995,7 +998,7 @@ label.btn{cursor:pointer}
 <script>
 // Pagine: Gara e PS, Meteo, Zaino, Viaggio e Spot, Fotografie
 (function(){
-  var P=['gara','meteo','zaino','viaggio','foto'],cur=null;
+  var P=['gara','meteo','zaino','viaggio','foto','imp'],cur=null;
   function show(p,keep){
     if(P.indexOf(p)<0)p='gara';
     document.querySelectorAll('.wrap [data-page]').forEach(function(el){el.hidden=el.getAttribute('data-page')!==p;});
