@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lessinia Rally Historic 2026</title>
-<link rel="manifest" href="manifest.webmanifest?v=4">
+<link rel="manifest" href="manifest.webmanifest?v=5">
 <meta name="theme-color" content="#0b0b0c">
 <link rel="icon" href="logo-icon-192.png">
 <link rel="apple-touch-icon" href="logo-icon-192.png">
@@ -639,6 +639,49 @@ h2{display:flex;align-items:center}
 .satmap,.car-map,.leaflet-container{position:relative;z-index:0;isolation:isolate}
 .subnav{z-index:40}
 .tabs{z-index:45}
+
+/* ===== Telefono in orizzontale (schermo basso) ===== */
+@media (orientation:landscape) and (max-height:520px){
+  .wrap{padding:10px max(16px,env(safe-area-inset-left,0px)) 24px max(16px,env(safe-area-inset-right,0px));gap:12px}
+  body{padding-bottom:calc(52px + env(safe-area-inset-bottom,0px))}
+  .tabs{padding:4px max(8px,env(safe-area-inset-left,0px)) calc(4px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-right,0px))}
+  .tabs a{grid-auto-flow:column;display:flex;justify-content:center;align-items:center;gap:6px;min-height:40px;padding:4px 6px;font-size:12px}
+  .tabs svg{width:19px;height:19px}
+  .tabs .l-s{display:none}.tabs .l-l{display:inline}
+  .night-btn{bottom:calc(58px + env(safe-area-inset-bottom,0px))!important;width:42px;height:42px;font-size:19px}
+  .subnav{padding:6px 0 8px}
+  .subnav a{padding:7px 10px}
+  section{scroll-margin-top:56px;padding:14px}
+  header{padding:12px 16px}
+  .hlogo{max-width:180px!important}
+  .ptitle h1{font-size:26px}
+  .big{font-size:24px}
+  .rbox{height:calc(100vh - 110px)!important;min-height:260px}
+  .satmap{height:calc(100vh - 110px)!important;min-height:240px}
+  .car-map{height:calc(100vh - 140px);min-height:220px}
+  #cold-svg{min-height:0}
+  .ovl{padding:10px}
+  .ovl-card{padding:14px 18px;gap:6px;max-width:560px}
+  .ovl-big{font-size:36px}
+  .ovl .btn{padding:10px}
+  /* schermata in prova su due colonne */
+  .focus{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:16px;row-gap:8px;padding:8px max(14px,env(safe-area-inset-right,0px)) 10px max(14px,env(safe-area-inset-left,0px))}
+  .fo-top{grid-column:1/-1}
+  .fo-39{grid-column:1;grid-row:2;align-content:start;text-align:left}
+  .fo-time{font-size:48px}.fo-count{font-size:30px}
+  .fo-next{grid-column:2;grid-row:2 / span 2;overflow:auto;max-height:calc(100vh - 70px)}
+  .fo-row{padding:8px 12px;grid-template-columns:56px 42px minmax(0,1fr) auto}
+  .fo-row .n{font-size:22px}
+  .fo-log{grid-column:1;grid-row:3}
+  .fo-btns .lq{padding:10px 6px}.fo-btns .lq b{font-size:28px}
+  .fo-log{gap:6px}.fo-man .btn,.fo-man input{padding-top:9px;padding-bottom:9px}#fo-car{padding:8px}.fo-39 .eyebrow{display:none}
+  /* vista AR: comandi compatti */
+  .ar-bot{padding:6px 12px calc(6px + env(safe-area-inset-bottom,0px));gap:6px;grid-template-columns:1fr 1fr}
+  .ar-msg{grid-column:1/-1}
+  .ar-row .btn{padding:7px 10px;font-size:12px}
+  .ar-fov{grid-column:1/-1}
+  .ar-top{padding:6px 12px}
+}
 </style>
 </head>
 <body>
@@ -1436,7 +1479,7 @@ h2{display:flex;align-items:center}
   function open(){
     ar.hidden=false;running=true;size();Rs=null;R=null;gotAbs=false;lastEv=Date.now();
     msg.textContent='Avvio fotocamera e bussola…';
-    try{if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('portrait').catch(function(){});}catch(e){}
+
     var go=function(){startSensors();};
     if(window.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission==='function'){DeviceOrientationEvent.requestPermission().then(go).catch(go);}else go();
     if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
