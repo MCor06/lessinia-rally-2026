@@ -479,14 +479,53 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:4px}
     </ul>
   </section>
   <section>
-    <h2>Da portare</h2>
+    <div class="res-head"><h2>Da portare</h2><span class="pill idle" id="pack-count">0 di 0</span></div>
+    <p class="note">Le spunte restano salvate su questo telefono.</p>
+    <h3 class="h3">Indosso e ai piedi</h3>
     <ul class="check" data-key="zaino">
-      <li><label><input type="checkbox" id="z1"><span>Vestiti pesanti a strati, guanti, berretto</span></label></li>
-      <li><label><input type="checkbox" id="z2"><span>Scarpe che non scivolano</span></label></li>
-      <li><label><input type="checkbox" id="z3"><span>Sedia pieghevole</span></label></li>
-      <li><label><input type="checkbox" id="z4"><span>Da mangiare e un termos di bevanda calda</span></label></li>
-      <li><label><input type="checkbox" id="z5"><span>Batterie cariche e powerbank</span></label></li>
-      <li><label><input type="checkbox" id="z6"><span>Torcia o frontale per la sera</span></label></li>
+      <li><label><input type="checkbox" id="pk1"><span>Maglia termica</span></label></li>
+      <li><label><input type="checkbox" id="pk2"><span>Pile</span></label></li>
+      <li><label><input type="checkbox" id="pk3"><span>Piumino</span></label></li>
+      <li><label><input type="checkbox" id="pk4"><span>Giacca impermeabile sopra a tutto</span></label></li>
+      <li><label><input type="checkbox" id="pk5"><span>Berretto</span></label></li>
+      <li><label><input type="checkbox" id="pk6"><span>Scaldacollo</span></label></li>
+      <li><label><input type="checkbox" id="pk7"><span>Guanti touch per usare il telefono</span></label></li>
+      <li><label><input type="checkbox" id="pk8"><span>Calze di lana pesanti</span></label></li>
+      <li><label><input type="checkbox" id="pk9"><span>Scarponi Crispi (per stare al tornante)</span></label></li>
+      <li><label><input type="checkbox" id="pk10"><span>Adidas Samba (per guidare)</span></label></li>
+    </ul>
+    <h3 class="h3">Foto e video</h3>
+    <ul class="check" data-key="zaino">
+      <li><label><input type="checkbox" id="pk11"><span>Telefono Galaxy S24 Ultra carico</span></label></li>
+      <li><label><input type="checkbox" id="pk12"><span>GoPro con custodia e cornici</span></label></li>
+      <li><label><input type="checkbox" id="pk13"><span>Batterie di riserva GoPro</span></label></li>
+      <li><label><input type="checkbox" id="pk14"><span>MicroSD in più</span></label></li>
+      <li><label><input type="checkbox" id="pk15"><span>Ventosa per GoPro</span></label></li>
+      <li><label><input type="checkbox" id="pk16"><span>Treppiede piccolo o Gorillapod (scie dei fari alla PS 8)</span></label></li>
+      <li><label><input type="checkbox" id="pk17"><span>Panno in microfibra per gli obiettivi</span></label></li>
+      <li><label><input type="checkbox" id="pk18"><span>Powerbank carico</span></label></li>
+      <li><label><input type="checkbox" id="pk19"><span>Cavi USB-C per telefono e GoPro</span></label></li>
+    </ul>
+    <h3 class="h3">Giornata al tornante</h3>
+    <ul class="check" data-key="zaino">
+      <li><label><input type="checkbox" id="pk20"><span>Zaino Mil-Tec</span></label></li>
+      <li><label><input type="checkbox" id="pk21"><span>Sedia pieghevole o cuscino isolante</span></label></li>
+      <li><label><input type="checkbox" id="pk22"><span>Termos con bevanda calda</span></label></li>
+      <li><label><input type="checkbox" id="pk23"><span>Acqua</span></label></li>
+      <li><label><input type="checkbox" id="pk24"><span>Panini, barrette e frutta secca</span></label></li>
+      <li><label><input type="checkbox" id="pk25"><span>Scaldamani usa e getta</span></label></li>
+      <li><label><input type="checkbox" id="pk26"><span>Torcia o frontale</span></label></li>
+      <li><label><input type="checkbox" id="pk27"><span>Occhiali da sole</span></label></li>
+      <li><label><input type="checkbox" id="pk28"><span>Ombrello</span></label></li>
+    </ul>
+    <h3 class="h3">Varie</h3>
+    <ul class="check" data-key="zaino">
+      <li><label><input type="checkbox" id="pk29"><span>Contanti per bar e parcheggio</span></label></li>
+      <li><label><input type="checkbox" id="pk30"><span>Carta d'identità</span></label></li>
+      <li><label><input type="checkbox" id="pk31"><span>Fazzoletti</span></label></li>
+      <li><label><input type="checkbox" id="pk32"><span>Sacchetto per i rifiuti</span></label></li>
+      <li><label><input type="checkbox" id="pk33"><span>Calze di ricambio</span></label></li>
+      <li><label><input type="checkbox" id="pk34"><span>Borsa per gli scarponi sporchi in macchina</span></label></li>
     </ul>
   </section>
 </div>
@@ -574,6 +613,15 @@ function __main(){
     var b=document.getElementById('off-body');
     b.className='';
     b.innerHTML='<b>'+o.title+'</b> <span class="note">· salvata '+o.time+'</span><table class="off-t">'+o.rows.map(function(r){return '<tr'+(r.n==39?' class="mine"':'')+'><td>'+r.pos+'</td><td>'+r.n+'</td><td>'+r.crew+'</td><td>'+(r.gap||'')+'</td></tr>';}).join('')+'</table>';
+  })();
+
+  // Contatore "Da portare"
+  (function(){
+    var boxes=document.querySelectorAll('input[id^="pk"]'),c=document.getElementById('pack-count');
+    if(!c) return;
+    function upd(){var k=0;boxes.forEach(function(b){if(b.checked)k++;});c.textContent=k+' di '+boxes.length;c.className='pill '+(k===boxes.length?'open':'idle');}
+    boxes.forEach(function(b){b.addEventListener('change',upd);});
+    setTimeout(upd,0);
   })();
 
   // Vista satellite (Leaflet + immagini Esri)
