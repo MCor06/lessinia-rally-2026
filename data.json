@@ -659,7 +659,7 @@
   }
  ],
  "offline": null,
- "updated": "ven 13 nov, 18:58",
+ "updated": "ven 13 nov, 19:30",
  "r39": [],
  "final39": null,
  "news": [
@@ -685,6 +685,12 @@
    "t": "ven 18:58",
    "title": "Altre penalità slow zone PS 1",
    "text": "Notifiche 10-14: 1 min 30 s ciascuno ai n. 19, 20, 21, 23 e 24 per velocità nella slow zone della PS 1.",
+   "imp": false
+  },
+  {
+   "t": "ven 19:30",
+   "title": "Penalità di 20 s al n. 39",
+   "text": "Notifica n. 18: 20 secondi al 39 per velocità nella slow zone della PS 1. Penalizzati anche i n. 26, 28, 35, 42, 43, 48, 52 e 71.",
    "imp": false
   }
  ]
