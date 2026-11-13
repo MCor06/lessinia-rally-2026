@@ -408,6 +408,38 @@ html{-webkit-tap-highlight-color:transparent}
 button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
 .btn,.tabs a,.night-btn,.check label{transition:transform .08s ease,opacity .08s ease}
 .btn:active,.tabs a:active,.night-btn:active{transform:scale(.96);opacity:.85}
+
+/* ===== Sole in AR ===== */
+.sun-open{width:100%;justify-content:center;font-size:16px;padding:14px;margin:4px 0 12px;cursor:pointer}
+.sun-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-bottom:10px}
+.sun-card{background:var(--soft);border-radius:14px;padding:12px;display:grid;gap:6px}
+.sun-card.mine{box-shadow:inset 3px 0 0 var(--accent)}
+.sun-card .sc-h{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.sun-card .sc-h b{font:700 15px/1.2 var(--display)}
+.sun-card .sc-h span{font:700 14px/1 var(--mono);color:var(--accent)}
+.sun-card .sc-d{font:600 13px/1.3 var(--mono)}
+.sun-card .sc-l{font-weight:700}
+.sun-card .sc-l.back{color:#fb923c}.sun-card .sc-l.side{color:var(--accent)}.sun-card .sc-l.front{color:var(--ok)}.sun-card .sc-l.dark{color:#93c5fd}
+.sun-card small{color:var(--muted);font-size:12px}
+.ar{position:fixed;inset:0;z-index:80;background:#000;color:#fff;overflow:hidden;touch-action:none}
+.ar[hidden]{display:none}
+.ar video,.ar canvas{position:absolute;inset:0;width:100%;height:100%}
+.ar video{object-fit:cover}
+.ar-top{position:absolute;left:0;right:0;top:0;display:flex;gap:8px;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;background:linear-gradient(rgba(0,0,0,.65),transparent)}
+.ar-top b{font:700 15px/1.2 var(--display)}
+.ar-top small{display:block;font:600 11px/1.3 var(--mono);color:#d4d4d8}
+.ar-x{width:44px;height:44px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:22px;cursor:pointer;flex:none}
+.ar-bot{position:absolute;left:0;right:0;bottom:0;display:grid;gap:8px;padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,rgba(0,0,0,.75) 30%)}
+.ar-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ar-row .btn{flex:1 1 auto;justify-content:center;cursor:pointer;background:rgba(20,20,22,.8);color:#fff;border-color:rgba(255,255,255,.18);padding:10px 12px;font-size:13px}
+.ar-row .btn.pri{background:#f5c04f;color:#111;border-color:#f5c04f}
+.ar-msg{font:600 12px/1.4 var(--body);color:#e4e4e7;text-align:center}
+.ar-fov{display:flex;gap:10px;align-items:center;font:600 12px/1 var(--mono);color:#d4d4d8}
+.ar-fov input{flex:1;accent-color:#f5c04f}
+.ar-cross{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border:2px solid rgba(255,255,255,.75);border-radius:50%;pointer-events:none}
+.ar-cross::before,.ar-cross::after{content:"";position:absolute;background:rgba(255,255,255,.75)}
+.ar-cross::before{left:50%;top:-10px;bottom:-10px;width:2px;margin-left:-1px}
+.ar-cross::after{top:50%;left:-10px;right:-10px;height:2px;margin-top:-1px}
 </style>
 </head>
 <body>
@@ -806,6 +838,14 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
 
 <div class="ptitle" data-page="foto"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Fotografie</h1><div class="sub">Impostazioni, luce di ogni passaggio e scatti da non perdere</div></div>
 
+<section data-page="foto" id="sun">
+  <div class="res-head"><h2>Il sole sul tornante</h2><span class="pill idle" id="sun-pill">sabato 14</span></div>
+  <p class="note">Apri la fotocamera e guarda dove passa il sole nel cielo, ora per ora, con i momenti dei passaggi segnati sopra. Al tornante vedi subito se finisce dietro un costone, un albero o proprio sopra le auto.</p>
+  <button class="btn sun-open" type="button" id="ar-open"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Apri il sole in AR</button>
+  <div class="sun-cards" id="sun-cards"></div>
+  <p class="note">Direzione e altezza del sole calcolate per il tornante. "Luce" vale guardando le auto che arrivano, verso ovest-nord-ovest (direzione ricostruita dalla mappa). Le montagne possono coprire il sole prima del tramonto: controllalo in AR sul posto.</p>
+</section>
+
 <section data-page="foto">
   <h2>Foto con il Galaxy S24 Ultra</h2>
   <div class="lux-now" id="lux-now"></div>
@@ -862,6 +902,172 @@ button,a,input,label,summary{-webkit-tap-highlight-color:transparent}
   window.addEventListener('hashchange',function(){var h=fromHash();if(h)show(h);});
   document.querySelectorAll('#tabs a').forEach(function(a){a.addEventListener('click',function(e){var p=a.getAttribute('data-p');if(p===cur){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}});});
   show(fromHash()||'gara',true);
+})();
+</script>
+<div class="ar" id="arv" hidden>
+  <video id="ar-v" playsinline muted autoplay></video>
+  <canvas id="ar-c"></canvas>
+  <div class="ar-cross" id="ar-cross" hidden></div>
+  <div class="ar-top"><div><b>Sole sul tornante · sabato 14</b><small id="ar-info">Muovi il telefono verso il cielo</small></div><button class="ar-x" type="button" id="ar-close" aria-label="Chiudi">✕</button></div>
+  <div class="ar-bot">
+    <div class="ar-msg" id="ar-msg"></div>
+    <div class="ar-row">
+      <button class="btn" type="button" id="ar-l" aria-label="Ruota l'arco a sinistra">◀ 2°</button>
+      <button class="btn pri" type="button" id="ar-cal">Calibra sul sole</button>
+      <button class="btn" type="button" id="ar-r" aria-label="Ruota l'arco a destra">2° ▶</button>
+    </div>
+    <div class="ar-row"><button class="btn" type="button" id="ar-reset">Azzera calibrazione</button><button class="btn" type="button" id="ar-day">Mostra: sabato 14</button></div>
+    <label class="ar-fov">Campo visivo <input type="range" id="ar-fov" min="45" max="100" step="1" value="70"><span id="ar-fov-v">70°</span></label>
+  </div>
+</div>
+<script>
+// ===== Il sole sul tornante: calcolo, schede dei passaggi e vista AR =====
+(function(){
+  var LAT=45.619783,LON=11.026997,ARR=288,D=Math.PI/180;
+  function sunPos(dt,lat,lon){
+    var n=(dt.getTime()-Date.UTC(2000,0,1,12))/864e5;
+    var L=(280.460+0.9856474*n)%360,g=((357.528+0.9856003*n)%360)*D;
+    var lam=(L+1.915*Math.sin(g)+0.020*Math.sin(2*g))*D,eps=(23.439-0.0000004*n)*D;
+    var ra=Math.atan2(Math.cos(eps)*Math.sin(lam),Math.cos(lam)),dec=Math.asin(Math.sin(eps)*Math.sin(lam));
+    var gmst=((18.697374558+24.06570982441908*n)%24+24)%24,ha=(gmst*15+lon)*D-ra,la=lat*D;
+    var el=Math.asin(Math.sin(la)*Math.sin(dec)+Math.cos(la)*Math.cos(dec)*Math.cos(ha));
+    var az=Math.atan2(-Math.sin(ha),Math.tan(dec)*Math.cos(la)-Math.sin(la)*Math.cos(ha));
+    var e=el/D; if(e>-1)e+=1.02/Math.tan((e+10.3/(e+5.11))*D)/60; // rifrazione
+    return {el:e,az:((az/D)%360+360)%360};
+  }
+  window.lrhSun=sunPos;
+  var DIRS=['nord','nord-nord-est','nord-est','est-nord-est','est','est-sud-est','sud-est','sud-sud-est','sud','sud-sud-ovest','sud-ovest','ovest-sud-ovest','ovest','ovest-nord-ovest','nord-ovest','nord-nord-ovest'];
+  var DS=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO'];
+  function dname(a){return DIRS[Math.round(a/22.5)%16];}
+  function hm(d){return d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
+  function at(h,m){return new Date(2026,10,14,h,m);}
+  function light(p){
+    if(p.el<=-6) return ['dark','Buio','Solo fari: treppiede e scie di luce, oppure 1/250 con ISO 3200.'];
+    if(p.el<=0) return ['dark','Sole tramontato · crepuscolo','Cielo ancora chiaro: ISO alti, panning lento a 1/30–1/60.'];
+    var d=Math.abs(((p.az-ARR)%360+540)%360-180);
+    if(d<=30) return ['back','Controluce pieno','Sole in faccia: esposizione +1, copri l\'obiettivo con la mano contro il flare, o cerca le silhouette.'];
+    if(d<=70) return ['back','Controluce laterale','Bordi dell\'auto illuminati e polvere in controluce: esposizione +0,3/+0,7.'];
+    if(d<=110) return ['side','Luce laterale','Metà auto in ombra: tocca il lato illuminato per esporre.'];
+    return ['front','Luce frontale','Sole alle spalle: colori pieni. Occhio alla tua ombra nell\'inquadratura.'];
+  }
+  function passes(){
+    var L=window.LRH,list=[['PS 4','prima auto',at(10,26)],['PS 6','prima auto',at(14,23)],['PS 8','prima auto',at(17,51)]];
+    if(L&&L.posOf&&L.posOf(39)){var p=L.posOf(39);L.ST.forEach(function(st,i){list.splice(i*2+1,0,[st.ps,'il 39',L.eta(st,p)]);});}
+    return list;
+  }
+  function cards(){
+    var el=document.getElementById('sun-cards'); if(!el) return;
+    el.innerHTML=passes().map(function(x){var p=sunPos(x[2],LAT,LON),l=light(p);
+      return '<div class="sun-card'+(x[1]==='il 39'?' mine':'')+'"><div class="sc-h"><b>'+x[0]+' · '+x[1]+'</b><span>'+hm(x[2])+'</span></div>'+
+      (p.el>0?'<div class="sc-d">Sole da '+dname(p.az)+' ('+Math.round(p.az)+'°), alto '+Math.round(p.el)+'°</div>':'<div class="sc-d">Sole sotto l\'orizzonte ('+Math.round(p.el)+'°)</div>')+
+      '<div class="sc-l '+l[0]+'">'+l[1]+'</div><small>'+l[2]+'</small></div>';}).join('');
+  }
+  cards(); window.addEventListener('lrh-page',cards); window.addEventListener('lrh-delay',cards); setTimeout(cards,1500); setTimeout(cards,5000);
+
+  // ---------- Vista AR ----------
+  var ar=document.getElementById("arv"),V=document.getElementById('ar-v'),C=document.getElementById('ar-c'),X=C.getContext('2d');
+  var msg=document.getElementById('ar-msg'),info=document.getElementById('ar-info'),cross=document.getElementById('ar-cross');
+  var R=null,Rs=null,gotAbs=false,stream=null,raf=0,running=false,lastEv=0,iosHead=null;
+  var off=0,fov=70,showToday=false;
+  try{off=+localStorage.getItem('lrh26-ar-off')||0;fov=+localStorage.getItem('lrh26-ar-fov')||70;}catch(e){}
+  var fovI=document.getElementById('ar-fov'),fovV=document.getElementById('ar-fov-v');fovI.value=fov;fovV.textContent=fov+'°';
+  fovI.addEventListener('input',function(){fov=+fovI.value;fovV.textContent=fov+'°';try{localStorage.setItem('lrh26-ar-fov',fov);}catch(e){}});
+  function saveOff(){try{localStorage.setItem('lrh26-ar-off',off);}catch(e){}}
+  function rotm(a,b,g){a*=D;b*=D;g*=D;var cA=Math.cos(a),sA=Math.sin(a),cB=Math.cos(b),sB=Math.sin(b),cG=Math.cos(g),sG=Math.sin(g);
+    return [cA*cG-sA*sB*sG,-cB*sA,cA*sG+cG*sA*sB, cG*sA+cA*sB*sG,cA*cB,sA*sG-cA*cG*sB, -cB*sG,sB,cB*cG];}
+  function onOri(e,abs){
+    if(e.alpha==null) return;
+    var a=e.alpha;
+    if(!abs){ if(typeof e.webkitCompassHeading==='number'){a=360-e.webkitCompassHeading;} else if(!e.absolute) return; }
+    if(abs) gotAbs=true; else if(gotAbs) return;
+    R=rotm(a,e.beta||0,e.gamma||0); lastEv=Date.now();
+    if(!Rs) Rs=R.slice(); else for(var i=0;i<9;i++) Rs[i]+= (R[i]-Rs[i])*0.25;
+  }
+  function hA(e){onOri(e,true);} function hR(e){onOri(e,false);}
+  function camAz(){ if(!Rs) return null; var e=-Rs[2],n=-Rs[5]; return ((Math.atan2(e,n)/D)%360+360)%360; }
+  function camEl(){ if(!Rs) return null; return Math.asin(Math.max(-1,Math.min(1,-Rs[8])))/D; }
+  function scr(){var a=(screen.orientation&&screen.orientation.angle)||window.orientation||0;return a*D;}
+  var W=0,H=0,dpr=1;
+  function size(){dpr=Math.min(2,window.devicePixelRatio||1);W=C.clientWidth;H=C.clientHeight;C.width=W*dpr;C.height=H*dpr;}
+  function focal(){
+    var vw=V.videoWidth,vh=V.videoHeight;
+    if(stream&&vw&&vh){var fv=(Math.max(vw,vh)/2)/Math.tan(fov/2*D);return fv*Math.max(W/vw,H/vh);}
+    return (Math.max(W,H)/2)/Math.tan(fov/2*D);
+  }
+  function proj(az,el,f,th){
+    var A=(az-off)*D,E=el*D,wE=Math.cos(E)*Math.sin(A),wN=Math.cos(E)*Math.cos(A),wU=Math.sin(E);
+    var r=Rs,dx=r[0]*wE+r[3]*wN+r[6]*wU,dy=r[1]*wE+r[4]*wN+r[7]*wU,dz=r[2]*wE+r[5]*wN+r[8]*wU;
+    if(dz>-0.08) return null;
+    var px=f*dx/-dz,py=f*dy/-dz,c=Math.cos(th),s=Math.sin(th),sx=px*c-py*s,sy=px*s+py*c;
+    return [W/2+sx,H/2-sy];
+  }
+  function line(pts,col,w,dash){X.save();X.strokeStyle=col;X.lineWidth=w;X.lineJoin=X.lineCap='round';if(dash)X.setLineDash(dash);X.beginPath();var on=false;
+    pts.forEach(function(p){if(!p){on=false;return;}if(Math.abs(p[0]-W/2)>W*3||Math.abs(p[1]-H/2)>H*3){on=false;return;}if(on)X.lineTo(p[0],p[1]);else{X.moveTo(p[0],p[1]);on=true;}});X.stroke();X.restore();}
+  function label(p,txt,bg,fg,dy){if(!p)return;X.save();X.textAlign='left';X.font='700 13px "Plus Jakarta Sans",system-ui,sans-serif';var w=X.measureText(txt).width+14,x=p[0]-w/2,y=p[1]+(dy||-30);
+    X.fillStyle=bg;X.beginPath();if(X.roundRect)X.roundRect(x,y,w,22,7);else X.rect(x,y,w,22);X.fill();X.fillStyle=fg;X.textBaseline='middle';X.fillText(txt,x+7,y+11);X.restore();}
+  function dot(p,r,fill,stroke){if(!p)return;X.beginPath();X.arc(p[0],p[1],r,0,7);X.fillStyle=fill;X.fill();if(stroke){X.lineWidth=2;X.strokeStyle=stroke;X.stroke();}}
+  function dayDate(){var n=new Date();return showToday?new Date(n.getFullYear(),n.getMonth(),n.getDate()):new Date(2026,10,14);}
+  function draw(){
+    if(!running) return; raf=requestAnimationFrame(draw);
+    X.setTransform(dpr,0,0,dpr,0,0);X.clearRect(0,0,W,H);
+    if(!Rs){return;}
+    var f=focal(),th=scr(),i,az,p;
+    // orizzonte e bussola
+    var hz=[];for(az=0;az<=360;az+=3)hz.push(proj(az,0,f,th));line(hz,'rgba(255,255,255,.75)',2);
+    for(i=0;i<16;i++){az=i*22.5;p=proj(az,0,f,th);if(!p)continue;X.fillStyle='rgba(255,255,255,.9)';X.fillRect(p[0]-1,p[1]-(i%2?6:10),2,i%2?12:20);
+      X.font=(i%4?'600 12px ':'800 16px ')+'"JetBrains Mono",monospace';X.textAlign='center';X.fillStyle=i===0?'#f87171':'#fff';X.fillText(DS[i],p[0],p[1]+(i%2?22:28));}
+    // direzione da cui arrivano le auto
+    p=proj(ARR,0,f,th);if(p){X.save();X.fillStyle='#f87171';X.beginPath();X.moveTo(p[0],p[1]-6);X.lineTo(p[0]-9,p[1]-22);X.lineTo(p[0]+9,p[1]-22);X.fill();X.restore();label(p,'arrivano le auto','rgba(127,29,29,.9)','#fff',-50);}
+    // arco del sole
+    var base=dayDate(),pts=[],gold=[],blue=[],t,sp;
+    for(i=0;i<=24*12;i++){t=new Date(base.getTime()+i*3e5);sp=sunPos(t,LAT,LON);
+      var q=sp.el>-8?proj(sp.az,sp.el,f,th):null;
+      pts.push(sp.el>=6?q:null);gold.push(sp.el<6.5&&sp.el>=-0.8?q:null);blue.push(sp.el<-0.6&&sp.el>=-8?q:null);}
+    line(blue,'rgba(96,165,250,.85)',5,[6,6]);line(pts,'rgba(0,0,0,.45)',9);line(pts,'#f5c04f',5);line(gold,'#fb923c',7);
+    for(i=0;i<24;i++){t=new Date(base.getTime()+i*36e5);sp=sunPos(t,LAT,LON);if(sp.el<-2)continue;p=proj(sp.az,sp.el,f,th);if(!p)continue;dot(p,4,'#fff');X.font='700 12px "JetBrains Mono",monospace';X.textAlign='center';X.fillStyle='#fff';X.fillText(i+':00',p[0],p[1]+18);}
+    if(!showToday) passes().forEach(function(x){var sp=sunPos(x[2],LAT,LON),p=proj(sp.az,Math.max(sp.el,-6),f,th);if(!p)return;var me=x[1]==='il 39';
+      dot(p,me?9:7,me?'#f5c04f':'#fff','#111');label(p,(me?'39 · ':'')+x[0]+' '+hm(x[2]),me?'#f5c04f':'rgba(17,17,19,.88)',me?'#111':'#fff',me?-36:-32);});
+    // sole adesso
+    var now=new Date(),sn=sunPos(now,LAT,LON);
+    if(sn.el>-4){p=proj(sn.az,sn.el,f,th);if(p){X.save();X.shadowColor='#fde68a';X.shadowBlur=22;dot(p,13,'#fde047','#fff');X.restore();label(p,'sole adesso '+hm(now),'rgba(253,224,71,.95)','#111',20);}}
+    var ca=camAz(),ce=camEl();
+    if(ca!=null) info.textContent='Stai guardando verso '+DS[Math.round(((ca+off)%360+360)%360/22.5)%16]+' '+Math.round(((ca+off)%360+360)%360)+'° · inclinazione '+Math.round(ce)+'°'+(off?' · calibrato '+(off>0?'+':'')+Math.round(off)+'°':'');
+    var NB='Nessun dato dalla bussola: muovi il telefono a forma di 8 per calibrarla.';
+    if(Date.now()-lastEv>2500) msg.textContent=NB; else if(msg.textContent===NB) msg.textContent='Inquadra il cielo. Se il sole è visibile, mettilo nel cerchio e tocca "Calibra sul sole".';
+  }
+  function startSensors(){
+    window.addEventListener('deviceorientationabsolute',hA,true);
+    window.addEventListener('deviceorientation',hR,true);
+  }
+  function stopSensors(){window.removeEventListener('deviceorientationabsolute',hA,true);window.removeEventListener('deviceorientation',hR,true);}
+  function open(){
+    ar.hidden=false;running=true;size();Rs=null;R=null;gotAbs=false;lastEv=Date.now();
+    msg.textContent='Avvio fotocamera e bussola…';
+    try{if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('portrait').catch(function(){});}catch(e){}
+    var go=function(){startSensors();};
+    if(window.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission==='function'){DeviceOrientationEvent.requestPermission().then(go).catch(go);}else go();
+    if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+      navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}}).then(function(s){stream=s;V.srcObject=s;V.play().catch(function(){});
+        msg.textContent='Inquadra il cielo. Se il sole è visibile, mettilo nel cerchio e tocca "Calibra sul sole".';}).catch(function(){msg.textContent='Fotocamera non disponibile: vedi solo l\'arco del sole sullo sfondo nero.';});
+    } else msg.textContent='Fotocamera non disponibile su questo dispositivo.';
+    cross.hidden=false;cancelAnimationFrame(raf);draw();
+  }
+  function close(){running=false;cancelAnimationFrame(raf);stopSensors();if(stream){stream.getTracks().forEach(function(t){t.stop();});stream=null;}V.srcObject=null;ar.hidden=true;try{if(screen.orientation&&screen.orientation.unlock)screen.orientation.unlock();}catch(e){}}
+  document.getElementById('ar-open').addEventListener('click',open);
+  document.getElementById('ar-close').addEventListener('click',close);
+  document.addEventListener('visibilitychange',function(){if(document.hidden&&running)close();});
+  window.addEventListener('resize',function(){if(running)size();});
+  document.getElementById('ar-cal').addEventListener('click',function(){
+    var ca=camAz(),sn=sunPos(new Date(),LAT,LON);
+    if(ca==null){msg.textContent='Aspetta che la bussola risponda, poi riprova.';return;}
+    if(sn.el<0){msg.textContent='Il sole adesso è sotto l\'orizzonte: per allineare usa ◀ ▶ puntando un riferimento noto (per esempio il nord della bussola di un altro telefono).';return;}
+    off=((sn.az-ca+540)%360)-180;saveOff();msg.textContent='Calibrato: l\'arco è stato spostato di '+Math.round(off)+'°.';
+  });
+  document.getElementById('ar-l').addEventListener('click',function(){off-=2;saveOff();});
+  document.getElementById('ar-r').addEventListener('click',function(){off+=2;saveOff();});
+  document.getElementById('ar-reset').addEventListener('click',function(){off=0;saveOff();msg.textContent='Calibrazione azzerata.';});
+  document.getElementById('ar-day').addEventListener('click',function(){showToday=!showToday;this.textContent=showToday?'Mostra: oggi':'Mostra: sabato 14';});
+  window.__arTest=function(m){Rs=m;running=true;ar.hidden=false;size();draw();};
 })();
 </script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
