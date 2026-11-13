@@ -514,6 +514,46 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 .st-c{width:100%;max-width:360px;height:auto;border-radius:14px;display:block;margin:8px auto;border:1px solid var(--line)}
 .st-c[hidden]{display:none}
 @media (max-width:599px){.fo-time{font-size:56px}.fo-row{grid-template-columns:60px 46px minmax(0,1fr)}.fo-row .w{grid-column:3}}
+
+/* ===== Meteo adesso, Lightroom ===== */
+.wrap>#wxnow{grid-column:1/-1}
+.wxnow{box-shadow:var(--shadow), inset 4px 0 0 var(--accent)}
+.wn-main{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin:4px 0 12px}
+.wn-temp{display:grid}
+.wn-temp span{font:800 64px/1 var(--display);letter-spacing:-.03em}
+.wn-temp small{color:var(--muted);font-size:13px}
+.wn-temp small b{color:var(--ink)}
+.wn-cond{display:grid;gap:4px}
+.wn-cond b{font:700 20px/1.2 var(--display)}
+.wn-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.wn-chip{background:var(--soft);border-radius:12px;padding:10px 12px;display:grid;gap:3px}
+.wn-chip small{color:var(--muted);font-size:12px}
+.wn-chip b{font:700 17px/1.1 var(--mono)}
+.wn-chip.warn{box-shadow:inset 3px 0 0 #93c5fd}.wn-chip.warn b{color:#93c5fd}
+.wn-rain{margin-top:12px;background:var(--soft);border-radius:12px;padding:10px 12px}
+.wn-rh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px}
+.wn-bars{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;align-items:end;height:64px;margin-top:8px}
+.wn-bars div{display:grid;gap:4px;justify-items:center;align-content:end;height:100%}
+.wn-bars i{display:block;width:100%;border-radius:4px 4px 2px 2px;background:#7dd3fc;min-height:3px}
+.wn-bars i.z{background:#3a3a40}
+.wn-bars small{font:600 10px/1 var(--mono);color:var(--muted)}
+.now-wx{font-size:14px}
+.now-wx b{font:700 16px/1 var(--mono);color:var(--accent)}
+.lr-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin:12px 0}
+.lr-card{background:var(--soft);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start}
+.lr-card .lr-h{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.lr-card .lr-h b{font:700 15px/1.2 var(--display)}
+.lr-card .lr-h span{font:600 11px/1 var(--mono);color:var(--accent);white-space:nowrap}
+.lr-t{display:grid;grid-template-columns:1fr auto;gap:2px 12px;font-size:13px}
+.lr-t span:nth-child(odd){color:var(--muted)}
+.lr-t span:nth-child(even){font:700 13px/1.4 var(--mono);text-align:right}
+.lr-card small{color:var(--muted);font-size:12px}
+.lr-card .btn{justify-content:center;cursor:pointer}
+.exp-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.exp{background:var(--soft);border-radius:12px;padding:10px 12px;display:grid;gap:4px}
+.exp span{font:700 14px/1.2 var(--mono);color:var(--accent)}
+.exp small{color:var(--muted);font-size:12px}
+@media (max-width:599px){.wn-temp span{font-size:56px}}
 </style>
 </head>
 <body>
@@ -545,6 +585,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <span class="count" id="now-count">–</span>
     <span class="note" id="now-detail"></span>
   </div>
+  <div class="now-wx" id="now-wx" hidden><span class="note">Al tornante adesso:</span> <b id="nw-t">–</b> <span class="note" id="nw-s"></span></div>
   <div class="roads">
     <div class="road"><span class="note">Strada Calavedo</span><span class="pill idle" id="pill-cal">–</span></div>
     <div class="road"><span class="note">Strada Velo</span><span class="pill idle" id="pill-velo">–</span></div>
@@ -690,6 +731,17 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 
 <div class="ptitle" data-page="meteo"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Meteo</h1><div class="sub">Previsioni per il tornante e per Velo Veronese, radar in diretta</div></div>
 
+<section data-page="meteo" class="wxnow" id="wxnow">
+  <div class="res-head"><h2>Adesso al tornante</h2><span class="pill idle" id="wn-pill">–</span></div>
+  <div class="wn-main">
+    <div class="wn-temp"><span id="wn-t">–</span><small>percepiti <b id="wn-f">–</b></small></div>
+    <div class="wn-cond"><b id="wn-c">–</b><span class="note" id="wn-w"></span></div>
+  </div>
+  <div class="wn-chips" id="wn-chips"></div>
+  <div class="wn-rain"><div class="wn-rh"><b>Pioggia nelle prossime 2 ore</b><span class="note" id="wn-rs"></span></div><div class="wn-bars" id="wn-bars"></div></div>
+  <p class="note" id="wn-meta">Stima del modello meteo per il punto esatto del tornante (1.100 m circa), non una stazione: si aggiorna ogni 10 minuti con l'app aperta.</p>
+</section>
+
 <section data-page="meteo">
   <h2>Meteo al tornante consigliato</h2>
   <div class="wx-meta note" id="wx-meta">Carico le previsioni…</div>
@@ -739,7 +791,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 <section class="todo" data-page="zaino">
     <div class="res-head"><h2>Da fare prima di sabato</h2><span class="pill idle" id="todo-count">0 di 0</span></div>
     <ul class="check" data-key="todo">
-      <li><label><input type="checkbox" id="td1"><span>Comprare la frontale Simond HL500 USB V3 nera (Decathlon San Giovanni Lupatoto o Villafranca, 29,99 €)</span></label></li>
+      <li><label><input type="checkbox" id="td1"><span>Comprare la frontale Simond HL500 USB V3 nera (Decathlon, 29,99 €)</span></label></li>
       <li><label><input type="checkbox" id="td2"><span>Caricare la frontale al 100%</span></label></li>
       <li><label><input type="checkbox" id="td3"><span>Recuperare la sedia da campeggio con schienale (in prestito, Brico di Soave o Decathlon)</span></label></li>
       <li><label><input type="checkbox" id="td4"><span>Impermeabilizzare gli scarponi con grasso o spray</span></label></li>
@@ -997,6 +1049,41 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   </details>
   <div class="note" id="m-sum"></div>
   <div class="m-res" id="m-res"></div>
+</section>
+
+<section data-page="foto" id="lr">
+  <div class="res-head"><h2>Ricette Lightroom</h2><span class="pill idle">punti di partenza</span></div>
+  <p class="note">Valori da cui partire sui DNG di Expert RAW. Sistema la prima foto di un passaggio, poi copia le impostazioni sulle altre: nel menu <b>⋯ → Copia impostazioni</b>, seleziona le altre foto e <b>Incolla</b>. Al tornante scatta un filo sottoesposto (EV −0,3/−0,7): le ombre si recuperano, il cielo bruciato no.</p>
+  <div class="lr-cards" id="lr-cards"></div>
+  <p class="note">I preset si importano in Lightroom dal pannello <b>Predefiniti → ⋯ → Importa predefiniti</b> (sul telefono) o da <b>File → Importa profili e predefiniti</b> (sul PC). Non ho potuto provare l'importazione da qui: se un file non viene accettato, inserisci i valori a mano dalla scheda.</p>
+</section>
+
+<section data-page="foto" id="exp">
+  <h2>Esportare per Instagram</h2>
+  <div class="exp-g">
+    <div class="exp"><b>Post nel feed</b><span class="mono">4:5 · 1080 × 1350</span><small>Ritaglio 4:5 verticale: occupa più schermo del quadrato.</small></div>
+    <div class="exp"><b>Storia</b><span class="mono">9:16 · 1080 × 1920</span><small>Lascia spazio in alto e in basso per le scritte di Instagram.</small></div>
+    <div class="exp"><b>Panoramica</b><span class="mono">3 foto 4:5 in carosello</span><small>Per la sequenza entrata, corda e uscita del tornante.</small></div>
+  </div>
+  <ul class="plain" style="margin-top:12px">
+    <li>In Lightroom: <b>Esporta → JPG</b>, qualità 90–100, lato lungo 2160 px (Instagram la riduce lui con meno perdita), nitidezza in uscita <b>Schermo, standard</b>.</li>
+    <li>Raddrizza l'orizzonte prima di tagliare: sul tornante la strada inclinata inganna.</li>
+    <li>Per mandarle senza perdere qualità usa un <b>album condiviso di Lightroom</b> o una cartella Google Drive: WhatsApp le comprime (se proprio, mandale come Documento).</li>
+  </ul>
+</section>
+
+<section data-page="foto" id="post">
+  <div class="res-head"><h2>Dopo il rally, passo per passo</h2><span class="pill idle" id="post-count">0 di 8</span></div>
+  <ul class="check" data-key="post">
+    <li><label><input type="checkbox" id="po1"><span>Sabato sera: copia DNG, JPG e video GoPro sul PC o in cloud, prima di cancellare qualsiasi cosa</span></label></li>
+    <li><label><input type="checkbox" id="po2"><span>Svuota la scheda della GoPro solo dopo aver controllato che la copia si apra</span></label></li>
+    <li><label><input type="checkbox" id="po3"><span>"Dai un nome alle foto" con il Registro passaggi, per trovare quelle del 39</span></label></li>
+    <li><label><input type="checkbox" id="po4"><span>Prima scrematura veloce: scarta le mosse e le doppie, tieni le 15–20 migliori del 39</span></label></li>
+    <li><label><input type="checkbox" id="po5"><span>Sistemale in Lightroom con le ricette del passaggio giusto</span></label></li>
+    <li><label><input type="checkbox" id="po6"><span>Taglia le migliori in 4:5 e qualcuna in 9:16 per le storie</span></label></li>
+    <li><label><input type="checkbox" id="po7"><span>Esporta e mandale con l'album condiviso o Drive</span></label></li>
+    <li><label><input type="checkbox" id="po8"><span>Crea la storia con il risultato finale dalla sezione "Storia per Instagram"</span></label></li>
+  </ul>
 </section>
 
 <section data-page="foto" id="story">
@@ -1469,6 +1556,74 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   function blob(cb){cv.toBlob(function(b){cb(b);},'image/jpeg',0.92);}
   document.getElementById('st-dl').addEventListener('click',function(){blob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lessinia-rally-39-storia.jpg';a.click();});});
   document.getElementById('st-share').addEventListener('click',function(){blob(function(b){var f=new File([b],'lessinia-rally-39-storia.jpg',{type:'image/jpeg'});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(function(){});else{var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=f.name;a.click();}});});
+})();
+</script>
+<script>
+// ===== Meteo adesso al tornante e ricette Lightroom =====
+(function(){
+  // --- Meteo adesso ---
+  var LAT=45.619783,LON=11.026997,K='lrh26-now';
+  var WMO={0:'Sereno',1:'Quasi sereno',2:'Poco nuvoloso',3:'Coperto',45:'Nebbia',48:'Nebbia con brina',51:'Pioviggine debole',53:'Pioviggine',55:'Pioviggine forte',56:'Pioviggine gelata',57:'Pioviggine gelata',61:'Pioggia debole',63:'Pioggia',65:'Pioggia forte',66:'Pioggia gelata',67:'Pioggia gelata forte',71:'Neve debole',73:'Neve',75:'Neve forte',77:'Granelli di neve',80:'Rovesci deboli',81:'Rovesci',82:'Rovesci forti',85:'Rovesci di neve',86:'Rovesci di neve forti',95:'Temporale',96:'Temporale con grandine',99:'Temporale con grandine'};
+  var DIR=['N','NE','E','SE','S','SO','O','NO'];
+  function f1(v){return v==null?'–':(Math.round(v*10)/10).toFixed(1).replace('.',',').replace('-','−');}
+  function r0(v){return v==null?'–':String(Math.round(v)).replace('-','−');}
+  function hm(s){return s?s.slice(11,16):'';}
+  function draw(d,when,old){
+    var c=d.current;if(!c)return;
+    document.getElementById('wn-t').textContent=f1(c.temperature_2m)+'°';
+    document.getElementById('wn-f').textContent=f1(c.apparent_temperature)+'°';
+    document.getElementById('wn-c').textContent=WMO[c.weather_code]||'–';
+    document.getElementById('wn-w').textContent='Vento '+r0(c.wind_speed_10m)+' km/h da '+DIR[Math.round((c.wind_direction_10m||0)/45)%8]+(c.wind_gusts_10m?' · raffiche '+r0(c.wind_gusts_10m):'');
+    var ice=c.temperature_2m!=null&&c.temperature_2m<=1.5;
+    var ch=[['Umidità',r0(c.relative_humidity_2m)+'%'],['Pioggia ora',f1(c.precipitation)+' mm'],['Nuvole',r0(c.cloud_cover)+'%'],[ice?'Strada':'Raffiche',ice?'possibile ghiaccio':r0(c.wind_gusts_10m)+' km/h',ice]];
+    document.getElementById('wn-chips').innerHTML=ch.map(function(x){return '<div class="wn-chip'+(x[2]?' warn':'')+'"><small>'+x[0]+'</small><b>'+x[1]+'</b></div>';}).join('');
+    var m=d.minutely_15||{},t=m.time||[],pr=m.precipitation||[],now=Date.now(),bars=[],k=0;
+    for(var i=0;i<t.length&&bars.length<8;i++){var tt=new Date(t[i]).getTime();if(tt+15*6e4<now)continue;bars.push([t[i],pr[i]||0]);}
+    var mx=Math.max(0.5,Math.max.apply(null,bars.map(function(b){return b[1];})));
+    document.getElementById('wn-bars').innerHTML=bars.map(function(b){return '<div><i class="'+(b[1]>0?'':'z')+'" style="height:'+Math.max(3,b[1]/mx*44)+'px"></i><small>'+hm(b[0])+'</small></div>';}).join('');
+    var wet=bars.filter(function(b){return b[1]>=0.1;});
+    document.getElementById('wn-rs').textContent=bars.length?(wet.length?'pioggia dalle '+hm(wet[0][0])+(wet.length>1?' · fino a '+f1(Math.max.apply(null,wet.map(function(b){return b[1];})))+' mm in 15′':''):'niente pioggia prevista'):'';
+    var p=document.getElementById('wn-pill');p.className='pill '+(old?'idle':'open');
+    var mins=Math.round((Date.now()-when)/6e4);p.textContent=old?('salvato '+(mins<60?mins+' min':Math.round(mins/60)+' h')+' fa'):'aggiornato '+hm(c.time);
+    var nw=document.getElementById('now-wx');if(nw){nw.hidden=false;document.getElementById('nw-t').textContent=f1(c.temperature_2m)+'°';document.getElementById('nw-s').textContent='percepiti '+f1(c.apparent_temperature)+'° · '+(WMO[c.weather_code]||'').toLowerCase();}
+  }
+  function url(model){return 'https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m&minutely_15=precipitation&forecast_minutely_15=10&past_minutely_15=1&timezone=Europe%2FRome'+(model?'&models='+model:'');}
+  function load(){
+    if(document.hidden)return;
+    fetch(url('italia_meteo_arpae_icon_2i')).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){if(!d.current||d.current.temperature_2m==null)throw 0;return d;})
+      .catch(function(){return fetch(url('')).then(function(r){if(!r.ok)throw 0;return r.json();});})
+      .then(function(d){if(d.minutely_15&&d.minutely_15.precipitation&&d.minutely_15.precipitation.every(function(x){return x==null;}))return fetch(url('')).then(function(r){return r.json();}).then(function(b){d.minutely_15=b.minutely_15;return d;}).catch(function(){return d;});return d;})
+      .then(function(d){var w=Date.now();try{localStorage.setItem(K,JSON.stringify({when:w,data:d}));}catch(e){}draw(d,w,false);})
+      .catch(function(){var c=null;try{c=JSON.parse(localStorage.getItem(K));}catch(e){}if(c)draw(c.data,c.when,true);else document.getElementById('wn-pill').textContent='senza rete';});
+  }
+  try{var c0=JSON.parse(localStorage.getItem(K));if(c0)draw(c0.data,c0.when,true);}catch(e){}
+  load();setInterval(load,10*6e4);document.addEventListener('visibilitychange',function(){if(!document.hidden){var c=null;try{c=JSON.parse(localStorage.getItem(K));}catch(e){}if(!c||Date.now()-c.when>5*6e4)load();}});
+  window.lrhNowRefresh=load;
+
+  // --- Ricette Lightroom ---
+  var R=[
+    {id:'ps4',name:'PS 4 · mattina, luce frontale',tag:'10:20–11:45',v:{Exposure2012:0.3,Contrast2012:10,Highlights2012:-60,Shadows2012:40,Whites2012:15,Blacks2012:-15,Temperature:5600,Tint:5,Texture:15,Clarity2012:10,Dehaze:5,Vibrance:15,Saturation:0,Sharpness:40,LuminanceSmoothing:10,ColorNoiseReduction:25},tip:'Se le auto bianche sono troppo chiare, alte luci fino a −80.'},
+    {id:'ps6',name:'PS 6 · pomeriggio, laterale o controluce',tag:'14:15–15:45',v:{Exposure2012:0.5,Contrast2012:5,Highlights2012:-80,Shadows2012:60,Whites2012:5,Blacks2012:-10,Temperature:6000,Tint:5,Texture:10,Clarity2012:15,Dehaze:15,Vibrance:10,Saturation:0,Sharpness:40,LuminanceSmoothing:15,ColorNoiseReduction:25},tip:'In controluce aggiungi una maschera "Seleziona soggetto" sull\'auto con esposizione +0,3.'},
+    {id:'ps8',name:'PS 8 · buio, fari',tag:'17:45–19:30',v:{Exposure2012:0.7,Contrast2012:15,Highlights2012:-100,Shadows2012:30,Whites2012:-10,Blacks2012:-5,Temperature:4300,Tint:0,Texture:0,Clarity2012:0,Dehaze:5,Vibrance:5,Saturation:0,Sharpness:30,LuminanceSmoothing:40,ColorNoiseReduction:35},tip:'A ISO 3200 prova "Riduci rumore" (IA) al posto della riduzione manuale: è molto meglio.'},
+    {id:'trail',name:'Scie di luce col treppiede',tag:'ISO 50 · 2–4 s',v:{Exposure2012:0,Contrast2012:10,Highlights2012:-70,Shadows2012:20,Whites2012:0,Blacks2012:-25,Temperature:4300,Tint:0,Texture:5,Clarity2012:5,Dehaze:10,Vibrance:20,Saturation:0,Sharpness:30,LuminanceSmoothing:5,ColorNoiseReduction:20},tip:'Neri più profondi fanno risaltare le scie: se il cielo è blu, lascialo blu.'}
+  ];
+  var LBL=[['Exposure2012','Esposizione'],['Contrast2012','Contrasto'],['Highlights2012','Luci'],['Shadows2012','Ombre'],['Whites2012','Bianchi'],['Blacks2012','Neri'],['Temperature','Temperatura'],['Tint','Tinta'],['Texture','Texture'],['Clarity2012','Chiarezza'],['Dehaze','Foschia'],['Vibrance','Vividezza'],['Sharpness','Nitidezza'],['LuminanceSmoothing','Rumore luminanza'],['ColorNoiseReduction','Rumore colore']];
+  function fmt(k,v){if(k==='Temperature')return v+' K';if(k==='Exposure2012')return (v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(2).replace('.',',');if(k==='Sharpness'||k==='LuminanceSmoothing'||k==='ColorNoiseReduction')return String(v);return (v>0?'+':v<0?'−':'')+Math.abs(v);}
+  function sg(k,v){if(k==='Temperature'||k==='Sharpness'||k==='LuminanceSmoothing'||k==='ColorNoiseReduction')return String(v);if(k==='Exposure2012')return (v>=0?'+':'')+v.toFixed(2);return (v>0?'+':'')+v;}
+  function uuid(){var h='0123456789ABCDEF',s='';for(var i=0;i<32;i++)s+=h[Math.floor(Math.random()*16)];return s;}
+  function xmp(r){
+    var a=Object.keys(r.v).map(function(k){return '   crs:'+k+'="'+sg(k,r.v[k])+'"';}).join('\n');
+    return '<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 7.0-c000 1.000000, 0000/00/00-00:00:00        ">\n <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n  <rdf:Description rdf:about=""\n    xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/"\n   crs:PresetType="Normal"\n   crs:Cluster=""\n   crs:UUID="'+uuid()+'"\n   crs:SupportsAmount="False"\n   crs:SupportsColor="True"\n   crs:SupportsMonochrome="True"\n   crs:SupportsHighDynamicRange="True"\n   crs:SupportsNormalDynamicRange="True"\n   crs:SupportsSceneReferred="True"\n   crs:SupportsOutputReferred="True"\n   crs:CameraModelRestriction=""\n   crs:Copyright=""\n   crs:ContactInfo=""\n   crs:Version="15.0"\n   crs:ProcessVersion="11.0"\n   crs:WhiteBalance="Custom"\n'+a+'\n   crs:SharpenRadius="+1.0"\n   crs:SharpenDetail="25"\n   crs:SharpenEdgeMasking="60"\n   crs:HasSettings="True">\n   <crs:Name>\n    <rdf:Alt>\n     <rdf:li xml:lang="x-default">Lessinia · '+r.name.replace(/&/g,'e')+'</rdf:li>\n    </rdf:Alt>\n   </crs:Name>\n   <crs:Group>\n    <rdf:Alt>\n     <rdf:li xml:lang="x-default">Lessinia Rally</rdf:li>\n    </rdf:Alt>\n   </crs:Group>\n  </rdf:Description>\n </rdf:RDF>\n</x:xmpmeta>\n';
+  }
+  var box=document.getElementById('lr-cards');
+  box.innerHTML=R.map(function(r){return '<div class="lr-card"><div class="lr-h"><b>'+r.name+'</b><span>'+r.tag+'</span></div><div class="lr-t">'+LBL.map(function(l){return '<span>'+l[1]+'</span><span>'+fmt(l[0],r.v[l[0]])+'</span>';}).join('')+'</div><small>'+r.tip+'</small><button class="btn ghost sm" type="button" data-xmp="'+r.id+'">Scarica il preset (.xmp)</button></div>';}).join('');
+  box.addEventListener('click',function(e){var b=e.target.closest('[data-xmp]');if(!b)return;var r=R.filter(function(x){return x.id===b.getAttribute('data-xmp');})[0];
+    var f=new File([xmp(r)],'Lessinia '+r.id.toUpperCase()+'.xmp',{type:'application/rdf+xml'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;a.click();});
+  // contatore "dopo il rally"
+  (function(){var b=document.querySelectorAll('input[id^="po"]'),c=document.getElementById('post-count');
+    function u(){var k=0;b.forEach(function(x){if(x.checked)k++;});c.textContent=k+' di '+b.length;c.className='pill '+(k===b.length?'open':'idle');}
+    b.forEach(function(x){x.addEventListener('change',u);});setTimeout(u,300);setTimeout(u,3000);})();
 })();
 </script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
