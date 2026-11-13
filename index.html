@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Lessinia Rally Historic 2026</title>
 <link rel="manifest" href="manifest.webmanifest?v=5">
 <meta name="theme-color" content="#0b0b0c">
@@ -22,6 +22,15 @@ window.lrhTwoFinger=function(map){
   c.addEventListener('touchstart',function(e){if(e.touches.length===1&&!(e.target.closest&&e.target.closest('.leaflet-control'))){clearTimeout(t);t=setTimeout(function(){h.classList.add('on');t=setTimeout(function(){h.classList.remove('on');},1300);},180);}else{clearTimeout(t);h.classList.remove('on');}},{passive:true});
   c.addEventListener('touchmove',function(e){if(e.touches.length>1){clearTimeout(t);h.classList.remove('on');}},{passive:true});
 };
+</script>
+<script>
+// Niente zoom della pagina con le dita (le mappe e il radar restano zoomabili)
+(function(){
+  function inMap(t){return t&&t.closest&&t.closest('.leaflet-container,.rbox');}
+  ['gesturestart','gesturechange'].forEach(function(ev){document.addEventListener(ev,function(e){if(!inMap(e.target))e.preventDefault();},{passive:false});});
+  document.addEventListener('touchmove',function(e){if(e.touches.length>1&&!inMap(e.target))e.preventDefault();},{passive:false});
+  var last=0;document.addEventListener('touchend',function(e){var n=Date.now();if(n-last<300&&!inMap(e.target)&&!(e.target.closest&&e.target.closest('input,textarea,button,a,label,select')))e.preventDefault();last=n;},{passive:false});
+})();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <style>
@@ -407,7 +416,7 @@ html.night .tabs{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) bri
 .road{display:flex;align-items:center;gap:10px;background:var(--soft);border-radius:14px;padding:8px 10px 8px 14px}
 .road .pill{white-space:nowrap}
 @media (max-width:599px){.roads{grid-template-columns:repeat(2,minmax(0,1fr))}.road{flex-direction:column;align-items:flex-start;gap:6px;padding:10px 12px}}
-html{-webkit-tap-highlight-color:transparent}
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 *{-webkit-tap-highlight-color:rgba(0,0,0,0)}
 .btn,.tabs a,.res-cta,button,label{transition:transform .08s ease,opacity .08s ease;-webkit-user-select:none;user-select:none}
 .btn:active,.tabs a:active,.res-cta:active,button:active{transform:scale(.97);opacity:.85}
@@ -696,7 +705,22 @@ h2{display:flex;align-items:center}
 /* Avviso due dita sulle mappe */
 .map-hint{position:absolute;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;text-align:center;background:rgba(0,0,0,.55);color:#fff;font:700 16px/1.3 var(--body);opacity:0;pointer-events:none;transition:opacity .2s}
 .map-hint.on{opacity:1}
+
+/* Niente zoom della pagina: niente doppio tocco, il pizzico resta solo su mappe e radar */
+html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+button,a,input,label,.btn,.tabs a,.subnav a{touch-action:manipulation}
 </style>
+<script>
+// Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
+(function(){
+  function inMap(t){return t&&t.closest&&t.closest('.leaflet-container,.rbox,.ar,#cold-svg');}
+  ['gesturestart','gesturechange','gestureend'].forEach(function(ev){document.addEventListener(ev,function(e){if(!inMap(e.target))e.preventDefault();},{passive:false});});
+  document.addEventListener('touchmove',function(e){if(e.touches.length>1&&!inMap(e.target))e.preventDefault();},{passive:false});
+  var last=0;document.addEventListener('touchend',function(e){var n=Date.now();if(n-last<300&&!inMap(e.target)&&!(e.target.closest&&e.target.closest('input,textarea,select'))){e.preventDefault();}last=n;},{passive:false});
+  window.addEventListener('wheel',function(e){if(e.ctrlKey&&!inMap(e.target))e.preventDefault();},{passive:false});
+  window.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+','-','=','0'].indexOf(e.key)>=0)e.preventDefault();});
+})();
+</script>
 </head>
 <body>
 <nav class="tabs" id="tabs" aria-label="Sezioni dell'app">
