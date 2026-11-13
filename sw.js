@@ -1,6 +1,6 @@
 // Service worker: app disponibile anche offline
-const C='lrh26-v41', T='lrh26-tiles';
-const CORE=['./','index.html','data.json','manifest.webmanifest','logo-icon-192.png','logo-icon-512.png','logo-icon-maskable-512.png','logo.png'];
+const C='lrh26-v42', T='lrh26-tiles';
+const CORE=['./','index.html','data.json','manifest.webmanifest','logo-icon-192.png','logo-icon-512.png','logo-icon-maskable-512.png','logo.png','car39.jpg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C&&x!==T).map(x=>caches.delete(x)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{
