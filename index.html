@@ -741,6 +741,16 @@ html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brig
 @media (min-width:2200px){.wrap{grid-template-columns:repeat(4,minmax(0,1fr));max-width:2600px}}
 @media (min-width:1600px){.wrap.mas>#cold,.wrap.mas>#wxnow{grid-column:span 2}}
 @media (min-width:2200px){.wrap.mas>#road{grid-column:span 2}}
+
+/* PC: radar accanto ai prossimi giorni, con proporzioni leggibili */
+@media (min-width:1100px){
+  #prev{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);column-gap:24px;align-items:start}
+  #prev>*{grid-column:1/-1}
+  #prev>.wx-days-wrap{grid-column:1;grid-template-columns:minmax(0,1fr)!important;margin-top:0}
+  #prev>#radar{grid-column:2;margin-top:0}
+  #prev .rbox{height:640px!important}
+}
+@media (min-width:1600px){#prev .rbox{height:720px!important}}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
