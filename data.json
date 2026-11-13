@@ -658,9 +658,118 @@
    "o": 82
   }
  ],
- "offline": null,
- "updated": "ven 13 nov, 19:30",
- "r39": [],
+ "offline": {
+  "title": "Classifica provvisoria dopo PS 1",
+  "time": "ven 21:20",
+  "rows": [
+   {
+    "pos": 1,
+    "n": 1,
+    "crew": "Visintainer Maurizio / Lonardi Federica",
+    "gap": ""
+   },
+   {
+    "pos": 2,
+    "n": 5,
+    "crew": "Costaganna Sandro / Rizzi Matteo",
+    "gap": "+3.6"
+   },
+   {
+    "pos": 3,
+    "n": 7,
+    "crew": "Menegolli Stefano / Zambelli Mattia",
+    "gap": "+4.8"
+   },
+   {
+    "pos": 4,
+    "n": 12,
+    "crew": "Garzotto Fabio / Sbalchiero Andrea",
+    "gap": "+12.3"
+   },
+   {
+    "pos": 5,
+    "n": 2,
+    "crew": "Tezza Dennis / Merzari Massimo",
+    "gap": "+13.5"
+   },
+   {
+    "pos": 6,
+    "n": 6,
+    "crew": "Patuzzo Nicola / Martini Alberto",
+    "gap": "+13.8"
+   },
+   {
+    "pos": 7,
+    "n": 8,
+    "crew": "Canteri Matteo / Valbusa Nicola",
+    "gap": "+14.0"
+   },
+   {
+    "pos": 8,
+    "n": 22,
+    "crew": "Bombieri Mattia / Tripi Linda",
+    "gap": "+14.7"
+   },
+   {
+    "pos": 9,
+    "n": 10,
+    "crew": "Bergamo Matteo / Simioni Giorgio",
+    "gap": "+15.1"
+   },
+   {
+    "pos": 10,
+    "n": 14,
+    "crew": "Bottoni Giuseppe / Sansone Elisabetta",
+    "gap": "+16.4"
+   },
+   {
+    "pos": 11,
+    "n": 29,
+    "crew": "Bombieri Nicola / Fiocco Elena",
+    "gap": "+21.1"
+   },
+   {
+    "pos": 12,
+    "n": 45,
+    "crew": "Sbalchiero Stefano / Crivellaro Giovanna",
+    "gap": "+21.5"
+   },
+   {
+    "pos": 13,
+    "n": 18,
+    "crew": "Soldà Fabio / Fracasso Massimo",
+    "gap": "+23.3"
+   },
+   {
+    "pos": 14,
+    "n": 3,
+    "crew": "\"RAFFA\" / Signorini Andrea",
+    "gap": "+23.4"
+   },
+   {
+    "pos": 15,
+    "n": 54,
+    "crew": "Iessi Michelangelo / Masin Denis",
+    "gap": "+25.2"
+   },
+   {
+    "pos": 38,
+    "n": 39,
+    "crew": "Zambelli Agostino / Zambelli Angela",
+    "gap": "+41.4"
+   }
+  ]
+ },
+ "updated": "ven 13 nov, 21:20",
+ "r39": [
+  {
+   "ps": "PS 1",
+   "time": "4:42.9",
+   "pos_ps": 38,
+   "pos": 38,
+   "gap": "+41.4"
+  }
+ ],
  "final39": null,
  "news": [
   {
@@ -691,6 +800,12 @@
    "t": "ven 19:30",
    "title": "Penalità di 20 s al n. 39",
    "text": "Notifica n. 18: 20 secondi al 39 per velocità nella slow zone della PS 1. Penalizzati anche i n. 26, 28, 35, 42, 43, 48, 52 e 71.",
+   "imp": false
+  },
+  {
+   "t": "ven 21:20",
+   "title": "Classifica dopo PS 1",
+   "text": "Il 39 è 38° a 41,4 s da Visintainer/Lonardi (BMW M3). Tempo 4:42.9 con i 20 s di penalità.",
    "imp": false
   }
  ]
