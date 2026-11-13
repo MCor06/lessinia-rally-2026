@@ -113,6 +113,7 @@ ul.plain{margin:0;padding-left:18px;display:grid;gap:6px}
 .radar .btns{margin-top:8px}
 /* Meteo su misura */
 .hlogo{display:block;width:min(260px,70%);height:auto;margin:0 0 10px;position:relative;z-index:1}
+.todo{box-shadow:var(--shadow), inset 4px 0 0 var(--accent)}
 .c39{box-shadow:var(--shadow), inset 4px 0 0 var(--accent)}
 .c39-next{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin:12px 0}
 .c39-time{font:800 40px/1 var(--display);letter-spacing:-.02em;margin:6px 0 4px;font-variant-numeric:tabular-nums}
@@ -466,6 +467,20 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:4px}
   </ul>
 </section>
 
+<section class="todo">
+    <div class="res-head"><h2>Da fare prima di sabato</h2><span class="pill idle" id="todo-count">0 di 0</span></div>
+    <ul class="check" data-key="todo">
+      <li><label><input type="checkbox" id="td1"><span>Comprare la frontale Simond HL500 USB V3 nera (Decathlon San Giovanni Lupatoto o Villafranca, 29,99 €)</span></label></li>
+      <li><label><input type="checkbox" id="td2"><span>Caricare la frontale al 100%</span></label></li>
+      <li><label><input type="checkbox" id="td3"><span>Recuperare la sedia da campeggio con schienale (in prestito, Brico di Soave o Decathlon)</span></label></li>
+      <li><label><input type="checkbox" id="td4"><span>Impermeabilizzare gli scarponi con grasso o spray</span></label></li>
+      <li><label><input type="checkbox" id="td5"><span>Mettere in carica telefono, powerbank e batterie GoPro</span></label></li>
+      <li><label><input type="checkbox" id="td6"><span>Aprire l'app col Wi-Fi, così salva tutto per l'uso offline</span></label></li>
+      <li><label><input type="checkbox" id="td7"><span>Lasciare il PC acceso con l'app di Claude aperta e senza standby (serve per le classifiche)</span></label></li>
+      <li><label><input type="checkbox" id="td8"><span>Sveglia per partire alle 7:20</span></label></li>
+    </ul>
+</section>
+
 <div class="cols">
   <section>
     <h2>Promemoria foto</h2>
@@ -491,7 +506,7 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:4px}
       <li><label><input type="checkbox" id="pk6"><span>Scaldacollo</span></label></li>
       <li><label><input type="checkbox" id="pk7"><span>Guanti touch per usare il telefono</span></label></li>
       <li><label><input type="checkbox" id="pk8"><span>Calze di lana pesanti</span></label></li>
-      <li><label><input type="checkbox" id="pk9"><span>Scarponi Crispi (per stare al tornante)</span></label></li>
+      <li><label><input type="checkbox" id="pk9"><span>Scarponi Crispi impermeabilizzati (per stare al tornante, cambio al parcheggio)</span></label></li>
       <li><label><input type="checkbox" id="pk10"><span>Adidas Samba (per guidare)</span></label></li>
     </ul>
     <h3 class="h3">Foto e video</h3>
@@ -514,7 +529,7 @@ footer{color:var(--muted);font-size:13px;display:grid;gap:4px}
       <li><label><input type="checkbox" id="pk23"><span>Acqua</span></label></li>
       <li><label><input type="checkbox" id="pk24"><span>Panini, barrette e frutta secca</span></label></li>
       <li><label><input type="checkbox" id="pk25"><span>Scaldamani usa e getta</span></label></li>
-      <li><label><input type="checkbox" id="pk26"><span>Frontale (o torcia), con luce rossa se ce l'ha</span></label></li>
+      <li><label><input type="checkbox" id="pk26"><span>Frontale Simond HL500 nera (carica al 100%)</span></label></li>
       <li><label><input type="checkbox" id="pk27"><span>Occhiali da sole</span></label></li>
       <li><label><input type="checkbox" id="pk28"><span>Ombrello</span></label></li>
     </ul>
@@ -613,6 +628,15 @@ function __main(){
     var b=document.getElementById('off-body');
     b.className='';
     b.innerHTML='<b>'+o.title+'</b> <span class="note">· salvata '+o.time+'</span><table class="off-t">'+o.rows.map(function(r){return '<tr'+(r.n==39?' class="mine"':'')+'><td>'+r.pos+'</td><td>'+r.n+'</td><td>'+r.crew+'</td><td>'+(r.gap||'')+'</td></tr>';}).join('')+'</table>';
+  })();
+
+  // Contatore "Da fare prima di sabato"
+  (function(){
+    var boxes=document.querySelectorAll('input[id^="td"]'),c=document.getElementById('todo-count');
+    if(!c) return;
+    function upd(){var k=0;boxes.forEach(function(b){if(b.checked)k++;});c.textContent=k+' di '+boxes.length;c.className='pill '+(k===boxes.length?'open':'idle');}
+    boxes.forEach(function(b){b.addEventListener('change',upd);});
+    setTimeout(upd,0);
   })();
 
   // Contatore "Da portare"
