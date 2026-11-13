@@ -24,5 +24,55 @@
    "type": "image/png",
    "purpose": "maskable"
   }
+ ],
+ "shortcuts": [
+  {
+   "name": "Schermata in prova",
+   "short_name": "In prova",
+   "url": "./#prova",
+   "icons": [
+    {
+     "src": "logo-icon-192.png",
+     "sizes": "192x192",
+     "type": "image/png"
+    }
+   ]
+  },
+  {
+   "name": "Registro passaggi",
+   "short_name": "Registro",
+   "url": "./#gara/log",
+   "icons": [
+    {
+     "src": "logo-icon-192.png",
+     "sizes": "192x192",
+     "type": "image/png"
+    }
+   ]
+  },
+  {
+   "name": "Il sole in AR",
+   "short_name": "Sole AR",
+   "url": "./#foto/sun",
+   "icons": [
+    {
+     "src": "logo-icon-192.png",
+     "sizes": "192x192",
+     "type": "image/png"
+    }
+   ]
+  },
+  {
+   "name": "Meteo",
+   "short_name": "Meteo",
+   "url": "./#meteo",
+   "icons": [
+    {
+     "src": "logo-icon-192.png",
+     "sizes": "192x192",
+     "type": "image/png"
+    }
+   ]
+  }
  ]
 }

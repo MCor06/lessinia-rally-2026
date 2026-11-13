@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lessinia Rally Historic 2026</title>
-<link rel="manifest" href="manifest.webmanifest?v=3">
+<link rel="manifest" href="manifest.webmanifest?v=4">
 <meta name="theme-color" content="#0b0b0c">
 <link rel="icon" href="logo-icon-192.png">
 <link rel="apple-touch-icon" href="logo-icon-192.png">
@@ -476,6 +476,44 @@ label.btn{cursor:pointer}
 .m-gh span{font:600 12px/1 var(--mono);color:var(--muted)}
 .m-g small{color:var(--muted);font-size:12px;word-break:break-all}
 .m-g .btns{margin-top:0}
+
+/* ===== Registro rapido, schermata in prova, riepilogo 39, storia ===== */
+.log-quick{display:grid;gap:6px;margin:8px 0 4px}
+.lq-btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lq{display:grid;gap:2px;justify-items:center;padding:12px 6px;border-radius:14px;border:1px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer;font:inherit}
+.lq b{font:800 28px/1 var(--display)}
+.lq small{font:600 11px/1.2 var(--mono);color:var(--muted)}
+.lq.mine{border-color:var(--accent);background:#2a2412}.lq.mine b{color:var(--accent)}
+.focus-open{width:100%;justify-content:center;margin:2px 0 6px;cursor:pointer}
+.focus{position:fixed;inset:0;z-index:70;background:#0b0b0c;display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));overflow:auto}
+.focus[hidden]{display:none}
+.fo-top{display:flex;justify-content:space-between;align-items:center}
+.fo-39{text-align:center;display:grid;gap:4px}
+.fo-time{font:800 64px/1 var(--display);letter-spacing:-.02em}
+.fo-count{font:700 40px/1 var(--mono);color:var(--accent)}
+.fo-next{display:grid;gap:8px;align-content:start}
+.fo-row{display:grid;grid-template-columns:70px 56px minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--soft);border-radius:14px;padding:12px 14px}
+.fo-row .t{font:700 18px/1 var(--mono);color:var(--accent)}
+.fo-row .n{font:800 28px/1 var(--display)}
+.fo-row .c{font-size:13px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fo-row .w{font:600 13px/1 var(--mono);color:var(--muted)}
+.fo-row.mine{background:#2a2412;box-shadow:inset 4px 0 0 var(--accent)}.fo-row.mine .n{color:var(--accent)}
+.fo-log{display:grid;gap:8px}
+.fo-btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.fo-btns .lq{padding:18px 6px}.fo-btns .lq b{font-size:38px}
+.fo-man{display:flex;gap:8px}.fo-man input{flex:1;min-width:0}
+html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brightness(.55)}
+.r39-t{width:100%;min-width:0;font-size:13px}
+.r39-t td,.r39-t th{padding:7px 6px}
+.r39-t .mono{white-space:nowrap}
+.r39-fin{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.r39-fin div{background:var(--soft);border-radius:12px;padding:10px 14px}
+.r39-fin b{display:block;font:800 26px/1 var(--display);color:var(--accent)}
+.r39-fin small{color:var(--muted);font-size:12px}
+.st-opts{display:grid;gap:8px;margin:12px 0}
+.st-c{width:100%;max-width:360px;height:auto;border-radius:14px;display:block;margin:8px auto;border:1px solid var(--line)}
+.st-c[hidden]{display:none}
+@media (max-width:599px){.fo-time{font-size:56px}.fo-row{grid-template-columns:60px 46px minmax(0,1fr)}.fo-row .w{grid-column:3}}
 </style>
 </head>
 <body>
@@ -526,6 +564,7 @@ label.btn{cursor:pointer}
 
 <section class="arr" id="arr" data-page="gara">
   <div class="res-head"><h2>Chi sta arrivando</h2><span class="pill idle" id="arr-pill">–</span></div>
+  <button class="btn focus-open" type="button" data-focus>Apri la schermata "in prova"</button>
   <div class="note" id="arr-sub">Le prossime auto al tornante, con l'orario stimato.</div>
   <ol class="arr-list" id="arr-list"></ol>
   <div class="arr-stats" id="arr-stats"></div>
@@ -546,6 +585,7 @@ label.btn{cursor:pointer}
     <input class="search log-n" id="log-n" type="number" inputmode="numeric" min="1" max="999" placeholder="N°" aria-label="Numero di gara">
     <button class="btn log-go" type="button" id="log-go">Passata</button>
   </div>
+  <div class="log-quick" id="log-quick" hidden><span class="note">Tocca l'auto appena passata:</span><div class="lq-btns" id="lq-btns"></div></div>
   <div class="log-hint note" id="log-hint"></div>
   <ol class="log-list" id="log-list"></ol>
   <div class="btns">
@@ -625,6 +665,11 @@ label.btn{cursor:pointer}
     <div class="flag"><i style="background:#8e8e95"></i><span><b>Commissari col fischietto</b><small>Fischio lungo: un'auto sta arrivando, stai al tuo posto. Segui sempre le loro indicazioni.</small></span></div>
   </div>
   <p class="note">Gli intervalli delle auto di sicurezza sono quelli tipici dei rally italiani e possono cambiare: per gli orari vale il passaggio dell'auto "0".</p>
+</section>
+
+<section data-page="gara" id="r39">
+  <div class="res-head"><h2>Il 39 prova per prova</h2><span class="pill idle" id="r39-pill">in attesa</span></div>
+  <div id="r39-body"><p class="note">Dopo ogni classifica Claude aggiunge qui il tempo del 39 in ogni prova, la posizione nella prova e quella in classifica generale. Il primo tempo arriva dopo la PS 1, venerdì sera.</p></div>
 </section>
 
 <section data-page="gara">
@@ -954,6 +999,18 @@ label.btn{cursor:pointer}
   <div class="m-res" id="m-res"></div>
 </section>
 
+<section data-page="foto" id="story">
+  <h2>Storia per Instagram</h2>
+  <p class="note">Scegli una foto: l'app crea un'immagine verticale 1080×1920 con il nome della gara, l'equipaggio del 39 e, a fine gara, il risultato finale. Tutto resta sul telefono.</p>
+  <div class="btns"><label class="btn" for="st-file">Scegli la foto</label><input type="file" id="st-file" accept="image/*" hidden></div>
+  <div class="st-opts">
+    <label class="sw"><input type="checkbox" id="st-res" checked><span><b>Mostra il risultato</b><small>Posizione finale e di classe, appena c'è la classifica finale</small></span></label>
+    <label class="sw"><input type="checkbox" id="st-dark" checked><span><b>Sfumatura scura in basso</b><small>Rende leggibili le scritte su foto chiare</small></span></label>
+  </div>
+  <canvas id="st-c" class="st-c" width="1080" height="1920" hidden></canvas>
+  <div class="btns" id="st-act" hidden><button class="btn" type="button" id="st-share">Condividi</button><button class="btn ghost" type="button" id="st-dl">Salva l'immagine</button></div>
+</section>
+
 <section data-page="foto">
   <h2>Promemoria foto</h2>
   <ul class="check" data-key="foto">
@@ -1009,10 +1066,11 @@ label.btn{cursor:pointer}
   }
   window.lrhShow=show;
   window.lrhGoTo=function(sel){var el=document.querySelector(sel);if(!el)return;var pg=el.closest('[data-page]');if(pg)show(pg.getAttribute('data-page'),true);setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},40);};
-  function fromHash(){var h=location.hash.slice(1);return P.indexOf(h)>=0?h:null;}
-  window.addEventListener('hashchange',function(){var h=fromHash();if(h)show(h);});
+  function fromHash(){var h=location.hash.slice(1).split('/')[0];if(h==='prova')return 'gara';return P.indexOf(h)>=0?h:null;}
+  function sub(){var h=location.hash.slice(1),a=h.split('/')[1];if(h==='prova'){var t=0;(function w(){if(window.lrhFocusOpen)window.lrhFocusOpen();else if(t++<40)setTimeout(w,150);})();return;}if(a)setTimeout(function(){var el=document.getElementById(a);if(el)el.scrollIntoView({block:'start'});},400);}
+  window.addEventListener('hashchange',function(){var h=fromHash();if(h){show(h);sub();}});
   document.querySelectorAll('#tabs a').forEach(function(a){a.addEventListener('click',function(e){var p=a.getAttribute('data-p');if(p===cur){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}});});
-  show(fromHash()||'gara',true);
+  show(fromHash()||'gara',true);sub();
 })();
 </script>
 <div class="ar" id="arv" hidden>
@@ -1318,6 +1376,101 @@ label.btn{cursor:pointer}
   });
 })();
 </script>
+<div class="focus" id="focus" hidden>
+  <div class="fo-top"><span class="pill closed" id="fo-pill">–</span><button class="ar-x" type="button" id="fo-close" aria-label="Chiudi">✕</button></div>
+  <div class="fo-39"><div class="eyebrow">Il 39 al tornante</div><div class="fo-time" id="fo-time">–</div><div class="fo-count" id="fo-count"></div></div>
+  <div class="fo-next" id="fo-next"></div>
+  <div class="fo-log"><div class="eyebrow">Passata adesso</div><div class="fo-btns" id="fo-btns"></div>
+    <div class="fo-man"><input class="search" id="fo-n" type="number" inputmode="numeric" placeholder="Altro numero" aria-label="Altro numero"><button class="btn" type="button" id="fo-go">Passata</button></div>
+    <div class="note" id="fo-last"></div></div>
+</div>
+<script>
+// ===== Registro rapido, schermata "in prova", riepilogo del 39, storia Instagram =====
+(function(){
+  function L(){return window.LRH;}
+  function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function expected(k){
+    var l=L();if(!l||!l.ents.length)return [];
+    var now=new Date(),st=l.current(now);if(!st)return [];
+    var ps=l.passed(st);
+    return l.ents.filter(function(e){return !e.ret&&!ps[String(e.n)]&&l.eta(st,e.p)>=now-180000;}).slice(0,k).map(function(e){return {e:e,t:l.eta(st,e.p),st:st};});
+  }
+  function qbtn(x,big){var m=Math.round((x.t-new Date())/60000);return '<button type="button" class="lq'+(String(x.e.n)==='39'?' mine':'')+'" data-n="'+esc(x.e.n)+'"><b>'+esc(x.e.n)+'</b><small>'+(m<=0?'adesso':'tra '+m+' min')+'</small></button>';}
+  // Registro rapido
+  var lq=document.getElementById('log-quick'),lb=document.getElementById('lq-btns');
+  function drawQ(){var x=expected(3);if(!x.length){lq.hidden=true;return;}lq.hidden=false;lb.innerHTML=x.map(function(y){return qbtn(y);}).join('');}
+  lb.addEventListener('click',function(e){var b=e.target.closest('[data-n]');if(b&&window.lrhLogAdd)lrhLogAdd(b.getAttribute('data-n'));});
+  // Schermata in prova
+  var fo=document.getElementById('focus'),open=false;
+  function hm(d){return d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
+  function drawF(){
+    if(!open)return;var l=L(),now=new Date(),st=l&&l.current(now);
+    var pill=document.getElementById('fo-pill');
+    if(!st){pill.textContent='prove finite';document.getElementById('fo-time').textContent='Fatto';document.getElementById('fo-count').textContent='';document.getElementById('fo-next').innerHTML='';document.getElementById('fo-btns').innerHTML='';return;}
+    var live=now>=l.at(st.a);pill.className='pill '+(live?'closed':'idle');pill.textContent=st.ps+(live?' · in corso':' · prossima');
+    var p39=l.posOf(39)||1,t39=l.eta(st,p39),m=Math.round((t39-now)/60000),ps=l.passed(st),done=!!ps['39'];
+    document.getElementById('fo-time').textContent=done?'Passato':'~'+hm(t39);
+    document.getElementById('fo-count').textContent=done?'alle '+hm(ps['39']):(m>0?(m>=60?Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'m':m+' min'):'adesso');
+    var x=expected(5);
+    document.getElementById('fo-next').innerHTML=x.length?x.map(function(y){var mm=Math.round((y.t-now)/60000);return '<div class="fo-row'+(String(y.e.n)==='39'?' mine':'')+'"><span class="t">'+hm(y.t)+'</span><span class="n">'+esc(y.e.n)+'</span><span class="c">'+esc(y.e.d)+' · '+esc(y.e.car)+'</span><span class="w">'+(mm<=0?'adesso':'tra '+mm+'′')+'</span></div>';}).join(''):'<p class="note">L\'ordine di partenza non è ancora nell\'app: segna le auto con il campo qui sotto.</p>';
+    document.getElementById('fo-btns').innerHTML=x.slice(0,3).map(function(y){return qbtn(y,true);}).join('');
+    var lg=[];try{lg=JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){}
+    var la=lg[lg.length-1];document.getElementById('fo-last').textContent=la?('Ultima segnata: n. '+la.n+' alle '+la.t+' · '+lg.length+' in tutto'):'Nessuna auto segnata';
+  }
+  function openF(){open=true;fo.hidden=false;drawF();try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(w){fo._wl=w;}).catch(function(){});}catch(e){}}
+  function closeF(){open=false;fo.hidden=true;try{if(fo._wl){fo._wl.release();fo._wl=null;}}catch(e){}if(location.hash==='#prova')history.replaceState(null,'','#gara');}
+  window.lrhFocusOpen=openF;
+  document.addEventListener('click',function(e){if(e.target.closest('[data-focus]'))openF();});
+  document.getElementById('fo-close').addEventListener('click',closeF);
+  document.getElementById('fo-btns').addEventListener('click',function(e){var b=e.target.closest('[data-n]');if(b&&window.lrhLogAdd)lrhLogAdd(b.getAttribute('data-n'));});
+  var fn=document.getElementById('fo-n');
+  function man(){var v=fn.value.trim();if(v&&window.lrhLogAdd){lrhLogAdd(v);fn.value='';}}
+  document.getElementById('fo-go').addEventListener('click',man);fn.addEventListener('keydown',function(e){if(e.key==='Enter')man();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden&&open){drawF();try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(w){fo._wl=w;}).catch(function(){});}catch(e){}}});
+  function tick(){drawQ();drawF();}
+  window.addEventListener('lrh-log',tick);window.addEventListener('lrh-delay',tick);setInterval(function(){if(!document.hidden)tick();},15000);setTimeout(tick,800);setTimeout(tick,4000);
+  // Riepilogo del 39
+  function r39(){
+    var d=window.RALLY_DATA||null;try{if(!d)d=JSON.parse(localStorage.getItem('lrh26-data'));}catch(e){}
+    if(window.RALLY_LOCAL)d=window.RALLY_LOCAL;
+    var rows=(d&&d.r39)||[],fin=d&&d.final39,body=document.getElementById('r39-body'),pill=document.getElementById('r39-pill');
+    if(!rows.length&&!fin)return;
+    pill.className='pill '+(fin?'open':'idle');pill.textContent=fin?'finale':('dopo '+rows[rows.length-1].ps);
+    var h='';
+    if(fin)h+='<div class="r39-fin"><div><b>'+esc(fin.pos)+'°</b><small>assoluta</small></div>'+(fin.cls_pos?'<div><b>'+esc(fin.cls_pos)+'°</b><small>di classe '+esc(fin.cls||'')+'</small></div>':'')+(fin.time?'<div><b class="mono" style="font-size:20px">'+esc(fin.time)+'</b><small>tempo totale'+(fin.gap?' · '+esc(fin.gap):'')+'</small></div>':'')+'</div>';
+    if(rows.length)h+='<div class="tbl"><table class="r39-t"><thead><tr><th>Prova</th><th>Tempo</th><th>Pos. prova</th><th>Generale</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td>'+esc(r.ps)+'</td><td class="mono">'+esc(r.time||'–')+'</td><td class="mono">'+(r.pos_ps?esc(r.pos_ps)+'°':'–')+'</td><td class="mono">'+(r.pos?esc(r.pos)+'°':'–')+(r.gap?' <small class="note">'+esc(r.gap)+'</small>':'')+'</td></tr>';}).join('')+'</tbody></table></div>';
+    body.innerHTML=h;
+  }
+  setTimeout(r39,600);setTimeout(r39,4500);window.lrhR39=r39;
+  // Storia per Instagram
+  var sf=document.getElementById('st-file'),cv=document.getElementById('st-c'),act=document.getElementById('st-act'),img=null,logo=new Image();
+  logo.src='logo.png';
+  function data(){var d=window.RALLY_DATA||null;try{if(!d)d=JSON.parse(localStorage.getItem('lrh26-data'));}catch(e){}if(window.RALLY_LOCAL)d=window.RALLY_LOCAL;return d||{};}
+  function crew(){var l=L(),e=l&&l.byNum?l.byNum(39):null;return e?{d:e.d,c:e.c,car:e.car}:{d:'',c:'',car:'Ford Sierra 4x4'};}
+  function render(){
+    if(!img)return;var x=cv.getContext('2d'),W=1080,H=1920;
+    var s=Math.max(W/img.width,H/img.height),w=img.width*s,h=img.height*s;x.fillStyle='#000';x.fillRect(0,0,W,H);x.drawImage(img,(W-w)/2,(H-h)/2,w,h);
+    if(document.getElementById('st-dark').checked){var g=x.createLinearGradient(0,H*0.45,0,H);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.88)');x.fillStyle=g;x.fillRect(0,0,W,H);
+      var g2=x.createLinearGradient(0,0,0,360);g2.addColorStop(0,'rgba(0,0,0,.55)');g2.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g2;x.fillRect(0,0,W,360);}
+    if(logo.complete&&logo.naturalWidth){var lw=520,lh=lw*logo.naturalHeight/logo.naturalWidth;x.drawImage(logo,(W-lw)/2,90,lw,lh);}
+    var c=crew(),d=data(),f=d.final39,y=H-150;
+    x.textAlign='left';x.fillStyle='#fff';
+    x.font='600 34px "JetBrains Mono",monospace';x.fillStyle='#f5c04f';x.fillText('BOSCO CHIESANUOVA · 14.11.2026',80,y);
+    y-=70;x.fillStyle='#fff';x.font='600 46px "Plus Jakarta Sans",sans-serif';if(c.d||c.c)x.fillText((c.d||'')+(c.c?' · '+c.c:''),80,y);
+    y-=110;x.font='800 120px "Bricolage Grotesque",sans-serif';x.fillText('N. 39',80,y);var nw=x.measureText('N. 39').width;
+    x.font='700 52px "Bricolage Grotesque",sans-serif';x.fillStyle='#e4e4e7';x.fillText(c.car||'',80+nw+34,y-6);
+    if(f&&document.getElementById('st-res').checked){y-=150;
+      if(f.cls_pos){x.font='700 50px "Plus Jakarta Sans",sans-serif';x.fillStyle='#fff';x.fillText(f.cls_pos+'° di classe'+(f.cls?' '+f.cls:''),80,y);y-=80;}
+      x.fillStyle='#f5c04f';x.font='800 110px "Bricolage Grotesque",sans-serif';x.fillText(f.pos+'° assoluta',80,y);}
+    cv.hidden=false;act.hidden=false;
+  }
+  sf.addEventListener('change',function(){var f=sf.files[0];if(!f)return;var u=URL.createObjectURL(f),i=new Image();i.onload=function(){img=i;var go=function(){render();};try{Promise.all([document.fonts.load('800 120px "Bricolage Grotesque"'),document.fonts.load('600 46px "Plus Jakarta Sans"'),document.fonts.load('600 34px "JetBrains Mono"')]).then(go,go);}catch(e){go();}};i.src=u;});
+  ['st-res','st-dark'].forEach(function(id){document.getElementById(id).addEventListener('change',render);});
+  function blob(cb){cv.toBlob(function(b){cb(b);},'image/jpeg',0.92);}
+  document.getElementById('st-dl').addEventListener('click',function(){blob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lessinia-rally-39-storia.jpg';a.click();});});
+  document.getElementById('st-share').addEventListener('click',function(){blob(function(b){var f=new File([b],'lessinia-rally-39-storia.jpg',{type:'image/jpeg'});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(function(){});else{var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=f.name;a.click();}});});
+})();
+</script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
 <div class="ovl" id="ovl" hidden><div class="ovl-card"><div class="eyebrow" id="ovl-eye">Arriva il 39</div><div class="ovl-big" id="ovl-big">–</div><div class="ovl-sub" id="ovl-sub"></div><button class="btn" type="button" id="ovl-ok">Pronto!</button></div></div>
 <script>
@@ -1558,8 +1711,9 @@ function __main(){
     function save(){try{localStorage.setItem(K,JSON.stringify(L));}catch(e){}}
     function draw(){cnt.textContent=L.length+(L.length===1?' auto':' auto');list.innerHTML=L.slice().reverse().map(function(r){return '<li'+(String(r.n)==='39'?' class="mine"':'')+'><span class="lt">'+r.t+'</span><span class="ln">'+esc(r.n)+'</span><span>'+esc(name(r.n))+'</span></li>';}).join('');}
     n.addEventListener('input',function(){hint.textContent=name(n.value)||'';});
-    function add(){var v=n.value.trim();if(!v)return;var d=new Date();L.push({n:v,t:d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),d:d.toISOString().slice(0,10)});save();draw();buzz(60);if(window.LRH)LRH.onLog(v,d);n.value='';hint.textContent='';n.focus();}
-    document.getElementById('log-go').addEventListener('click',add);
+    function add(val){var v=(typeof val==='string'||typeof val==='number')?String(val):n.value.trim();if(!v)return;var d=new Date();L.push({n:v,t:d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),d:d.toISOString().slice(0,10)});save();draw();buzz(60);if(window.LRH)LRH.onLog(v,d);n.value='';hint.textContent='';n.focus();}
+    window.lrhLogAdd=add;
+    document.getElementById('log-go').addEventListener('click',function(){add();});
     n.addEventListener('keydown',function(e){if(e.key==='Enter')add();});
     document.getElementById('log-undo').addEventListener('click',function(){L.pop();save();draw();window.dispatchEvent(new Event('lrh-log'));});
     document.getElementById('log-clear').addEventListener('click',function(){var b=this;if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Tocca ancora per svuotare';setTimeout(function(){b.dataset.c='';b.textContent='Svuota';},3000);return;}L=[];save();draw();window.dispatchEvent(new Event('lrh-log'));b.dataset.c='';b.textContent='Svuota';});
