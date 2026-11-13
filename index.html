@@ -590,6 +590,41 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 .car-info .mono{color:var(--muted);font-size:12px}
 .car-map{height:260px;border-radius:14px;overflow:hidden;margin-top:10px;border:1px solid var(--line)}
 .car-map[hidden]{display:none}
+
+/* ===== Versione snella: sottocategorie, menu richiudibili ===== */
+.subnav{grid-column:1/-1;position:sticky;top:0;z-index:30;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 0 10px;margin:-6px 0 -6px;background:linear-gradient(var(--bg) 78%,rgba(11,11,12,0))}
+.subnav::-webkit-scrollbar{display:none}
+.subnav a{flex:none;font:600 13px/1 var(--body);color:var(--muted);text-decoration:none;background:var(--panel);border:1px solid var(--line);padding:9px 13px;border-radius:999px}
+.subnav a.on{color:#111;background:var(--accent);border-color:var(--accent)}
+@media (min-width:1100px){.subnav{top:61px;justify-content:center;flex-wrap:wrap}}
+section{scroll-margin-top:64px}
+@media (min-width:1100px){section{scroll-margin-top:124px}}
+details.more{margin-top:8px;font-size:13px;color:var(--muted)}
+details.more summary{cursor:pointer;color:var(--ink);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:6px}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"";width:7px;height:7px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg);transition:transform .15s}
+details.more[open] summary::before{transform:rotate(45deg)}
+details.more p,details.more ul{margin:8px 0 0}
+details.grp{border-top:1px solid var(--line);padding-top:4px;margin-top:6px}
+details.grp summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font:700 15px/1.3 var(--display);padding:10px 0}
+details.grp summary::-webkit-details-marker{display:none}
+details.grp summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-left:10px}
+details.grp[open] summary::after{transform:rotate(-135deg)}
+details.grp .gc{margin-left:auto;font:600 12px/1 var(--mono);color:var(--muted)}
+details.grp .gc.full{color:var(--ok)}
+.c39-car{margin:10px 0 0;font:600 13px/1.3 var(--mono);color:var(--muted)}
+details.lr-card{display:block}
+details.lr-card>summary{list-style:none;cursor:pointer}
+details.lr-card>summary::-webkit-details-marker{display:none}
+details.lr-card[open]>summary{margin-bottom:8px}
+details.lr-card>.lr-t,details.lr-card>small,details.lr-card>.btn,details.lr-card>details{margin-top:8px}
+details.lr-card>.btn{display:flex}
+footer details{margin-top:6px}
+
+header:has(.hlogo) h1,header:has(.hlogo) .eyebrow{display:none}
+.ptitle .eyebrow,.ptitle .sub{display:none}
+.ptitle{padding:2px 4px 0}
+@media (max-width:599px){.hlogo{max-width:240px;height:auto}header{padding:16px}}
 </style>
 </head>
 <body>
@@ -609,10 +644,10 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   <img class="hlogo" src="logo.png" alt="8° Lessinia Rally Historic, 13–14 novembre 2026, Rally Club Valpantena" width="650" height="296">
   <div class="eyebrow">Trofeo Banca Valsabbina · Rally Club Valpantena</div>
   <h1>8° Lessinia Rally Historic</h1>
-  <div class="sub">Sabato 14 novembre 2026 · Tornante consigliato: fine PS 4/6/8 "Calavedo", Bosco Chiesanuova</div>
+  <div class="sub">Sabato 14 novembre · tornante a fine PS 4/6/8 Calavedo, Bosco Chiesanuova</div>
 </header>
 
-<section class="now" aria-live="polite" data-page="gara">
+<section class="now" id="now" aria-live="polite" data-page="gara" data-short="Adesso">
   <div class="eyebrow">Adesso</div>
   <div class="now-row">
     <span class="big" id="now-title">Prossimo passaggio</span>
@@ -626,25 +661,26 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <div class="road"><span class="note">Strada Calavedo</span><span class="pill idle" id="pill-cal">–</span></div>
     <div class="road"><span class="note">Strada Velo</span><span class="pill idle" id="pill-velo">–</span></div>
   </div>
-  <div class="note">Gli orari di riapertura sono indicativi: la strada riapre solo dopo il passaggio della vettura "scopa".</div>
+  <div class="note">Riapertura indicativa: dopo l'auto "scopa".</div>
 </section>
 
-<section data-page="gara" id="news">
+<section data-page="gara" id="news" data-short="Comunicati">
   <div class="res-head"><h2>Stato della gara</h2><span class="pill idle" id="news-pill">nessun comunicato</span></div>
-  <div id="news-list"><p class="note">Ritardi, prove annullate o cambi di orario dai comunicati ufficiali: Claude li riporta qui a ogni controllo, insieme alle classifiche. Se arriva una novità ti compare un avviso.</p></div>
+  <div id="news-list"><p class="note">Ritardi e cambi di orario dai comunicati ufficiali. Ogni novità arriva anche come avviso.</p></div>
 </section>
 
-<section class="c39" id="c39" data-page="gara">
+<section class="c39" id="c39" data-page="gara" data-short="Il 39">
   <div class="res-head"><h2>Quando passa il 39</h2><span class="pill idle" id="c39-pill">in attesa dell'ordine di partenza</span></div>
   <div class="c39-next" id="c39-next">
-    <div><div class="eyebrow">Prossimo passaggio del 39 al tornante</div><div class="c39-time" id="c39-time">–</div><div class="note" id="c39-sub">L'ordine di partenza esce venerdì: Claude aggiorna la dashboard e qui compare l'orario stimato.</div></div>
+    <div><div class="eyebrow">Prossimo passaggio del 39 al tornante</div><div class="c39-time" id="c39-time">–</div><div class="note" id="c39-sub">L'orario stimato compare appena esce l'ordine di partenza.</div></div>
     <div class="c39-count" id="c39-count"></div>
   </div>
   <div class="c39-list" id="c39-list"></div>
-  <p class="note">Stima: orario di partenza della prova + un minuto per ogni auto davanti al 39 + circa 9 minuti per arrivare al tornante, che è verso la fine dei 10,5 km. Se segni le auto nel Registro passaggi, la stima si corregge da sola con il ritardo reale. Tieniti comunque pronto 5 minuti prima.</p>
+  <p class="c39-car">Ford Sierra 4x4 bianca e blu · livrea Mobil 1</p>
+  <details class="more"><summary>Come è calcolato</summary><p>Orario della prova + 1 minuto per ogni auto davanti + circa 9 minuti fino al tornante. Si corregge da solo quando segni le auto nel registro. Sii pronto 5 minuti prima.</p></details>
 </section>
 
-<section class="arr" id="arr" data-page="gara">
+<section class="arr" id="arr" data-page="gara" data-short="Arrivi">
   <div class="res-head"><h2>Chi sta arrivando</h2><span class="pill idle" id="arr-pill">–</span></div>
   <button class="btn focus-open" type="button" data-focus>Apri la schermata "in prova"</button>
   <div class="note" id="arr-sub">Le prossime auto al tornante, con l'orario stimato.</div>
@@ -657,12 +693,12 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <button class="btn ghost sm" type="button" data-dly="15">Prova interrotta +15</button>
     <button class="btn ghost sm" type="button" data-dly="0">Azzera</button>
   </div>
-  <p class="note">Ogni volta che segni un'auto nel Registro passaggi l'app capisce di quanto la gara è in anticipo o in ritardo e riallinea tutti gli orari, anche quello del 39. Se la prova viene fermata usa i pulsanti. Le auto ritirate vengono saltate quando Claude aggiorna l'elenco.</p>
+  <details class="more"><summary>Come funziona</summary><p>Quando segni un'auto nel registro, tutti gli orari si riallineano al ritardo reale. Se la prova viene fermata usa i pulsanti. I ritirati vengono saltati.</p></details>
 </section>
 
-<section class="log" id="log" data-page="gara">
+<section class="log" id="log" data-page="gara" data-short="Registro">
   <div class="res-head"><h2>Registro passaggi</h2><span class="pill idle" id="log-count">0 auto</span></div>
-  <p class="note">Quando passa un'auto scrivi il numero e tocca "Passata". L'orario viene salvato su questo telefono: a fine giornata ti serve per dare un nome alle foto.</p>
+  <p class="note">Segna ogni auto che passa: l'orario serve poi per dare il nome alle foto.</p>
   <div class="log-row">
     <input class="search log-n" id="log-n" type="number" inputmode="numeric" min="1" max="999" placeholder="N°" aria-label="Numero di gara">
     <button class="btn log-go" type="button" id="log-go">Passata</button>
@@ -677,19 +713,19 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   </div>
 </section>
 
-<section class="live-res" data-page="gara">
+<section class="live-res" id="classifica" data-page="gara" data-short="Classifica">
   <div class="res-head">
     <h2>Classifica live</h2>
     <span class="pill open">aggiornata da Claude</span>
   </div>
-  <p class="note">Appena l'organizzazione pubblica una classifica ufficiale, Claude la trasforma in una tabella e aggiorna questa pagina: posizione, equipaggio, auto, tempo e distacco, con il n. 39 evidenziato. Il link resta sempre lo stesso.</p>
+  <p class="note">Aggiornata da Claude dopo ogni prova, con il 39 evidenziato.</p>
   <a class="res-cta" href="https://claude.ai/artifact/3EE8RXXMet6Y7sC6wzYoAW">
     <span><b>Apri la classifica</b><small>Prima classifica attesa venerdì verso le 18:15, dopo la PS 1</small></span>
     <span class="arrow">→</span>
   </a>
   <div class="offline-res" id="off-res">
-    <div class="eyebrow">Copia salvata in questo file · funziona anche senza segnale</div>
-    <div id="off-body" class="note">Ancora nessuna classifica: la prima arriva dopo la PS 1. Ogni volta che aggiorno la classifica ti rimando anche questo file con la copia dentro.</div>
+    <div class="eyebrow">Copia salvata · anche senza rete</div>
+    <div id="off-body" class="note">Ancora nessuna classifica: la prima arriva dopo la PS 1.</div>
   </div>
   <div class="btns">
     <a class="btn ghost" href="https://webapp.sportity.com/event/Lessinia2026/9fe650ba-6cee-48be-a23d-24445bf119bf">Albo ufficiale Sportity</a>
@@ -697,7 +733,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   </div>
 </section>
 
-<section data-page="gara">
+<section data-page="gara" id="prog" data-short="Programma">
   <h2>Programma di sabato</h2>
   <ol class="tl" id="timeline">
     <li data-start="08:30" data-end="09:00"><span class="t">8:30</span><span><span class="w">Parcheggio a Bosco e salita a piedi al tornante</span><span class="d">Lascia l'auto in paese, non sulla strada della prova</span></span></li>
@@ -712,7 +748,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   </ol>
 </section>
 
-<section data-page="gara">
+<section data-page="gara" id="prove" data-short="Prove">
   <h2>Prove speciali e strade chiuse</h2>
   <div class="tbl">
     <table>
@@ -730,37 +766,38 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   <p class="note">Venerdì 13: PS 1 e PS 2 Romagnano/Azzago (5,52 km) alle 16:44 e alle 19:27. Strade chiuse dalle 15:30 alle 18:15 e dalle 19:00 alle 21:25. Partenza da Grezzana, Piazza C. Ederle.</p>
 </section>
 
-<section id="seq" data-page="gara">
+<section id="seq" data-page="gara" data-short="Sicurezza">
   <h2>Prima e dopo ogni prova</h2>
   <ol class="seq" id="seq-list">
-    <li><span class="sq" id="sq-000">~40 min</span><span><b>Auto "000"</b><small>Prima vettura di sicurezza: controlla che la strada sia chiusa e il pubblico al sicuro. Se sei in un punto vietato ti fanno spostare.</small></span></li>
-    <li><span class="sq" id="sq-00">~20 min</span><span><b>Auto "00"</b><small>Seconda vettura di sicurezza, spesso con il direttore di prova.</small></span></li>
-    <li><span class="sq" id="sq-0">~10 min</span><span><b>Auto "0"</b><small>Ultima apripista, fa il percorso come un'auto in gara. Dopo di lei arrivano le auto vere: ottima per provare inquadratura e messa a fuoco.</small></span></li>
-    <li><span class="sq" id="sq-1">1ª auto</span><span><b>Auto in gara, una al minuto</b><small>Gli orari esatti sono in "Chi sta arrivando".</small></span></li>
-    <li><span class="sq">Fine</span><span><b>Vettura "scopa"</b><small>Chiude la prova dopo l'ultima auto, di solito con una bandiera a scacchi o un cartello di fine gara. Solo dopo il suo passaggio si può attraversare o lasciare la strada.</small></span></li>
+    <li><span class="sq" id="sq-000">~40 min</span><span><b>Auto "000"</b><small>Prima auto di sicurezza: controlla strada e pubblico.</small></span></li>
+    <li><span class="sq" id="sq-00">~20 min</span><span><b>Auto "00"</b><small>Seconda auto di sicurezza.</small></span></li>
+    <li><span class="sq" id="sq-0">~10 min</span><span><b>Auto "0"</b><small>Ultima apripista: prova inquadratura e fuoco.</small></span></li>
+    <li><span class="sq" id="sq-1">1ª auto</span><span><b>Auto in gara, una al minuto</b><small>Orari in "Chi sta arrivando".</small></span></li>
+    <li><span class="sq">Fine</span><span><b>Vettura "scopa"</b><small>Chiude la prova: solo dopo puoi attraversare.</small></span></li>
   </ol>
-  <h3 class="h3">Se qualcosa va storto</h3>
+  <details class="more"><summary>Bandiere e imprevisti</summary>
   <div class="flags">
-    <div class="flag"><i style="background:#ef4444"></i><span><b>Bandiera rossa</b><small>Prova fermata, di solito per un incidente. Le auto rallentano e possono restare ferme a lungo. Tocca "Prova interrotta +15" in "Chi sta arrivando".</small></span></div>
-    <div class="flag"><i style="background:#facc15"></i><span><b>Bandiera gialla</b><small>Pericolo più avanti: le auto passano piano. Le foto di quel passaggio non saranno di gara.</small></span></div>
-    <div class="flag"><i style="background:#f4f4f5"></i><span><b>Ambulanza o carro attrezzi</b><small>Se entrano in prova, il passaggio è sospeso. Resta dove sei e lascia libera la strada.</small></span></div>
-    <div class="flag"><i style="background:#8e8e95"></i><span><b>Commissari col fischietto</b><small>Fischio lungo: un'auto sta arrivando, stai al tuo posto. Segui sempre le loro indicazioni.</small></span></div>
+    <div class="flag"><i style="background:#ef4444"></i><span><b>Bandiera rossa</b><small>Prova fermata: tocca "Prova interrotta +15".</small></span></div>
+    <div class="flag"><i style="background:#facc15"></i><span><b>Bandiera gialla</b><small>Pericolo più avanti: passano piano.</small></span></div>
+    <div class="flag"><i style="background:#f4f4f5"></i><span><b>Ambulanza o carro attrezzi</b><small>Passaggio sospeso: resta dove sei.</small></span></div>
+    <div class="flag"><i style="background:#8e8e95"></i><span><b>Commissari col fischietto</b><small>Arriva un'auto: stai al tuo posto.</small></span></div>
   </div>
-  <p class="note">Gli intervalli delle auto di sicurezza sono quelli tipici dei rally italiani e possono cambiare: per gli orari vale il passaggio dell'auto "0".</p>
+  </details>
+  <p class="note">Orari indicativi: fa fede l\'auto "0".</p>
 </section>
 
-<section data-page="gara" id="r39">
+<section data-page="gara" id="r39" data-short="Tempi 39">
   <div class="res-head"><h2>Il 39 prova per prova</h2><span class="pill idle" id="r39-pill">in attesa</span></div>
-  <div id="r39-body"><p class="note">Dopo ogni classifica Claude aggiunge qui il tempo del 39 in ogni prova, la posizione nella prova e quella in classifica generale. Il primo tempo arriva dopo la PS 1, venerdì sera.</p></div>
+  <div id="r39-body"><p class="note">Tempi e posizioni del 39 dopo ogni prova. Il primo arriva venerdì sera.</p></div>
 </section>
 
-<section data-page="gara">
+<section data-page="gara" id="ent" data-short="Partenti">
   <div class="res-head"><h2>Elenco partenti</h2><span class="note" id="ent-count"></span></div>
   <input class="search" id="ent-q" type="search" inputmode="numeric" placeholder="Cerca numero, pilota o auto" aria-label="Cerca nell'elenco partenti">
-  <div id="ent-list" class="ent"><p class="note">L'elenco iscritti esce venerdì sull'albo di gara: Claude lo inserisce qui e ti rimanda il file.</p></div>
+  <div id="ent-list" class="ent"><p class="note">L'elenco arriva con l'ordine di partenza.</p></div>
 </section>
 
-<section data-page="gara">
+<section data-page="gara" id="contatti" data-short="Contatti">
   <h2>Contatti e documenti</h2>
   <ul class="plain">
     <li>Organizzazione: Bob <span class="mono">+39 348 081 1712</span> · Gian <span class="mono">+39 347 252 9415</span></li>
@@ -772,7 +809,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 
 <div class="ptitle" data-page="meteo"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Meteo</h1><div class="sub">Previsioni per il tornante e per Velo Veronese, radar in diretta</div></div>
 
-<section data-page="meteo" class="wxnow" id="wxnow">
+<section data-page="meteo" class="wxnow" id="wxnow" data-short="Adesso">
   <div class="res-head"><h2 id="wn-h">Adesso al tornante</h2><span class="pill idle" id="wn-pill">–</span></div>
   <div class="seg" role="tablist" aria-label="Luogo"><button type="button" class="on" data-loc="cal">Tornante · Calavedo</button><button type="button" data-loc="velo">Velo Veronese</button></div>
   <div class="wn-main">
@@ -781,24 +818,24 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   </div>
   <div class="wn-chips" id="wn-chips"></div>
   <div class="wn-rain"><div class="wn-rh"><b>Pioggia nelle prossime 2 ore</b><span class="note" id="wn-rs"></span></div><div class="wn-bars" id="wn-bars"></div></div>
-  <p class="note" id="wn-meta">Stima del modello meteo per il punto esatto del tornante (1.100 m circa), non una stazione: si aggiorna ogni 10 minuti con l'app aperta.</p>
+  <p class="note" id="wn-meta">Stima per il punto esatto (non una stazione), aggiornata ogni 10 minuti.</p>
 </section>
 
-<section data-page="meteo" id="cold">
+<section data-page="meteo" id="cold" data-short="Sabato">
   <div class="res-head"><h2>Sabato al tornante: il freddo ora per ora</h2><span class="pill idle" id="cold-pill">–</span></div>
   <div class="cold-wrap"><svg id="cold-svg" viewBox="0 0 700 250" role="img" aria-label="Temperatura di sabato al tornante ora per ora, con gli orari dei passaggi"></svg></div>
   <div class="cold-leg"><span><i class="l1"></i>temperatura</span><span><i class="l2"></i>percepita col vento</span><span><i class="b1"></i>prove</span><span><i class="b2"></i>pause: caffè caldo</span></div>
   <p class="note" id="cold-note"></p>
 </section>
 
-<section data-page="meteo" id="road">
+<section data-page="meteo" id="road" data-short="Strada">
   <div class="res-head"><h2>Strada: ghiaccio e nebbia</h2><span class="pill idle" id="road-pill">–</span></div>
-  <p class="note">Controllo del tornante e della salita (Cerro Veronese) per stanotte e per sabato mattina, quando sarai in strada. Se c'è rischio ti compare un avviso.</p>
+  <p class="note">Tornante e salita a Cerro: stanotte, sabato mattina e al rientro.</p>
   <div class="road-g" id="road-g"></div>
-  <p class="note">"Ghiaccio possibile" vuol dire temperatura vicina o sotto lo zero con umidità alta o dopo la pioggia: nelle curve in ombra la strada può essere scivolosa anche se il resto è asciutto.</p>
+  <details class="more"><summary>Cosa vuol dire "ghiaccio possibile"</summary><p>Temperatura vicina allo zero con umidità alta o dopo la pioggia: attenzione nelle curve in ombra.</p></details>
 </section>
 
-<section data-page="meteo">
+<section data-page="meteo" id="prev" data-short="Previsioni">
   <h2>Meteo al tornante consigliato</h2>
   <div class="wx-meta note" id="wx-meta">Carico le previsioni…</div>
 
@@ -831,10 +868,10 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
       <div class="wx-days" id="wx-days-velo"></div>
     </div>
   </div>
-  <div class="live">
+  <div class="live" id="radar">
     <h3>Radar 3B Meteo</h3>
     <div class="rbox"><iframe title="Radar 3B Meteo" src="https://www.3bmeteo.com/cartografico?embed=1#type=italia,param=radar,fascia_ora=auto,embed=1" loading="lazy" allow="fullscreen"></iframe></div>
-    <span class="note">Pioggia, neve e grandine in tempo reale, con l'animazione degli ultimi minuti. Allarga con due dita per zoomare sulla Lessinia.</span>
+    <span class="note">Pioggia e neve in diretta. Allarga con due dita sulla Lessinia.</span>
   </div>
   <div class="btns">
     <a class="btn" href="https://www.3bmeteo.com/meteo/bosco+chiesanuova">Confronta con 3B Meteo</a>
@@ -844,24 +881,24 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 
 <div class="ptitle" data-page="zaino"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Zaino</h1><div class="sub">Cosa fare prima di partire e cosa mettere nello zaino</div></div>
 
-<section class="todo" data-page="zaino">
+<section class="todo" id="todo" data-page="zaino" data-short="Da fare">
     <div class="res-head"><h2>Da fare prima di sabato</h2><span class="pill idle" id="todo-count">0 di 0</span></div>
     <ul class="check" data-key="todo">
-      <li><label><input type="checkbox" id="td1"><span>Comprare la frontale Simond HL500 USB V3 nera (Decathlon, 29,99 €)</span></label></li>
-      <li><label><input type="checkbox" id="td2"><span>Caricare la frontale al 100%</span></label></li>
-      <li><label><input type="checkbox" id="td3"><span>Recuperare la sedia da campeggio con schienale (in prestito, Brico di Soave o Decathlon)</span></label></li>
-      <li><label><input type="checkbox" id="td4"><span>Impermeabilizzare gli scarponi con grasso o spray</span></label></li>
-      <li><label><input type="checkbox" id="td5"><span>Mettere in carica telefono, powerbank e batterie GoPro</span></label></li>
-      <li><label><input type="checkbox" id="td6"><span>In Impostazioni: "Scarica tutto per l'uso offline" col Wi-Fi, finché le spie sono verdi</span></label></li>
-      <li><label><input type="checkbox" id="td7"><span>Lasciare il PC acceso con l'app di Claude aperta e senza standby (serve per le classifiche)</span></label></li>
+      <li><label><input type="checkbox" id="td1"><span>Comprare la frontale Simond HL500 nera (Decathlon, 29,99 €)</span></label></li>
+      <li><label><input type="checkbox" id="td2"><span>Caricare la frontale</span></label></li>
+      <li><label><input type="checkbox" id="td3"><span>Recuperare la sedia da campeggio</span></label></li>
+      <li><label><input type="checkbox" id="td4"><span>Impermeabilizzare gli scarponi</span></label></li>
+      <li><label><input type="checkbox" id="td5"><span>Caricare telefono, powerbank e batterie GoPro</span></label></li>
+      <li><label><input type="checkbox" id="td6"><span>Salvare l'app per l'uso offline (Impostazioni)</span></label></li>
+      <li><label><input type="checkbox" id="td7"><span>PC acceso con Claude aperto, senza standby</span></label></li>
       <li><label><input type="checkbox" id="td8"><span>Sveglia per partire alle 7:20</span></label></li>
     </ul>
 </section>
 
-<section data-page="zaino">
+<section data-page="zaino" id="portare" data-short="Da portare">
   <div class="res-head"><h2>Da portare</h2><span class="pill idle" id="pack-count">0 di 0</span></div>
-  <p class="note">Le spunte restano salvate su questo telefono.</p>
-  <h3 class="h3">Indosso e ai piedi</h3>
+  
+  <details class="grp"><summary>Indosso e ai piedi<span class="gc"></span></summary>
   <ul class="check" data-key="zaino">
     <li><label><input type="checkbox" id="pk1"><span>Maglia termica</span></label></li>
     <li><label><input type="checkbox" id="pk2"><span>Pile</span></label></li>
@@ -874,7 +911,8 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <li><label><input type="checkbox" id="pk9"><span>Scarponi Crispi impermeabilizzati (per stare al tornante, cambio al parcheggio)</span></label></li>
     <li><label><input type="checkbox" id="pk10"><span>Adidas Samba (per guidare)</span></label></li>
   </ul>
-  <h3 class="h3">Foto e video</h3>
+  </details>
+  <details class="grp"><summary>Foto e video<span class="gc"></span></summary>
   <ul class="check" data-key="zaino">
     <li><label><input type="checkbox" id="pk11"><span>Telefono Galaxy S24 Ultra carico</span></label></li>
     <li><label><input type="checkbox" id="pk12"><span>GoPro con custodia e cornici</span></label></li>
@@ -886,7 +924,8 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <li><label><input type="checkbox" id="pk18"><span>Powerbank carico</span></label></li>
     <li><label><input type="checkbox" id="pk19"><span>Cavi USB-C per telefono e GoPro</span></label></li>
   </ul>
-  <h3 class="h3">Giornata al tornante</h3>
+  </details>
+  <details class="grp"><summary>Giornata al tornante<span class="gc"></span></summary>
   <ul class="check" data-key="zaino">
     <li><label><input type="checkbox" id="pk20"><span>Zaino Mil-Tec</span></label></li>
     <li><label><input type="checkbox" id="pk21"><span>Sedia da campeggio + seggiolino pieghevole</span></label></li>
@@ -902,7 +941,8 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <li><label><input type="checkbox" id="pk38"><span>Plaid o coperta in pile</span></label></li>
     <li><label><input type="checkbox" id="pk39"><span>Telo impermeabile o sacco grande</span></label></li>
   </ul>
-  <h3 class="h3">Varie</h3>
+  </details>
+  <details class="grp"><summary>Varie<span class="gc"></span></summary>
   <ul class="check" data-key="zaino">
     <li><label><input type="checkbox" id="pk29"><span>Contanti per bar e parcheggio</span></label></li>
     <li><label><input type="checkbox" id="pk30"><span>Carta d'identità</span></label></li>
@@ -917,14 +957,15 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <li><label><input type="checkbox" id="pk44"><span>Patente e documenti dell'auto</span></label></li>
     <li><label><input type="checkbox" id="pk45"><span>Pieno di benzina prima di salire</span></label></li>
   </ul>
+  </details>
 </section>
 
 <div class="ptitle" data-page="viaggio"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Viaggio e Spot</h1><div class="sub">Come arrivare, dove parcheggiare, il tornante e la zona intorno</div></div>
 
-<section data-page="viaggio">
+<section data-page="viaggio" id="viaggio-s" data-short="Viaggio">
   <h2>Viaggio, parcheggio e servizi</h2>
   <div class="trip">
-    <div class="trip-big"><div class="eyebrow">Partenza consigliata da Verona sud</div><div class="trip-time">7:20</div><div class="note">Circa 45 km e un'ora di strada, in salita da Verona verso Grezzana e la Lessinia. Così arrivi a Bosco verso le 8:20, parcheggi con calma e sei al tornante prima che la strada chiuda alle 9:00.</div></div>
+    <div class="trip-big"><div class="eyebrow">Partenza consigliata da Verona sud</div><div class="trip-time">7:20</div><div class="note">Circa un'ora (45 km) via Grezzana: a Bosco verso le 8:20, prima della chiusura delle 9:00.</div></div>
   </div>
   <h3 class="h3">Parcheggi gratuiti vicino al tornante</h3>
   <ul class="poi">
@@ -932,7 +973,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <li><span class="poi-ic">P</span><span><b>Vicino a Piazza Borgo</b><small>gratuito · circa 380 m</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.622102,11.030511">Portami lì</a></li>
     <li><span class="poi-ic">P</span><span><b>Parcheggio grande, circa 90 posti</b><small>gratuito · circa 580 m · utile se in centro è pieno</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.624376,11.030623">Portami lì</a></li>
   </ul>
-  <p class="note">Il giorno del rally alcuni parcheggi in centro possono essere riservati all'organizzazione: segui i cartelli e i commissari. Dal parcheggio scendi a piedi su Via Saina, 5 minuti.</p>
+  <p class="note">Alcuni posti in centro possono essere riservati: segui i commissari. Dal parcheggio 5 minuti a piedi.</p>
   <h3 class="h3">Bar, bagni e servizi</h3>
   <ul class="poi">
     <li><span class="poi-ic">☕</span><span><b>Osteria La Baita</b><small>Largo Jenna · circa 100 m, la più vicina</small></span></li>
@@ -941,7 +982,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <li><span class="poi-ic">WC</span><span><b>Bagni pubblici</b><small>vicino a Piazza della Chiesa · circa 300 m</small></span><a class="btn ghost sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=45.621837,11.029428">Portami lì</a></li>
     <li><span class="poi-ic">+</span><span><b>Farmacia</b><small>circa 540 m, verso Via General Cantore</small></span></li>
   </ul>
-  <p class="note">Posizioni da OpenStreetMap; gli orari di apertura non sono indicati, verificali sul posto.</p>
+  <p class="note">Orari di apertura da verificare sul posto.</p>
   <h3 class="h3">Numeri utili</h3>
   <ul class="poi">
     <li><span class="poi-ic sos">112</span><span><b>Emergenze</b><small>Numero unico europeo: soccorso, carabinieri, vigili del fuoco</small></span></li>
@@ -949,9 +990,9 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   </ul>
 </section>
 
-<section data-page="viaggio" id="car">
+<section data-page="viaggio" id="car" data-short="Macchina">
   <div class="res-head"><h2>Dov'è la macchina</h2><span class="pill idle" id="car-pill">non salvata</span></div>
-  <p class="note">Quando parcheggi tocca "Ho parcheggiato qui": la posizione resta salvata nel telefono, anche senza rete. Stasera al buio ti riporta alla macchina.</p>
+  <p class="note">Salvala quando parcheggi: stasera ti riporta qui, anche senza rete.</p>
   <input class="search" id="car-note" type="text" placeholder="Nota facoltativa (es. dietro la chiesa, seconda fila)" aria-label="Nota sul parcheggio">
   <div class="btns">
     <button class="btn" type="button" id="car-save">Ho parcheggiato qui</button>
@@ -963,7 +1004,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   <div class="btns"><button class="btn ghost sm" type="button" id="car-del" hidden>Cancella posizione</button></div>
 </section>
 
-<section class="warn" data-page="viaggio">
+<section class="warn" id="posto" data-page="viaggio" data-short="Il posto">
   <h2>Il posto: tornante a fine prova</h2>
   <figure class="spot">
     <svg class="osm" viewBox="-240 -200 480 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mappa del tornante su Via Saina a Bosco Chiesanuova: la prova arriva da ovest, fa il tornante cerchiato in giallo, scende al secondo tornante e risale verso il paese">
@@ -1004,12 +1045,12 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 </g>
 <text x="-234" y="124" font-family="Plus Jakarta Sans, system-ui, sans-serif" font-size="8" fill="#6b6b72">© OpenStreetMap contributors</text>
 </svg>
-    <figcaption class="note">Il tornante su Via Saina, appena sotto il paese. In rosso il percorso della prova ricostruito sulle strade di OpenStreetMap: le frecce indicano il senso di marcia delle auto, il cerchio giallo è il tornante consigliato. Il tracciato esatto va confermato sul posto.</figcaption>
+    <figcaption class="note">In rosso la prova col senso di marcia, in giallo il tornante (da OpenStreetMap, da confermare sul posto).</figcaption>
   </figure>
   <div class="live">
     <h3>Vista satellite</h3>
     <div id="sat" class="satmap" role="img" aria-label="Vista satellite del tornante su Via Saina con il percorso della prova"></div>
-    <span class="note">Trascina e allarga con due dita. In rosso la prova, in giallo il tornante consigliato.</span>
+    <span class="note">In rosso la prova, in giallo il tornante.</span>
   </div>
   <div class="btns spot-btns">
     <a class="btn" href="https://www.google.com/maps/@?api=1&amp;map_action=pano&amp;viewpoint=45.619783,11.026997">Apri Street View del tornante</a>
@@ -1018,15 +1059,15 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   </div>
   <ul class="plain">
     <li>Coordinate: <span class="mono">45°37'11.2"N 11°01'37.2"E</span></li>
-    <li>Cerca il cartello giallo a scacchi dell'<b>arrivo lanciato</b>. Se il tornante è prima del cartello, resta lì. Se è dopo, torna indietro qualche centinaio di metri lungo la prova.</li>
-    <li>Mettiti <b>all'interno della curva e in alto</b>, mai all'esterno o nella traiettoria d'uscita.</li>
-    <li>Segui sempre i commissari. La zona dello stop è riservata a loro.</li>
+    <li>Cerca il cartello a scacchi dell'<b>arrivo lanciato</b>: se il tornante è dopo, torna indietro di qualche centinaio di metri.</li>
+    <li>Stai <b>all'interno della curva e in alto</b>, mai all'esterno.</li>
+    <li>Segui sempre i commissari.</li>
   </ul>
 </section>
 
-<section id="sos" data-page="viaggio">
+<section id="sos" data-page="viaggio" data-short="SOS">
   <h2>Posizione e SOS</h2>
-  <p class="note">Se vi perdete, se qualcuno deve raggiungervi o in caso di emergenza.</p>
+  <p class="note">Per ritrovarvi o in emergenza.</p>
   <div class="btns">
     <button class="btn" type="button" id="sos-gps">Invia la mia posizione GPS</button>
     <button class="btn ghost" type="button" id="sos-spot">Invia il punto del tornante</button>
@@ -1034,32 +1075,31 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   </div>
   <div class="note sos-out" id="sos-out"></div>
   <ul class="plain" style="margin-top:12px">
-    <li>Al 112 di': <b>"Bosco Chiesanuova, Via Saina, tornante a fine prova speciale del rally"</b> e leggi le coordinate <span class="mono">45.61978, 11.02700</span>.</li>
-    <li>Se un'auto esce di strada, <b>non entrare in prova</b>: possono arrivarne altre. Avvisa il commissario più vicino, che ha la radio e fa fermare la gara.</li>
-    <li>In montagna il segnale può essere debole: il 112 funziona anche con qualunque rete disponibile.</li>
+    <li>Al 112: <b>"Bosco Chiesanuova, Via Saina, tornante a fine prova del rally"</b> · <span class="mono">45.61978, 11.02700</span></li>
+    <li>Incidente in prova: <b>non entrare in strada</b>, avvisa un commissario.</li>
   </ul>
 </section>
 
 <div class="ptitle" data-page="foto"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Fotografie</h1><div class="sub">Impostazioni, luce di ogni passaggio e scatti da non perdere</div></div>
 
-<section data-page="foto" id="sun">
+<section data-page="foto" id="sun" data-short="Sole">
   <div class="res-head"><h2>Il sole sul tornante</h2><span class="pill idle" id="sun-pill">sabato 14</span></div>
-  <p class="note">Apri la fotocamera e guarda dove passa il sole nel cielo, ora per ora, con i momenti dei passaggi segnati sopra. Al tornante vedi subito se finisce dietro un costone, un albero o proprio sopra le auto.</p>
+  <p class="note">Inquadra il cielo e guarda dove sarà il sole a ogni passaggio.</p>
   <button class="btn sun-open" type="button" id="ar-open"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Apri il sole in AR</button>
   <div class="sun-cards" id="sun-cards"></div>
-  <p class="note">Direzione e altezza del sole calcolate per il tornante. "Luce" vale guardando le auto che arrivano, verso ovest-nord-ovest (direzione ricostruita dalla mappa). Le montagne possono coprire il sole prima del tramonto: controllalo in AR sul posto.</p>
+  <details class="more"><summary>Note</summary><p>"Luce" vale guardando le auto che arrivano (verso ovest-nord-ovest). Le montagne possono coprire il sole prima del tramonto: controlla in AR sul posto.</p></details>
 </section>
 
-<section data-page="foto">
+<section data-page="foto" id="raw" data-short="Expert RAW">
   <h2>Foto con Expert RAW · Galaxy S24 Ultra</h2>
   <div class="lux-now" id="lux-now"></div>
-  <p class="note">In <b>Expert RAW</b> imposti tu <b>S</b> (tempo), <b>ISO</b>, <b>EV</b> e la messa a fuoco manuale <b>MF</b>; ogni scatto salva un DNG da sistemare dopo, più il JPEG. Dal tornante l'obiettivo migliore è il <b>3x</b>; il <b>5x</b> serve per i primi piani da lontano.</p>
-  <ul class="plain er-tips">
-    <li><b>Attenzione alla velocità:</b> Expert RAW unisce più fotogrammi per ogni scatto, quindi tra una foto e l'altra è più lento della fotocamera normale e la raffica è limitata. Con le auto che passano a un minuto l'una dall'altra va benissimo; per avere la sequenza completa del 39 tieni pronta come riserva la Fotocamera in modalità Pro con la raffica.</li>
-    <li><b>Messa a fuoco:</b> in MF metti a fuoco sul punto di corda con un'auto di prova, poi non toccare più: l'autofocus su un'auto veloce a volte arriva tardi.</li>
-    <li><b>Bilanciamento del bianco:</b> fissalo (circa 5500 K di giorno) così tutte le foto della giornata hanno gli stessi colori; nel DNG lo cambi comunque dopo.</li>
-    <li><b>Prova prima:</b> oggi fai qualche scatto ad auto in movimento sulla strada di casa, così vedi se a 1/1000 ti vengono mosse o con artefatti.</li>
-  </ul>
+  <p class="note"><b>Expert RAW</b>: imposti S, ISO, EV e MF. Obiettivo migliore <b>3x</b>, <b>5x</b> per i primi piani.</p>
+  <details class="more"><summary>4 consigli per Expert RAW</summary><ul class="plain">
+    <li>È più lento della fotocamera normale: per la raffica del 39 tieni pronta la modalità <b>Pro</b>.</li>
+    <li><b>MF</b> sul punto di corda con un'auto di prova, poi non toccarla.</li>
+    <li>Bilanciamento del bianco fisso, circa <b>5500 K</b>.</li>
+    <li>Prova oggi a 1/1000 su auto in movimento.</li>
+  </ul></details>
   <div class="shots">
     <div class="shot"><div class="shot-h"><span class="tag2">PS 4 · 10:17</span><b>Luce piena del mattino</b></div>
       <p class="lux">Sole a circa 23° · luce piena ma bassa, ombre lunghe</p>
@@ -1073,76 +1113,79 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     <div class="shot"><div class="shot-h"><span class="tag2">Video</span><b>Per le storie</b></div>
       <ul><li>4K a 60 fps, oppure Super Slow-mo per l'entrata in curva</li><li>Verticale se è per le storie di Instagram</li><li>Blocca l'esposizione toccando a lungo lo schermo</li></ul></div>
   </div>
-  <p class="note">I DNG di Expert RAW si sistemano con Lightroom (anche sul telefono): recuperi le ombre del tornante e il cielo bruciato. Pesano molto più dei JPEG, quindi libera spazio prima di partire. Con il freddo la batteria cala in fretta: tieni il telefono in tasca tra un passaggio e l'altro e pulisci gli obiettivi prima di ogni prova.</p>
+  <p class="note">I DNG pesano molto: libera spazio. Tra un passaggio e l'altro telefono in tasca, al caldo.</p>
 </section>
 
-<section data-page="foto" id="shots39">
+<section data-page="foto" id="shots39" data-short="Scatti">
   <div class="res-head"><h2>Scatti da fare al 39</h2><span class="pill idle" id="shots-count">0 di 12</span></div>
-  <p class="note">Inquadrature diverse in ogni passaggio, così non torni a casa con 40 foto uguali. Le spunte restano salvate.</p>
-  <h3 class="h3">PS 4 · mattina, luce frontale</h3>
+  <p class="note">Inquadrature diverse per ogni passaggio.</p>
+  <details class="grp"><summary>PS 4 · mattina, luce frontale<span class="gc"></span></summary>
   <ul class="check" data-key="shots">
     <li><label><input type="checkbox" id="sh1"><span>Entrata in curva a 3x, nitida a 1/1000</span></label></li>
     <li><label><input type="checkbox" id="sh2"><span>Punto di corda con la ruota interna vicina al bordo</span></label></li>
     <li><label><input type="checkbox" id="sh3"><span>Uscita in accelerazione, con polvere o ghiaia</span></label></li>
     <li><label><input type="checkbox" id="sh4"><span>GoPro ferma su tutto il passaggio (mettila prima della prima auto)</span></label></li>
   </ul>
-  <h3 class="h3">PS 6 · pomeriggio, luce laterale</h3>
+  </details>
+  <details class="grp"><summary>PS 6 · pomeriggio, luce laterale<span class="gc"></span></summary>
   <ul class="check" data-key="shots">
     <li><label><input type="checkbox" id="sh5"><span>Panning a 1/60 sull'uscita: auto nitida, sfondo mosso</span></label></li>
     <li><label><input type="checkbox" id="sh6"><span>Primo piano dell'abitacolo a 5x, quando rallentano in entrata</span></label></li>
     <li><label><input type="checkbox" id="sh7"><span>Foto larga a 0,6x con il tornante e il pubblico</span></label></li>
     <li><label><input type="checkbox" id="sh8"><span>Video verticale per le storie</span></label></li>
   </ul>
-  <h3 class="h3">PS 8 · buio e arrivo</h3>
+  </details>
+  <details class="grp"><summary>PS 8 · buio e arrivo<span class="gc"></span></summary>
   <ul class="check" data-key="shots">
     <li><label><input type="checkbox" id="sh9"><span>Fari in arrivo, 1/250 e ISO alti</span></label></li>
     <li><label><input type="checkbox" id="sh10"><span>Scia di luce col treppiede, 2–4 secondi</span></label></li>
     <li><label><input type="checkbox" id="sh11"><span>GoPro di notte sul passaggio del 39</span></label></li>
     <li><label><input type="checkbox" id="sh12"><span>Auto ferma all'arrivo in Piazza Marconi, con l'equipaggio</span></label></li>
   </ul>
+  </details>
 </section>
 
-<section data-page="foto" id="match">
+<section data-page="foto" id="match" data-short="Nomi foto">
   <h2>Dai un nome alle foto</h2>
-  <p class="note">A fine giornata scegli le foto (anche i DNG di Expert RAW e i JPG della GoPro): l'app legge l'orario di scatto dentro ogni file e lo confronta con il Registro passaggi, così sai di quale auto è ogni foto. Le foto non vengono caricate da nessuna parte: tutto resta sul dispositivo.</p>
+  <p class="note">Scegli le foto: l'app le divide per auto usando l'orario di scatto e il Registro. Restano sul dispositivo.</p>
   <div class="btns">
     <label class="btn" for="m-files">Scegli le foto</label>
     <input type="file" id="m-files" multiple accept="image/*,.dng,.DNG" hidden>
   </div>
   <div class="m-opts">
     <label>Correzione orologio (secondi) <input class="search m-off" id="m-off" type="number" inputmode="numeric" value="0" step="1"></label>
-    <span class="note">Serve per la GoPro se il suo orologio è avanti o indietro: per esempio −40 se segna 40 secondi in più.</span>
+    <span class="note">Per la GoPro se l'orologio è sfasato (es. −40).</span>
   </div>
   <details class="m-imp"><summary>Registro da un altro dispositivo</summary>
-    <p class="note">Sul PC il registro del telefono non c'è: sul telefono tocca "Condividi o copia l'elenco" nel Registro passaggi, mandatelo e incollalo qui.</p>
+    <p class="note">Sul PC incolla qui l'elenco condiviso dal Registro del telefono.</p>
     <textarea class="search m-ta" id="m-ta" rows="5" placeholder="10:26:14  n. 1 ..."></textarea>
   </details>
   <div class="note" id="m-sum"></div>
   <div class="m-res" id="m-res"></div>
 </section>
 
-<section data-page="foto" id="lr">
+<section data-page="foto" id="lr" data-short="Lightroom">
   <div class="res-head"><h2>Ricette Lightroom</h2><span class="pill idle">punti di partenza</span></div>
-  <p class="note">Valori da cui partire sui DNG di Expert RAW. Sistema la prima foto di un passaggio, poi copia le impostazioni sulle altre: nel menu <b>⋯ → Copia impostazioni</b>, seleziona le altre foto e <b>Incolla</b>. Al tornante scatta un filo sottoesposto (EV −0,3/−0,7): le ombre si recuperano, il cielo bruciato no.</p>
+  <p class="note">Sistema una foto, poi <b>⋯ → Copia impostazioni</b> e incolla sulle altre dello stesso passaggio. Scatta un filo sottoesposto (EV −0,3/−0,7).</p>
   <div class="lr-cards" id="lr-cards"></div>
-  <p class="note">I preset si importano in Lightroom dal pannello <b>Predefiniti → ⋯ → Importa predefiniti</b> (sul telefono) o da <b>File → Importa profili e predefiniti</b> (sul PC). Non ho potuto provare l'importazione da qui: se un file non viene accettato, inserisci i valori a mano dalla scheda.</p>
+  <details class="more"><summary>Come importare i preset</summary><p>Telefono: <b>Predefiniti → ⋯ → Importa predefiniti</b>. PC: <b>File → Importa profili e predefiniti</b>. Se un file non viene accettato, usa i valori della scheda.</p></details>
 </section>
 
-<section data-page="foto" id="exp">
+<section data-page="foto" id="exp" data-short="Esporta">
   <h2>Esportare per Instagram</h2>
   <div class="exp-g">
-    <div class="exp"><b>Post nel feed</b><span class="mono">4:5 · 1080 × 1350</span><small>Ritaglio 4:5 verticale: occupa più schermo del quadrato.</small></div>
-    <div class="exp"><b>Storia</b><span class="mono">9:16 · 1080 × 1920</span><small>Lascia spazio in alto e in basso per le scritte di Instagram.</small></div>
-    <div class="exp"><b>Panoramica</b><span class="mono">3 foto 4:5 in carosello</span><small>Per la sequenza entrata, corda e uscita del tornante.</small></div>
+    <div class="exp"><b>Post nel feed</b><span class="mono">4:5 · 1080 × 1350</span><small>Occupa più schermo del quadrato.</small></div>
+    <div class="exp"><b>Storia</b><span class="mono">9:16 · 1080 × 1920</span><small>Margine sopra e sotto per le scritte.</small></div>
+    <div class="exp"><b>Panoramica</b><span class="mono">3 foto 4:5 in carosello</span><small>Entrata, corda e uscita.</small></div>
   </div>
   <ul class="plain" style="margin-top:12px">
-    <li>In Lightroom: <b>Esporta → JPG</b>, qualità 90–100, lato lungo 2160 px (Instagram la riduce lui con meno perdita), nitidezza in uscita <b>Schermo, standard</b>.</li>
-    <li>Raddrizza l'orizzonte prima di tagliare: sul tornante la strada inclinata inganna.</li>
-    <li>Per mandarle senza perdere qualità usa un <b>album condiviso di Lightroom</b> o una cartella Google Drive: WhatsApp le comprime (se proprio, mandale come Documento).</li>
+    <li><b>Esporta → JPG</b>, qualità 90–100, lato lungo 2160 px, nitidezza <b>Schermo</b>.</li>
+    <li>Raddrizza l'orizzonte prima di tagliare.</li>
+    <li>Mandale con un album di Lightroom o Drive: WhatsApp le comprime.</li>
   </ul>
 </section>
 
-<section data-page="foto" id="post">
+<section data-page="foto" id="post" data-short="Dopo">
   <div class="res-head"><h2>Dopo il rally, passo per passo</h2><span class="pill idle" id="post-count">0 di 8</span></div>
   <ul class="check" data-key="post">
     <li><label><input type="checkbox" id="po1"><span>Sabato sera: copia DNG, JPG e video GoPro sul PC o in cloud, prima di cancellare qualsiasi cosa</span></label></li>
@@ -1156,68 +1199,56 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   </ul>
 </section>
 
-<section data-page="foto" id="story">
+<section data-page="foto" id="story" data-short="Storia">
   <h2>Storia per Instagram</h2>
-  <p class="note">Scegli una foto: l'app crea un'immagine verticale 1080×1920 con il nome della gara, l'equipaggio del 39 e, a fine gara, il risultato finale. Tutto resta sul telefono.</p>
+  <p class="note">Una tua foto con logo, n. 39 e risultato, in formato storia.</p>
   <div class="btns"><label class="btn" for="st-file">Scegli la foto</label><input type="file" id="st-file" accept="image/*" hidden></div>
   <div class="st-opts">
-    <label class="sw"><input type="checkbox" id="st-res" checked><span><b>Mostra il risultato</b><small>Posizione finale e di classe, appena c'è la classifica finale</small></span></label>
-    <label class="sw"><input type="checkbox" id="st-dark" checked><span><b>Sfumatura scura in basso</b><small>Rende leggibili le scritte su foto chiare</small></span></label>
+    <label class="sw"><input type="checkbox" id="st-res" checked><span><b>Mostra il risultato</b><small>Appena c'è la classifica finale</small></span></label>
+    <label class="sw"><input type="checkbox" id="st-dark" checked><span><b>Sfumatura scura in basso</b><small>Per foto chiare</small></span></label>
   </div>
   <canvas id="st-c" class="st-c" width="1080" height="1920" hidden></canvas>
   <div class="btns" id="st-act" hidden><button class="btn" type="button" id="st-share">Condividi</button><button class="btn ghost" type="button" id="st-dl">Salva l'immagine</button></div>
 </section>
 
-<section data-page="foto">
-  <h2>Promemoria foto</h2>
-  <ul class="check" data-key="foto">
-    <li><label><input type="checkbox" id="f1"><span>Il <b>n. 39</b>: Ford Sierra 4x4 bianca e blu, livrea Mobil 1. Manca solo l'orario di partenza</span></label></li>
-    <li><label><input type="checkbox" id="f2"><span>Video anche in verticale per Instagram</span></label></li>
-    <li><label><input type="checkbox" id="f3"><span>Allenarsi sulle prime auto</span></label></li>
-    <li><label><input type="checkbox" id="f4"><span>Nitide: da 1/1000 s in su, scatti in sequenza</span></label></li>
-    <li><label><input type="checkbox" id="f5"><span>Panning: tra 1/60 e 1/125 s, seguendo l'auto</span></label></li>
-    <li><label><input type="checkbox" id="f6"><span>PS 8 al buio: fari e scie di luce</span></label></li>
-  </ul>
-</section>
 
 <div class="ptitle" data-page="imp"><div class="eyebrow">Lessinia Rally Historic · sabato 14 novembre</div><h1>Impostazioni</h1><div class="sub">Uso offline, avvisi del 39 e schermo</div></div>
-<section data-page="imp" id="test">
+<section data-page="imp" id="test" data-short="Prova">
   <div class="res-head"><h2>Prova generale</h2><span class="pill idle" id="test-pill">da fare</span></div>
-  <p class="note">Simula sabato in circa 30 secondi: avviso del 39 a 10 e a 2 minuti, "Tocca al 39", suono, voce, vibrazione, schermo acceso e notifica. Alza il volume multimediale e tieni l'app aperta. Alla fine trovi qui sotto cosa funziona sul tuo telefono.</p>
+  <p class="note">Simula sabato in 30 secondi e controlla cosa funziona. Alza il volume multimediale.</p>
   <div class="btns"><button class="btn" type="button" id="test-go">Avvia la prova generale</button></div>
   <ul class="off-list" id="test-res"></ul>
 </section>
-<section class="offl" id="offl" data-page="imp">
+<section class="offl" id="offl" data-page="imp" data-short="Offline">
   <div class="res-head"><h2>Prepara l'app per l'uso offline</h2><span class="pill idle" id="off-pill">da controllare</span></div>
-  <p class="note">Al tornante il segnale può mancare. Prima di partire, col Wi-Fi di casa, tocca il pulsante: salva nel telefono la vista satellite del tornante, le previsioni e l'ultima classifica. Radar e classifica nuova invece hanno bisogno di rete.</p>
+  <p class="note">Col Wi-Fi, prima di partire: salva mappa, meteo e classifica. Radar e aggiornamenti richiedono rete.</p>
   <ul class="off-list" id="off-list"></ul>
   <div class="btns"><button class="btn" type="button" id="off-go">Scarica tutto per l'uso offline</button></div>
   <div class="note" id="off-msg"></div>
 </section>
 
-<section class="snd" id="snd" data-page="imp">
+<section class="snd" id="snd" data-page="imp" data-short="Avvisi">
   <div class="res-head"><h2>Avvisi del 39: suono e schermo</h2><span class="pill idle" id="wl-pill">schermo normale</span></div>
-  <p class="note">Quando il telefono si blocca, il browser mette in pausa l'app e gli avvisi possono arrivare tardi. Tieni lo schermo acceso nei minuti del 39 e alza il volume multimediale: il suono si sente anche con il telefono in tasca.</p>
+  <p class="note">Con lo schermo spento gli avvisi possono arrivare tardi: tienilo acceso vicino al 39.</p>
   <div class="opt">
-    <label class="sw"><input type="checkbox" id="wl-auto"><span><b>Schermo acceso vicino al 39</b><small>Da 15 minuti prima a 5 minuti dopo ogni passaggio stimato del 39, solo con l'app aperta</small></span></label>
-    <label class="sw"><input type="checkbox" id="wl-now"><span><b>Schermo sempre acceso adesso</b><small>Si spegne da solo se chiudi l'app</small></span></label>
-    <label class="sw"><input type="checkbox" id="snd-on"><span><b>Avviso sonoro</b><small>Bip a 10 e a 2 minuti, e quando passa l'auto prima del 39</small></span></label>
-    <label class="sw"><input type="checkbox" id="snd-voice"><span><b>Voce</b><small>Dopo il bip una voce dice "Il 39 tra 2 minuti"</small></span></label>
+    <label class="sw"><input type="checkbox" id="wl-auto"><span><b>Schermo acceso vicino al 39</b><small>Da 15 min prima a 5 min dopo il 39</small></span></label>
+    <label class="sw"><input type="checkbox" id="wl-now"><span><b>Schermo sempre acceso adesso</b><small>Fino a quando chiudi l'app</small></span></label>
+    <label class="sw"><input type="checkbox" id="snd-on"><span><b>Avviso sonoro</b><small>A 10 e 2 min, e all'auto prima del 39</small></span></label>
+    <label class="sw"><input type="checkbox" id="snd-voice"><span><b>Voce</b><small>"Il 39 tra 2 minuti"</small></span></label>
   </div>
   <label class="vol">Volume <input type="range" id="snd-vol" min="0.1" max="1" step="0.1" value="0.8"></label>
   <div class="btns"><button class="btn ghost" type="button" id="snd-test">Prova l'avviso</button></div>
-  <p class="note">La luminosità non la può cambiare l'app: abbassala tu dalla tendina, oppure usa la modalità notte con il pulsante ☾.</p>
 </section>
 
-<section data-page="imp" id="batt">
+<section data-page="imp" id="batt" data-short="Batteria">
   <div class="res-head"><h2>Batteria</h2><span class="pill idle" id="bat-pill">–</span></div>
-  <p class="note">Con il freddo la batteria cala in fretta. Sabato l'app ti avvisa se sei sotto il 40% prima della PS 6 o sotto il 30% prima della PS 8, così attacchi il powerbank nella pausa. Sotto il 15% spegne lo schermo sempre acceso per risparmiare.</p>
+  <p class="note">Avviso sotto il 40% prima della PS 6 e sotto il 30% prima della PS 8. Sotto il 15% lo schermo non resta acceso.</p>
   <div class="bat"><div class="bat-bar"><i id="bat-fill"></i></div><span class="mono" id="bat-txt">–</span></div>
 </section>
 
-<section data-page="imp" id="backup">
+<section data-page="imp" id="backup" data-short="Backup">
   <h2>Backup dei tuoi dati</h2>
-  <p class="note">Registro passaggi, spunte, calibrazione del sole e impostazioni stanno solo nella memoria dell'app: se la disinstalli si perdono. Salva un backup prima di reinstallarla e sabato sera, poi ripristinalo quando serve (anche sul PC, per dare il nome alle foto).</p>
+  <p class="note">Registro, spunte e impostazioni sono solo in questa app: salva un backup prima di reinstallarla e sabato sera.</p>
   <div class="btns">
     <button class="btn" type="button" id="bk-save">Salva backup</button>
     <label class="btn ghost" for="bk-file">Ripristina da un file</label><input type="file" id="bk-file" accept=".json,application/json" hidden>
@@ -1226,8 +1257,8 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
 </section>
 
 <footer>
-  <span>Dashboard personale non ufficiale per seguire la gara: per orari, percorso e classifiche fanno fede i documenti del Rally Club Valpantena sull'albo di gara.</span>
-  <span>Fonti: tabella distanze e tempi Rev. 260909, orari chiusura strade dal sito del Rally Club Valpantena, previsioni Open-Meteo (ItaliaMeteo-ARPAE ICON-2I) confrontate con 3B Meteo, radar 3B Meteo, mappa © OpenStreetMap contributors, immagini satellitari © Esri.</span>
+  <span>Non ufficiale: fanno fede i documenti del Rally Club Valpantena.</span>
+  <details class="more"><summary>Fonti</summary><p>Fonti: tabella distanze e tempi Rev. 260909, orari chiusura strade dal sito del Rally Club Valpantena, previsioni Open-Meteo (ItaliaMeteo-ARPAE ICON-2I) confrontate con 3B Meteo, radar 3B Meteo, mappa © OpenStreetMap contributors, immagini satellitari © Esri.</p></details>
 </footer>
 </div>
 
@@ -1710,7 +1741,8 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     return '<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 7.0-c000 1.000000, 0000/00/00-00:00:00        ">\n <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n  <rdf:Description rdf:about=""\n    xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/"\n   crs:PresetType="Normal"\n   crs:Cluster=""\n   crs:UUID="'+uuid()+'"\n   crs:SupportsAmount="False"\n   crs:SupportsColor="True"\n   crs:SupportsMonochrome="True"\n   crs:SupportsHighDynamicRange="True"\n   crs:SupportsNormalDynamicRange="True"\n   crs:SupportsSceneReferred="True"\n   crs:SupportsOutputReferred="True"\n   crs:CameraModelRestriction=""\n   crs:Copyright=""\n   crs:ContactInfo=""\n   crs:Version="15.0"\n   crs:ProcessVersion="11.0"\n   crs:WhiteBalance="Custom"\n'+a+'\n   crs:SharpenRadius="+1.0"\n   crs:SharpenDetail="25"\n   crs:SharpenEdgeMasking="60"\n   crs:HasSettings="True">\n   <crs:Name>\n    <rdf:Alt>\n     <rdf:li xml:lang="x-default">Lessinia · '+r.name.replace(/&/g,'e')+'</rdf:li>\n    </rdf:Alt>\n   </crs:Name>\n   <crs:Group>\n    <rdf:Alt>\n     <rdf:li xml:lang="x-default">Lessinia Rally</rdf:li>\n    </rdf:Alt>\n   </crs:Group>\n  </rdf:Description>\n </rdf:RDF>\n</x:xmpmeta>\n';
   }
   var box=document.getElementById('lr-cards');
-  box.innerHTML=R.map(function(r){return '<div class="lr-card"><div class="lr-h"><b>'+r.name+'</b><span>'+r.tag+'</span></div><div class="lr-t">'+LBL.map(function(l){return '<span>'+l[1]+'</span><span>'+fmt(l[0],r.v[l[0]])+'</span>';}).join('')+'</div><small>'+r.tip+'</small><button class="btn ghost sm" type="button" data-xmp="'+r.id+'">Scarica il preset (.xmp)</button></div>';}).join('');
+    var MAIN=['Exposure2012','Highlights2012','Shadows2012','Whites2012','Blacks2012','Temperature','Clarity2012','Dehaze'];
+  box.innerHTML=R.map(function(r){return '<details class="lr-card"><summary class="lr-h"><b>'+r.name+'</b><span>'+r.tag+'</span></summary><div class="lr-t">'+LBL.filter(function(l){return MAIN.indexOf(l[0])>=0;}).map(function(l){return '<span>'+l[1]+'</span><span>'+fmt(l[0],r.v[l[0]])+'</span>';}).join('')+'</div><details class="more"><summary>Altri valori</summary><div class="lr-t">'+LBL.filter(function(l){return MAIN.indexOf(l[0])<0;}).map(function(l){return '<span>'+l[1]+'</span><span>'+fmt(l[0],r.v[l[0]])+'</span>';}).join('')+'</div></details><small>'+r.tip+'</small><button class="btn ghost sm" type="button" data-xmp="'+r.id+'">Scarica il preset (.xmp)</button></details>';}).join('');
   box.addEventListener('click',function(e){var b=e.target.closest('[data-xmp]');if(!b)return;var r=R.filter(function(x){return x.id===b.getAttribute('data-xmp');})[0];
     var f=new File([xmp(r)],'Lessinia '+r.id.toUpperCase()+'.xmp',{type:'application/rdf+xml'});
     var a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;a.click();});
@@ -1788,7 +1820,7 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
     var aMin=Math.min.apply(null,A.filter(function(v){return v!=null;}).slice(10));
     document.getElementById('cold-pill').textContent=f1(Math.min.apply(null,T))+'° / '+f1(Math.max.apply(null,T))+'°';
     var pm=A.slice(10).filter(function(v){return v!=null;});
-    document.getElementById('cold-note').textContent='Il momento più caldo è verso le '+(7+ma)+':00. Alla PS 8 la percepita scende fino a '+f1(pm.length?Math.min.apply(null,pm):null)+'°: piumino chiuso, scaldamani e il termos tenuto per la sera. Le pause tra le prove sono il momento per scaldarsi al bar in paese.';
+    document.getElementById('cold-note').textContent='Più caldo verso le '+(7+ma)+':00. Alla PS 8 percepita fino a '+f1(pm.length?Math.min.apply(null,pm):null)+'°: piumino, scaldamani e termos per la sera.';
   }
   var K='lrh26-wx2';
   function show(c,old){drawCold(c);drawRoad(c);}
@@ -1932,6 +1964,25 @@ html.night .focus{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) br
   document.getElementById('car-del').addEventListener('click',function(){var b=this;if(b.dataset.c!=='1'){b.dataset.c='1';b.textContent='Tocca ancora per cancellare';setTimeout(function(){b.dataset.c='';b.textContent='Cancella posizione';},3000);return;}car=null;try{localStorage.removeItem(K);}catch(e){}b.dataset.c='';b.textContent='Cancella posizione';show();});
   if(car&&car.note)note.value=car.note;
   show();window.addEventListener('lrh-page',function(){if(car&&document.getElementById('car').offsetParent)drawMap();});
+})();
+</script>
+<script>
+// Sottocategorie: barra in cima a ogni pagina e contatori dei gruppi
+(function(){
+  var wrap=document.querySelector('.wrap'),pages={};
+  document.querySelectorAll('.wrap>section[data-short]').forEach(function(sec){var p=sec.getAttribute('data-page');(pages[p]=pages[p]||[]).push(sec);});
+  Object.keys(pages).forEach(function(p){
+    var list=pages[p];if(list.length<2)return;
+    var nav=document.createElement('nav');nav.className='subnav';nav.setAttribute('data-page',p);nav.setAttribute('aria-label','Sezioni della pagina');
+    nav.innerHTML=list.map(function(sec){return '<a href="#'+p+'/'+sec.id+'" data-to="'+sec.id+'">'+sec.getAttribute('data-short')+'</a>';}).join('');
+    var first=document.querySelector('.wrap>.ptitle[data-page="'+p+'"]')||document.querySelector('.wrap>header[data-page="'+p+'"]');
+    if(first&&first.nextSibling)wrap.insertBefore(nav,first.nextSibling);else wrap.insertBefore(nav,list[0]);
+    nav.addEventListener('click',function(e){var a=e.target.closest('a[data-to]');if(!a)return;e.preventDefault();var el=document.getElementById(a.getAttribute('data-to'));if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});
+    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){nav.querySelectorAll('a').forEach(function(a){a.classList.toggle('on',a.getAttribute('data-to')===x.target.id);});var on=nav.querySelector('a.on');if(on&&nav.scrollTo)nav.scrollTo({left:on.offsetLeft-nav.clientWidth/2+on.clientWidth/2,behavior:'smooth'});}});},{rootMargin:'-30% 0px -60% 0px'});list.forEach(function(sec){io.observe(sec);});}
+  });
+  if(window.lrhShow){var h=location.hash.slice(1).split('/')[0];window.lrhShow(h||'gara',true);}
+  function cnt(){document.querySelectorAll('details.grp').forEach(function(d){var b=d.querySelectorAll('input[type=checkbox]'),k=0;b.forEach(function(x){if(x.checked)k++;});var c=d.querySelector('.gc');if(c){c.textContent=k+'/'+b.length;c.classList.toggle('full',k===b.length);}});}
+  document.addEventListener('change',function(e){if(e.target.closest('details.grp'))cnt();});setTimeout(cnt,400);setTimeout(cnt,3000);
 })();
 </script>
 <button class="night-btn" type="button" id="night-btn" aria-pressed="false" aria-label="Modalità notte rossa">☾</button>
