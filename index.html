@@ -2688,6 +2688,25 @@ function __main(){
   if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
 })();
 </script>
+<script>
+/* Promemoria: riaccendere il PC e aprire Claude, sabato 14/11 alle 6:05 */
+(function(){
+  var AT=new Date(2026,10,14,6,5,0).getTime(),END=new Date(2026,10,14,9,30,0).getTime(),K='lrh26-pc-ok';
+  function done(){try{return localStorage.getItem(K)==='1';}catch(e){return false;}}
+  function show(fire){
+    if(done()||!window.lrhAlert) return;
+    window.lrhAlert('pc-remind','warn','Riaccendi il computer','Accendi il PC e apri l’app di Claude, così le classifiche si aggiornano durante la giornata.','Fatto',function(){try{localStorage.setItem(K,'1');}catch(e){}var a=document.getElementById('pc-remind');if(a)a.remove();});
+    if(fire){
+      try{if(window.lrhBuzz)window.lrhBuzz([500,200,500,200,500]);}catch(e){}
+      try{if('Notification' in window&&Notification.permission==='granted'&&navigator.serviceWorker)navigator.serviceWorker.ready.then(function(r){r.showNotification('Riaccendi il computer',{body:'Accendi il PC e apri l’app di Claude per le classifiche di oggi.',tag:'pc-remind',renotify:true,requireInteraction:true,icon:'logo-icon-192.png'});});}catch(e){}
+    }
+  }
+  function check(){var n=Date.now();if(n>=AT&&n<END)show(n-AT<5*60000);}
+  setTimeout(check,1500);
+  var w=AT-Date.now(); if(w>0&&w<24*3600000) setTimeout(function(){show(true);},w);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)check();});
+})();
+</script>
 <script>document.addEventListener('contextmenu',function(e){var t=e.target;if(!(t.closest&&t.closest('input,textarea,a,img.c39-img')))e.preventDefault();});</script>
 </body>
 </html>
