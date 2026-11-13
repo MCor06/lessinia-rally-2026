@@ -723,6 +723,9 @@ html,body{overscroll-behavior-y:none}
 .ptr.spin .arw{display:none}
 @keyframes ptrspin{to{transform:rotate(360deg)}}
 html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brightness(.55)}
+
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));z-index:91;transform:translate(-50%,-80px);background:var(--panel);color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--accent);padding:10px 16px;border-radius:12px;font:600 13px/1 var(--body);box-shadow:0 10px 24px rgba(0,0,0,.6);transition:transform .25s ease;pointer-events:none}
+.toast.on{transform:translate(-50%,0)}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -1937,7 +1940,7 @@ html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brig
   window.addEventListener('resize',function(){if(lastC)drawCold(lastC);});window.addEventListener('lrh-page',function(){if(lastC&&document.getElementById('cold-svg').getBoundingClientRect().width)drawCold(lastC);});
   function load(){if(document.hidden)return;Promise.all([get(P.cal),get(P.cerro)]).then(function(r){var c={cal:r[0],cerro:r[1],when:Date.now()};ls(K,JSON.stringify(c));show(c);}).catch(function(){});}
   try{var c0=JSON.parse(ls(K));if(c0)show(c0,true);}catch(e){}
-  load();setInterval(load,30*6e4);
+  load();setInterval(load,30*6e4);window.lrhWx2Refresh=load;
 })();
 </script>
 <script>
@@ -2120,10 +2123,24 @@ html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brig
   function blocked(t){return document.querySelector('.ar:not([hidden]),.focus:not([hidden]),.ovl:not([hidden])')||(t.closest&&t.closest('.leaflet-container,.rbox,.subnav,.wx-scroll,.tbl,input,textarea,canvas'));}
   function set(v){d=v;var k=Math.min(1,v/TH);el.style.transform='translateY('+(Math.min(v,MAX)*0.9-46+(env()))+'px)';el.style.opacity=Math.min(1,v/30);arc.setAttribute('stroke-dashoffset',String(C*(1-k*0.85)));el.classList.toggle('ready',v>=TH);}
   function env(){return 10;}
+  function toast(t){var x=document.getElementById('toast');if(!x){x=document.createElement('div');x.id='toast';x.className='toast';document.body.appendChild(x);}x.textContent=t;x.classList.add('on');clearTimeout(x._t);x._t=setTimeout(function(){x.classList.remove('on');},1800);}
+  function done(msg){setTimeout(function(){el.classList.remove('spin','ready');el.style.transform='translateY(-60px)';el.style.opacity=0;d=0;busy=false;if(msg)toast(msg);},700);}
+  function soft(){
+    // aggiornamento senza ricaricare la pagina: niente barra di caricamento del browser
+    try{['lrhWxRefresh','lrhNowRefresh','lrhWx2Refresh'].forEach(function(k){if(window[k])window[k]();});}catch(e){}
+    try{if(navigator.serviceWorker&&navigator.serviceWorker.getRegistration)navigator.serviceWorker.getRegistration().then(function(r){if(r)r.update();});}catch(e){}
+    window.dispatchEvent(new Event('lrh-delay'));window.dispatchEvent(new Event('lrh-log'));
+    if(window.RALLY_LOCAL||!/^https?:/.test(location.protocol)){done('Aggiornato');return;}
+    fetch('data.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():null;}).then(function(t){
+      var old=null;try{old=localStorage.getItem('lrh26-data');}catch(e){}
+      if(t&&old&&JSON.stringify(JSON.parse(t))!==JSON.stringify(JSON.parse(old))){try{localStorage.setItem('lrh26-data',t);}catch(e){}location.reload();return;}
+      var n=new Date();done('Aggiornato alle '+n.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}));
+    }).catch(function(){done('Senza rete: dati salvati');});
+  }
   document.addEventListener('touchstart',function(e){if(busy||e.touches.length!==1||window.scrollY>0||blocked(e.target)){y0=null;return;}y0=e.touches[0].clientY;el.classList.remove('anim');},{passive:true});
   document.addEventListener('touchmove',function(e){if(y0==null)return;var dy=e.touches[0].clientY-y0;if(dy<=0||window.scrollY>0){if(d)set(0);return;}e.preventDefault();set(dy*0.55);},{passive:false});
   document.addEventListener('touchend',function(){if(y0==null)return;y0=null;el.classList.add('anim');
-    if(d>=TH){busy=true;el.classList.add('spin');el.style.transform='translateY('+(TH*0.9-46+env())+'px)';arc.setAttribute('stroke-dashoffset',String(C*0.7));setTimeout(function(){location.reload();},350);}
+    if(d>=TH){busy=true;el.classList.add('spin');el.style.transform='translateY('+(TH*0.9-46+env())+'px)';arc.setAttribute('stroke-dashoffset',String(C*0.7));soft();}
     else{el.style.transform='translateY(-60px)';el.style.opacity=0;d=0;}},{passive:true});
 })();
 </script>
