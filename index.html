@@ -144,7 +144,7 @@ ul.plain{margin:0;padding-left:18px;display:grid;gap:6px}
 .log-go{flex:1;justify-content:center;padding:16px;font-size:18px;font-weight:700;background:var(--accent);border-color:var(--accent);color:#141414}
 .log-hint{min-height:18px;margin:6px 0}
 .log-list{list-style:none;margin:8px 0;padding:0;display:grid;gap:4px;max-height:300px;overflow:auto}
-.log-list li{display:grid;grid-template-columns:76px 48px 1fr;gap:8px;align-items:center;padding:7px 10px;border-radius:10px;background:var(--soft);font-size:13px}
+.log-list li{cursor:pointer;display:grid;grid-template-columns:76px 48px 1fr;gap:8px;align-items:center;padding:7px 10px;border-radius:10px;background:var(--soft);font-size:13px}
 .log-list li.mine{box-shadow:inset 3px 0 0 var(--accent)}
 .log-list .lt{font:600 13px/1 var(--mono);color:var(--muted)}
 .log-list .ln{font:800 16px/1 var(--display)}
@@ -842,7 +842,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 
 <section class="log" id="log" data-page="gara" data-short="Registro">
   <div class="res-head"><h2>Registro passaggi</h2><span class="pill idle" id="log-count">0 auto</span></div>
-  <p class="note">Segna ogni auto che passa: l'orario serve poi per dare il nome alle foto.</p>
+  <p class="note">Segna ogni auto che passa: l'orario serve poi per dare il nome alle foto. Tocca una riga dell'elenco per correggere l'orario.</p>
   <div class="log-row">
     <input class="search log-n" id="log-n" type="number" inputmode="numeric" min="1" max="999" placeholder="N°" aria-label="Numero di gara">
     <button class="btn log-go" type="button" id="log-go">Passata</button>
@@ -2435,10 +2435,13 @@ function __main(){
     function name(num){var s=String(num);if(s==='000'||s==='00'||s==='0')return 'Apripista, auto '+s;var e=(RALLY.entries||[]).filter(function(x){return String(x.n)===s;})[0];return e?(e.d+' · '+e.car):'';}
     function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     function save(){try{localStorage.setItem(K,JSON.stringify(L));}catch(e){}}
-    function draw(){var nr=L.filter(function(r){return !/^0+$/.test(String(r.n));}).length;cnt.textContent=nr+' auto';list.innerHTML=L.slice().reverse().map(function(r){return '<li'+(String(r.n)==='39'?' class="mine"':'')+'><span class="lt">'+r.t+'</span><span class="ln">'+esc(r.n)+'</span><span>'+esc(name(r.n))+'</span></li>';}).join('');}
+    function draw(){var nr=L.filter(function(r){return !/^0+$/.test(String(r.n));}).length;cnt.textContent=nr+' auto';list.innerHTML=L.slice().reverse().map(function(r,j){return '<li data-i="'+(L.length-1-j)+'"'+(String(r.n)==='39'?' class="mine"':'')+'><span class="lt">'+r.t+'</span><span class="ln">'+esc(r.n)+'</span><span>'+esc(name(r.n))+'</span></li>';}).join('');}
     n.addEventListener('input',function(){hint.textContent=name(n.value)||'';});
     function add(val){var v=(typeof val==='string'||typeof val==='number')?String(val):n.value.trim();if(!v)return;var d=new Date();L.push({n:v,t:d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),d:d.toISOString().slice(0,10)});save();draw();buzz(60);if(window.LRH)LRH.onLog(v,d);n.value='';hint.textContent='';n.focus();}
     window.lrhLogAdd=add;
+    list.addEventListener('click',function(e){var li=e.target.closest('li[data-i]');if(!li)return;var i=+li.getAttribute('data-i'),r=L[i];if(!r)return;
+      var v=prompt('Correggi l\'orario del n. '+r.n+' (es. 9:45)',r.t.slice(0,5));if(v===null)return;var m=String(v).trim().match(/^(\d{1,2})[:.,](\d{2})(?:[:.,](\d{2}))?$/);if(!m){alert('Scrivi l\'orario come 9:45');return;}
+      r.t=('0'+m[1]).slice(-2)+':'+m[2]+':'+(m[3]||'00');L.sort(function(a,b){return (a.d+a.t)<(b.d+b.t)?-1:1;});save();draw();window.dispatchEvent(new Event('lrh-log'));});
     document.getElementById('log-go').addEventListener('click',function(){add();});
     n.addEventListener('keydown',function(e){if(e.key==='Enter')add();});
     document.getElementById('log-undo').addEventListener('click',function(){L.pop();save();draw();window.dispatchEvent(new Event('lrh-log'));});
