@@ -1370,6 +1370,22 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
   <div class="bat"><div class="bat-bar"><i id="bat-fill"></i></div><span class="mono" id="bat-txt">–</span></div>
 </section>
 
+<section data-page="imp" id="sync" data-short="Sincronia">
+  <div class="res-head"><h2>Spunte su tutti i dispositivi</h2><span class="pill idle" id="sy-pill">spento</span></div>
+  <p class="note">Le spunte (da fare, zaino, scatti) si aggiornano da sole su telefono, tablet e PC quando c'è rete.</p>
+  <div id="sy-off">
+    <div class="btns"><button class="btn" type="button" id="sy-new">Crea un codice</button></div>
+    <p class="note">Sugli altri dispositivi inserisci lo stesso codice:</p>
+    <div class="btns"><input class="search" id="sy-in" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Codice" aria-label="Codice di sincronia"><button class="btn ghost" type="button" id="sy-join">Collega</button></div>
+  </div>
+  <div id="sy-on" hidden>
+    <div class="eyebrow">Codice da inserire sugli altri dispositivi</div>
+    <div class="c39-time" id="sy-code" style="font-size:1.2rem;word-break:break-all;-webkit-user-select:text;user-select:text">–</div>
+    <div class="btns"><button class="btn" type="button" id="sy-now">Aggiorna ora</button><button class="btn ghost" type="button" id="sy-copy">Copia codice</button><button class="btn ghost" type="button" id="sy-stop">Scollega</button></div>
+  </div>
+  <div class="note" id="sy-msg"></div>
+</section>
+
 <section data-page="imp" id="backup" data-short="Backup">
   <h2>Backup dei tuoi dati</h2>
   <p class="note">Registro, spunte e impostazioni: salvali prima di reinstallare l'app e sabato sera.</p>
@@ -2096,7 +2112,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 // Sottocategorie: barra in cima a ogni pagina e contatori dei gruppi
 (function(){
   var wrap=document.querySelector('.wrap'),pages={},navs=[],lock=0;
-  var ICO={"now": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/>", "news": "<path d=\"M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z\"/><path d=\"M16 9a4 4 0 0 1 0 6\"/><path d=\"M19 6a8 8 0 0 1 0 12\"/>", "c39": "<circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>", "arr": "<path d=\"M8 6h13M8 12h13M8 18h13\"/><path d=\"M3.5 6h.01M3.5 12h.01M3.5 18h.01\"/>", "log": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"M14 6l4 4\"/>", "classifica": "<path d=\"M8 4h8v5a4 4 0 0 1-8 0z\"/><path d=\"M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4\"/><path d=\"M12 13v4M9 20h6\"/>", "prog": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"16\" rx=\"2\"/><path d=\"M4 10h16M9 3v4M15 3v4\"/>", "prove": "<circle cx=\"6\" cy=\"18\" r=\"2\"/><circle cx=\"18\" cy=\"6\" r=\"2\"/><path d=\"M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7\"/>", "seq": "<path d=\"M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z\"/>", "r39": "<circle cx=\"12\" cy=\"13\" r=\"8\"/><path d=\"M12 9v4l2 2M10 2h4M12 2v3\"/>", "ent": "<circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20a6.5 6.5 0 0 1 13 0\"/><path d=\"M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 4 6\"/>", "contatti": "<path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z\"/>", "wxnow": "<path d=\"M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z\"/>", "cold": "<path d=\"M3 3v18h18\"/><path d=\"M7 15l4-5 4 3 5-6\"/>", "road": "<path d=\"M12 3l10 18H2z\"/><path d=\"M12 10v4M12 17.5h.01\"/>", "prev": "<path d=\"M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z\"/>", "todo": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M8 12l3 3 5-6\"/>", "portare": "<path d=\"M4 12a8 7 0 0 1 16 0v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\"/><path d=\"M9.5 5.4V4.5a2.5 2.5 0 0 1 5 0v.9\"/><path d=\"M8 14.5h8v3.5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z\"/>", "viaggio-s": "<path d=\"M3 16v-3l2-5h14l2 5v3z\"/><circle cx=\"7.5\" cy=\"16.5\" r=\"2\"/><circle cx=\"16.5\" cy=\"16.5\" r=\"2\"/>", "car": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M10 17V7h3a3 3 0 0 1 0 6h-3\"/>", "posto": "<path d=\"M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/>", "sos": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>", "raw": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M14.3 3.3L9 12M20.4 9H11M18.4 18L13 9M9.7 20.7L15 12M3.6 15H13M5.6 6L11 15\"/>", "shots39": "<rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/>", "match": "<path d=\"M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\"1.5\"/>", "lr": "<path d=\"M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12\"/><circle cx=\"16\" cy=\"6\" r=\"2\"/><circle cx=\"10\" cy=\"12\" r=\"2\"/><circle cx=\"18\" cy=\"18\" r=\"2\"/>", "exp": "<path d=\"M12 15V3M7 8l5-5 5 5\"/><path d=\"M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6\"/>", "post": "<path d=\"M3 6l2 2 3-3M3 13l2 2 3-3M11 7h10M11 14h10M11 20h10\"/>", "story": "<rect x=\"6\" y=\"2\" width=\"12\" height=\"20\" rx=\"3\"/><circle cx=\"12\" cy=\"11\" r=\"3\"/>", "test": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M10 8l6 4-6 4z\"/>", "offl": "<path d=\"M12 3v12M7 10l5 5 5-5\"/><path d=\"M5 21h14\"/>", "snd": "<path d=\"M6 16V11a6 6 0 0 1 12 0v5l2 2H4z\"/><path d=\"M10 21h4\"/>", "batt": "<rect x=\"2\" y=\"7\" width=\"18\" height=\"10\" rx=\"2\"/><path d=\"M22 11v2M6 10v4M10 10v4\"/>", "backup": "<path d=\"M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z\"/><path d=\"M7 3v6h8V3M7 21v-6h10v6\"/>"},LAB={"now": "Ora", "news": "News", "c39": "39", "arr": "Arrivi", "log": "Registro", "classifica": "Classifica", "prog": "Orari", "prove": "Prove", "seq": "Sicurezza", "r39": "Tempi", "ent": "Iscritti", "contatti": "Contatti", "wxnow": "Ora", "cold": "Sabato", "road": "Strada", "prev": "Previsioni", "todo": "Da fare", "portare": "Zaino", "viaggio-s": "Viaggio", "car": "Parcheggio", "posto": "Tornante", "sos": "SOS", "sun": "Sole", "raw": "RAW", "shots39": "Scatti", "match": "Nomi", "lr": "Lightroom", "exp": "Esporta", "post": "Dopo", "story": "Storia", "test": "Prova", "offl": "Offline", "snd": "Avvisi", "batt": "Batteria", "backup": "Backup"};
+  var ICO={"sync": "<path d=\"M21 12a9 9 0 0 1-15 6.7L3 16\"/><path d=\"M3 21v-5h5\"/><path d=\"M3 12a9 9 0 0 1 15-6.7L21 8\"/><path d=\"M21 3v5h-5\"/>", "now": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/>", "news": "<path d=\"M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z\"/><path d=\"M16 9a4 4 0 0 1 0 6\"/><path d=\"M19 6a8 8 0 0 1 0 12\"/>", "c39": "<circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>", "arr": "<path d=\"M8 6h13M8 12h13M8 18h13\"/><path d=\"M3.5 6h.01M3.5 12h.01M3.5 18h.01\"/>", "log": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"M14 6l4 4\"/>", "classifica": "<path d=\"M8 4h8v5a4 4 0 0 1-8 0z\"/><path d=\"M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4\"/><path d=\"M12 13v4M9 20h6\"/>", "prog": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"16\" rx=\"2\"/><path d=\"M4 10h16M9 3v4M15 3v4\"/>", "prove": "<circle cx=\"6\" cy=\"18\" r=\"2\"/><circle cx=\"18\" cy=\"6\" r=\"2\"/><path d=\"M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7\"/>", "seq": "<path d=\"M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z\"/>", "r39": "<circle cx=\"12\" cy=\"13\" r=\"8\"/><path d=\"M12 9v4l2 2M10 2h4M12 2v3\"/>", "ent": "<circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20a6.5 6.5 0 0 1 13 0\"/><path d=\"M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 4 6\"/>", "contatti": "<path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z\"/>", "wxnow": "<path d=\"M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z\"/>", "cold": "<path d=\"M3 3v18h18\"/><path d=\"M7 15l4-5 4 3 5-6\"/>", "road": "<path d=\"M12 3l10 18H2z\"/><path d=\"M12 10v4M12 17.5h.01\"/>", "prev": "<path d=\"M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z\"/>", "todo": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M8 12l3 3 5-6\"/>", "portare": "<path d=\"M4 12a8 7 0 0 1 16 0v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\"/><path d=\"M9.5 5.4V4.5a2.5 2.5 0 0 1 5 0v.9\"/><path d=\"M8 14.5h8v3.5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z\"/>", "viaggio-s": "<path d=\"M3 16v-3l2-5h14l2 5v3z\"/><circle cx=\"7.5\" cy=\"16.5\" r=\"2\"/><circle cx=\"16.5\" cy=\"16.5\" r=\"2\"/>", "car": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M10 17V7h3a3 3 0 0 1 0 6h-3\"/>", "posto": "<path d=\"M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/>", "sos": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>", "raw": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M14.3 3.3L9 12M20.4 9H11M18.4 18L13 9M9.7 20.7L15 12M3.6 15H13M5.6 6L11 15\"/>", "shots39": "<rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/>", "match": "<path d=\"M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\"1.5\"/>", "lr": "<path d=\"M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12\"/><circle cx=\"16\" cy=\"6\" r=\"2\"/><circle cx=\"10\" cy=\"12\" r=\"2\"/><circle cx=\"18\" cy=\"18\" r=\"2\"/>", "exp": "<path d=\"M12 15V3M7 8l5-5 5 5\"/><path d=\"M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6\"/>", "post": "<path d=\"M3 6l2 2 3-3M3 13l2 2 3-3M11 7h10M11 14h10M11 20h10\"/>", "story": "<rect x=\"6\" y=\"2\" width=\"12\" height=\"20\" rx=\"3\"/><circle cx=\"12\" cy=\"11\" r=\"3\"/>", "test": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M10 8l6 4-6 4z\"/>", "offl": "<path d=\"M12 3v12M7 10l5 5 5-5\"/><path d=\"M5 21h14\"/>", "snd": "<path d=\"M6 16V11a6 6 0 0 1 12 0v5l2 2H4z\"/><path d=\"M10 21h4\"/>", "batt": "<rect x=\"2\" y=\"7\" width=\"18\" height=\"10\" rx=\"2\"/><path d=\"M22 11v2M6 10v4M10 10v4\"/>", "backup": "<path d=\"M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z\"/><path d=\"M7 3v6h8V3M7 21v-6h10v6\"/>"},LAB={"now": "Ora", "news": "News", "c39": "39", "arr": "Arrivi", "log": "Registro", "classifica": "Classifica", "prog": "Orari", "prove": "Prove", "seq": "Sicurezza", "r39": "Tempi", "ent": "Iscritti", "contatti": "Contatti", "wxnow": "Ora", "cold": "Sabato", "road": "Strada", "prev": "Previsioni", "todo": "Da fare", "portare": "Zaino", "viaggio-s": "Viaggio", "car": "Parcheggio", "posto": "Tornante", "sos": "SOS", "sun": "Sole", "raw": "RAW", "shots39": "Scatti", "match": "Nomi", "lr": "Lightroom", "exp": "Esporta", "post": "Dopo", "story": "Storia", "test": "Prova", "offl": "Offline", "snd": "Avvisi", "batt": "Batteria", "backup": "Backup"};
   function svg(id,c){return ICO[id]?'<svg class="'+c+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICO[id]+'</svg>':'';}
 
   function mark(nav,id){var on=null;nav.querySelectorAll('a').forEach(function(a){var x=a.getAttribute('data-to')===id;a.classList.toggle('on',x);if(x)on=a;});if(on&&nav.scrollTo)nav.scrollTo({left:on.offsetLeft-nav.clientWidth/2+on.clientWidth/2,behavior:'smooth'});}
@@ -2673,7 +2689,7 @@ function __main(){
   // Checklist ricordata su questo dispositivo
   document.querySelectorAll('.check input').forEach(function(cb){
     try{ cb.checked=localStorage.getItem('lrh26-'+cb.id)==='1'; }catch(e){}
-    cb.addEventListener('change',function(){ try{ localStorage.setItem('lrh26-'+cb.id,cb.checked?'1':'0'); }catch(e){} });
+    cb.addEventListener('change',function(){ try{ localStorage.setItem('lrh26-'+cb.id,cb.checked?'1':'0'); if(!window.__lrhSyncing){localStorage.setItem('lrh26-ts-'+cb.id,String(Date.now())); if(window.lrhSyncPush)window.lrhSyncPush();} }catch(e){} });
   });
 })();
 }
@@ -2704,6 +2720,63 @@ function __main(){
   setTimeout(check,1500);
   var w=AT-Date.now(); if(w>0&&w<24*3600000) setTimeout(function(){show(true);},w);
   document.addEventListener('visibilitychange',function(){if(!document.hidden)check();});
+})();
+</script>
+<script>
+/* Sincronia delle spunte tra dispositivi (jsonblob.com) */
+(function(){
+  var API='https://jsonblob.com/api/jsonBlob',K='lrh26-sync',busy=false,again=false,tm=null;
+  var $=function(i){return document.getElementById(i);};
+  if(!$('sy-pill')) return;
+  function code(){try{return localStorage.getItem(K)||'';}catch(e){return '';}}
+  function boxes(){return [].slice.call(document.querySelectorAll('.check input[type=checkbox]'));}
+  function local(){var s={};boxes().forEach(function(b){var t=0;try{t=+localStorage.getItem('lrh26-ts-'+b.id)||0;}catch(e){}s[b.id]={v:b.checked?1:0,t:t};});return s;}
+  function msg(t,ok){$('sy-msg').textContent=t||'';var p=$('sy-pill');if(!code()){p.textContent='spento';p.className='pill idle';}else{p.textContent=ok===false?'offline':'attivo';p.className='pill '+(ok===false?'idle':'open');}}
+  function ui(){var c=code();$('sy-off').hidden=!!c;$('sy-on').hidden=!c;$('sy-code').textContent=c||'–';msg('');}
+  function hh(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+  function apply(remote){
+    var changed=false; window.__lrhSyncing=true;
+    boxes().forEach(function(b){var r=remote&&remote[b.id];if(!r)return;var lt=0;try{lt=+localStorage.getItem('lrh26-ts-'+b.id)||0;}catch(e){}
+      if((r.t||0)>lt){try{localStorage.setItem('lrh26-ts-'+b.id,String(r.t));localStorage.setItem('lrh26-'+b.id,r.v?'1':'0');}catch(e){}
+        if(b.checked!==!!r.v){b.checked=!!r.v;b.dispatchEvent(new Event('change',{bubbles:true}));changed=true;}}});
+    window.__lrhSyncing=false; return changed;
+  }
+  function merge(remote){var l=local(),o={};Object.keys(remote||{}).forEach(function(k){o[k]=remote[k];});Object.keys(l).forEach(function(k){if(!o[k]||(l[k].t||0)>(o[k].t||0))o[k]=l[k];});return o;}
+  function same(a,b){return JSON.stringify(a)===JSON.stringify(b);}
+  function sync(){
+    var c=code(); if(!c) return Promise.resolve();
+    if(busy){again=true;return Promise.resolve();} busy=true;
+    return fetch(API+'/'+encodeURIComponent(c),{cache:'no-store',headers:{'Accept':'application/json'}}).then(function(r){
+      if(r.status===404) throw new Error('nf'); if(!r.ok) throw new Error('net'); return r.json();
+    }).then(function(j){
+      var remote=(j&&j.checks)||{}; apply(remote); var m=merge(remote);
+      if(same(m,remote)) return;
+      return fetch(API+'/'+encodeURIComponent(c),{method:'PUT',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({app:'lrh26',checks:m})}).then(function(r){if(!r.ok)throw new Error('net');});
+    }).then(function(){msg('Sincronizzato alle '+hh(),true);}).catch(function(e){
+      msg(e&&e.message==='nf'?'Codice non trovato: controlla di averlo scritto giusto.':'Niente rete: le spunte restano salvate qui e si sincronizzano appena torna il segnale.',false);
+    }).then(function(){busy=false;if(again){again=false;sync();}});
+  }
+  window.lrhSyncPush=function(){clearTimeout(tm);tm=setTimeout(sync,1200);};
+  $('sy-new').addEventListener('click',function(){
+    msg('Creo il codice…');
+    fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({app:'lrh26',checks:local()})}).then(function(r){
+      if(!r.ok) throw 0; var id=r.headers.get('x-jsonblob-id')||'';
+      if(!id){var l=r.headers.get('Location')||r.headers.get('location')||'';id=l.split('/').pop();}
+      if(!id) throw 0; try{localStorage.setItem(K,id);}catch(e){} ui(); msg('Codice creato. Inseriscilo sugli altri dispositivi.',true);
+    }).catch(function(){msg('Non riesco a creare il codice: serve la rete. Riprova tra poco.',false);});
+  });
+  $('sy-join').addEventListener('click',function(){
+    var v=($('sy-in').value||'').trim(); if(!v){msg('Scrivi il codice.');return;}
+    try{localStorage.setItem(K,v);}catch(e){} ui(); msg('Collego…'); sync();
+  });
+  $('sy-now').addEventListener('click',function(){msg('Aggiorno…');sync();});
+  $('sy-copy').addEventListener('click',function(){var c=code();try{navigator.clipboard.writeText(c).then(function(){msg('Codice copiato.',true);});}catch(e){}});
+  $('sy-stop').addEventListener('click',function(){try{localStorage.removeItem(K);}catch(e){} ui();});
+  ui();
+  if(code()){setTimeout(sync,2000);}
+  document.addEventListener('visibilitychange',function(){if(!document.hidden&&code())sync();});
+  window.addEventListener('online',function(){if(code())sync();});
+  setInterval(function(){if(!document.hidden&&code())sync();},30000);
 })();
 </script>
 <script>document.addEventListener('contextmenu',function(e){var t=e.target;if(!(t.closest&&t.closest('input,textarea,a,img.c39-img')))e.preventDefault();});</script>
