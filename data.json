@@ -659,7 +659,7 @@
   }
  ],
  "offline": {
-  "title": "Classifica finale provvisoria",
+  "title": "Classifica finale ufficiale",
   "time": "sab 19:45",
   "rows": [
    {
@@ -784,7 +784,7 @@
    }
   ]
  },
- "updated": "sab 14 nov, 19:45",
+ "updated": "sab 14 nov, 20:50",
  "r39": [
   {
    "ps": "PS 1",
@@ -933,6 +933,12 @@
    "t": "sab 19:45",
    "title": "Finale provvisoria: il 39 è 15°",
    "text": "Zambelli/Zambelli chiudono 15° assoluti e 3° di classe J2/A/>2500 (56:39.9, +5:26.7). Vince Visintainer/Lonardi su BMW M3 davanti a Tezza/Merzari e \"Pedro\"/Baldaccini. Classifica ancora provvisoria.",
+   "imp": true
+  },
+  {
+   "t": "sab 20:50",
+   "title": "Classifica ufficiale: confermato",
+   "text": "Classifica finale definitiva (doc. 5.5): il 39 è 15° assoluto, 11° di gruppo 4 e 3° di classe J2/A/>2500, con 56:39.9.",
    "imp": true
   }
  ]
