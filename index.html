@@ -775,7 +775,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 .fo-log{gap:10px;margin-top:2px}
 .fo-btns .lq{padding:14px 6px;border-radius:16px}.fo-btns .lq b{font-size:34px}
 .fo-ap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.fo-ap .btn{justify-content:center;padding:9px 0;font:700 14px/1 var(--mono);border-radius:12px}
+.fo-ap .btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 0;font:700 14px/1 var(--mono);border-radius:12px}.fo-ap .btn small{font:600 11px/1 var(--body);color:var(--muted)}.fo-ap .btn small:empty{display:none}.fo-ap .btn.done{background:var(--soft);color:var(--muted);border-color:var(--line)}
 .fo-man .btn{background:var(--accent);color:#111;border-color:var(--accent);font-weight:700;padding-left:22px;padding-right:22px}
 .fo-man input{text-align:center}
 #fo-last{text-align:center;margin:0}
@@ -1843,7 +1843,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
     document.getElementById('fo-btns').innerHTML=x.slice(0,3).map(function(y){return qbtn(y,true);}).join('');var fsk=document.getElementById('fo-skip');if(fsk)fsk.innerHTML=skipHtml();
     (function fit(){var c=document.getElementById('fo-next');if(!c)return;requestAnimationFrame(function(){var B=c.getBoundingClientRect().bottom;[].forEach.call(c.querySelectorAll('.fo-row'),function(r){r.style.visibility=(r.getBoundingClientRect().bottom>B+1)?'hidden':'';});});})();
     var lg=[];try{lg=JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){}
-    lg.sort(function(a,b){return (a.d+a.t)<(b.d+b.t)?-1:1;});var real=lg.filter(function(r){return !/^(0+|CP)$/.test(String(r.n));});var la=lg[lg.length-1];document.getElementById('fo-last').textContent=la?('Ultima: '+(/^(0+|CP)$/.test(String(la.n))?(la.n==='CP'?'chiudipista':'apripista '+la.n):'n. '+la.n)+' alle '+String(la.t).slice(0,5)+' · '+real.length+(real.length===1?' auto segnata':' auto segnate')):'Nessuna auto segnata';
+    lg.sort(function(a,b){return (a.d+a.t)<(b.d+b.t)?-1:1;});var real=Object.keys(ps).filter(function(k){return !/^(0+|CP)$/.test(k);});var la=lg[lg.length-1];document.getElementById('fo-last').textContent=la?('Ultima: '+(/^(0+|CP)$/.test(String(la.n))?(la.n==='CP'?'chiudipista':'apripista '+la.n):'n. '+la.n)+' alle '+String(la.t).slice(0,5)+' · '+st.ps+': '+real.length+(real.length===1?' auto segnata':' auto segnate')):'Nessuna auto segnata';
   }
   function openF(){open=true;fo.hidden=false;drawF();try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(w){fo._wl=w;}).catch(function(){});}catch(e){}}
   function closeF(){open=false;fo.hidden=true;try{if(fo._wl){fo._wl.release();fo._wl=null;}}catch(e){}if(location.hash==='#prova')history.replaceState(null,'','#gara');}
@@ -2879,7 +2879,7 @@ function __main(){
   function upd(){var L=[];try{L=JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){}
     var now=new Date(),st=window.LRH&&LRH.current(now);if(!st||!h){if(h)h.textContent='';return;}
     var ps=LRH.passed(st),out=[];['000','00','0'].forEach(function(k){if(ps[k])out.push(k+' alle '+LRH.hm(ps[k]));});
-    ['000','00','0','CP'].forEach(function(k){var b=document.querySelector('[data-ap="'+k+'"]');if(!b)return;b.classList.toggle('done',!!ps[k]);b.querySelector('small').textContent=ps[k]?'alle '+LRH.hm(ps[k]):'non ancora';});
+    ['000','00','0','CP'].forEach(function(k){[].forEach.call(document.querySelectorAll('[data-ap="'+k+'"]'),function(b){b.classList.toggle('done',!!ps[k]);var sm=b.querySelector('small');if(!sm){sm=document.createElement('small');b.appendChild(sm);}var fo=!!b.closest('.fo-ap');sm.textContent=ps[k]?(fo?'✓ '+LRH.hm(ps[k]):'alle '+LRH.hm(ps[k])):(fo?'':'non ancora');});});
     var out=[];if(!ps['000']&&!ps['00']&&!ps['0']&&!ps['CP']){var f1=LRH.eta(st,1).getTime();out.push(st.ps+', apripista attese: 000 verso le '+LRH.hm(new Date(f1-40*60000))+', 00 verso le '+LRH.hm(new Date(f1-25*60000))+', 0 verso le '+LRH.hm(new Date(f1-10*60000))+'.');}
     if((ps['0']||ps['00']||ps['000'])&&!ps['CP'])out.push('Prima auto prevista verso le '+LRH.hm(LRH.eta(st,1))+', il 39 verso le '+LRH.hm(LRH.eta(st,LRH.posOf(39)||1))+'.');
     function dur(a,b){var m=Math.round((b-a)/60000);return (m>=60?Math.floor(m/60)+' h '+String(m%60).padStart(2,'0'):m)+' min';}
