@@ -2295,7 +2295,7 @@ function __main(){
   var RALLY=Object.assign({pos39:null,entries:[],offline:null},window.RALLY_DATA||{});
   // ===== Orari stimati per ogni auto, ritardo, passaggi e ritiri =====
   var LRH=window.LRH=(function(){
-    var ST=[{ps:'PS 4',t:'10:17',a:'09:40',b:'11:50'},{ps:'PS 6',t:'14:14',a:'13:40',b:'15:50'},{ps:'PS 8',t:'17:42',a:'17:05',b:'19:45'}],TO=9;
+    var ST=[{ps:'PS 4',t:'10:17',a:'08:50',b:'12:00'},{ps:'PS 6',t:'14:14',a:'12:50',b:'16:00'},{ps:'PS 8',t:'17:42',a:'16:20',b:'19:55'}],TO=9;
     function at(hm,add){var p=hm.split(':');return new Date(2026,10,14,+p[0],+p[1]+(add||0));}
     function hm(d){return d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
     var ents=(RALLY.entries||[]).map(function(e,i){var o=Object.assign({},e);o.p=+e.o||i+1;return o;}).sort(function(a,b){return a.p-b.p;});
