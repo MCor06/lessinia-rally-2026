@@ -806,6 +806,9 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 .ap-btns .btn.cp.next small,.fo-ap .btn.cp.next small{color:#ff8a7a}
 .ap-btns .btn.cp.next,.fo-ap .btn.cp.next{border-color:#ff8a7a;background:#2a1614}
 .fo-apl{margin-top:2px}
+.sp-prev{width:100%;border-radius:12px;margin:12px 0 8px;display:block;max-height:260px;object-fit:cover}.sp-meas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:8px 0}.sp-meas div{background:var(--soft);border-radius:10px;padding:8px;text-align:center}.sp-meas b{display:block;font:700 16px/1.1 var(--mono,monospace)}.sp-meas small{color:var(--muted);font-size:11px}.sp-set{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:10px 0}.sp-set div{background:#2a2412;border:1px solid #3a3218;border-radius:12px;padding:10px}.sp-set small{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}.sp-set b{font:700 18px/1.1 var(--mono,monospace);color:var(--accent)}.sp-tips{margin:8px 0 0;padding-left:18px}.sp-tips li{margin:4px 0}
+.scn{display:grid;gap:10px;margin:4px 0 14px;padding:14px;border:1px solid #3a3218;border-radius:16px;background:linear-gradient(180deg,#1d1a10,#141310)}.scn-h{display:grid;gap:4px}.scn-h b{font:800 17px/1.2 var(--display,inherit);color:var(--accent)}.scn-h .note{margin:0}
+.scn-g{display:grid;grid-template-columns:1fr 1fr;gap:6px}.scn-k{background:var(--soft);border-radius:12px;padding:10px 12px}.scn-k small{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}.scn-k b{font:700 17px/1.1 var(--mono,monospace)}.scn-img{width:100%;max-height:220px;object-fit:cover;border-radius:12px;display:block}.scn ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}.scn-z{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:-4px}.scn-z span{font:600 11px/1 var(--mono,monospace);text-align:center;padding:6px 0;border-radius:8px;color:#111}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -1289,9 +1292,22 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
   <details class="more"><summary>Note</summary><p>"Luce" vale guardando le auto che arrivano (verso ovest-nord-ovest). Le montagne possono coprire il sole prima del tramonto: controlla in AR sul posto.</p></details>
 </section>
 
+<section data-page="foto" id="adesso" data-short="Adesso">
+  <div class="res-head"><h2>Consiglio sul momento</h2><span class="pill idle" id="sp-pill">foto dello spot</span></div>
+  <p class="note">Fai una foto al tornante con la fotocamera normale: l'app misura luce, contrasto e colore e ti dice come inquadrare e cosa impostare in Expert RAW.</p>
+  <label class="btn" for="sp-in" style="justify-content:center">Fotografa lo spot</label><input type="file" id="sp-in" accept="image/*" capture="environment" hidden>
+  <div id="sp-out"></div>
+</section>
+
 <section data-page="foto" id="raw" data-short="Expert RAW">
   <h2>Expert RAW</h2>
   <div class="lux-now" id="lux-now"></div>
+  <div class="scn">
+    <div class="scn-h"><b>Consiglio dalla scena</b><span class="note">Fotografa il tornante adesso: l'app legge luce e colori e ti dà inquadratura e impostazioni.</span></div>
+    <label class="btn" for="scn-in" style="justify-content:center">Fotografa il tornante</label><input type="file" id="scn-in" accept="image/*" capture="environment" hidden>
+    <div id="scn-out"></div>
+  </div>
+
   <p class="note"><b>Dalla collinetta sopra il tornante</b>: vedi tutta la curva dall'alto, a circa 30 m. Usa <b>3x</b> per il punto di corda, <b>5x</b> per l'arrivo dal rettilineo dei garage, <b>1x</b> per la curva intera.</p>
   <details class="more"><summary>5 consigli per questa posizione</summary><ul class="plain">
     <li><b>Striscione in basso</b>: alzati in piedi o alza il treppiede, così resta fuori dall'inquadratura. Oppure tienilo sfocato in primo piano.</li>
@@ -2198,7 +2214,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 // Sottocategorie: barra in cima a ogni pagina e contatori dei gruppi
 (function(){
   var wrap=document.querySelector('.wrap'),pages={},navs=[],lock=0;
-  var ICO={"casa": "<path d=\"M3 11l9-8 9 8\"/><path d=\"M5 10v10h14V10\"/><path d=\"M10 20v-6h4v6\"/>", "sync": "<path d=\"M21 12a9 9 0 0 1-15 6.7L3 16\"/><path d=\"M3 21v-5h5\"/><path d=\"M3 12a9 9 0 0 1 15-6.7L21 8\"/><path d=\"M21 3v5h-5\"/>", "now": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/>", "news": "<path d=\"M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z\"/><path d=\"M16 9a4 4 0 0 1 0 6\"/><path d=\"M19 6a8 8 0 0 1 0 12\"/>", "c39": "<circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>", "arr": "<path d=\"M8 6h13M8 12h13M8 18h13\"/><path d=\"M3.5 6h.01M3.5 12h.01M3.5 18h.01\"/>", "log": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"M14 6l4 4\"/>", "classifica": "<path d=\"M8 4h8v5a4 4 0 0 1-8 0z\"/><path d=\"M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4\"/><path d=\"M12 13v4M9 20h6\"/>", "prog": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"16\" rx=\"2\"/><path d=\"M4 10h16M9 3v4M15 3v4\"/>", "prove": "<circle cx=\"6\" cy=\"18\" r=\"2\"/><circle cx=\"18\" cy=\"6\" r=\"2\"/><path d=\"M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7\"/>", "seq": "<path d=\"M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z\"/>", "r39": "<circle cx=\"12\" cy=\"13\" r=\"8\"/><path d=\"M12 9v4l2 2M10 2h4M12 2v3\"/>", "ent": "<circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20a6.5 6.5 0 0 1 13 0\"/><path d=\"M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 4 6\"/>", "contatti": "<path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z\"/>", "wxnow": "<path d=\"M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z\"/>", "cold": "<path d=\"M3 3v18h18\"/><path d=\"M7 15l4-5 4 3 5-6\"/>", "road": "<path d=\"M12 3l10 18H2z\"/><path d=\"M12 10v4M12 17.5h.01\"/>", "prev": "<path d=\"M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z\"/>", "todo": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M8 12l3 3 5-6\"/>", "portare": "<path d=\"M4 12a8 7 0 0 1 16 0v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\"/><path d=\"M9.5 5.4V4.5a2.5 2.5 0 0 1 5 0v.9\"/><path d=\"M8 14.5h8v3.5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z\"/>", "viaggio-s": "<path d=\"M3 16v-3l2-5h14l2 5v3z\"/><circle cx=\"7.5\" cy=\"16.5\" r=\"2\"/><circle cx=\"16.5\" cy=\"16.5\" r=\"2\"/>", "car": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M10 17V7h3a3 3 0 0 1 0 6h-3\"/>", "posto": "<path d=\"M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/>", "sos": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>", "raw": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M14.3 3.3L9 12M20.4 9H11M18.4 18L13 9M9.7 20.7L15 12M3.6 15H13M5.6 6L11 15\"/>", "shots39": "<rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/>", "match": "<path d=\"M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\"1.5\"/>", "lr": "<path d=\"M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12\"/><circle cx=\"16\" cy=\"6\" r=\"2\"/><circle cx=\"10\" cy=\"12\" r=\"2\"/><circle cx=\"18\" cy=\"18\" r=\"2\"/>", "exp": "<path d=\"M12 15V3M7 8l5-5 5 5\"/><path d=\"M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6\"/>", "post": "<path d=\"M3 6l2 2 3-3M3 13l2 2 3-3M11 7h10M11 14h10M11 20h10\"/>", "story": "<rect x=\"6\" y=\"2\" width=\"12\" height=\"20\" rx=\"3\"/><circle cx=\"12\" cy=\"11\" r=\"3\"/>", "test": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M10 8l6 4-6 4z\"/>", "offl": "<path d=\"M12 3v12M7 10l5 5 5-5\"/><path d=\"M5 21h14\"/>", "snd": "<path d=\"M6 16V11a6 6 0 0 1 12 0v5l2 2H4z\"/><path d=\"M10 21h4\"/>", "batt": "<rect x=\"2\" y=\"7\" width=\"18\" height=\"10\" rx=\"2\"/><path d=\"M22 11v2M6 10v4M10 10v4\"/>", "backup": "<path d=\"M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z\"/><path d=\"M7 3v6h8V3M7 21v-6h10v6\"/>"},LAB={"now": "Ora", "news": "News", "c39": "39", "arr": "Arrivi", "log": "Registro", "classifica": "Classifica", "prog": "Orari", "prove": "Prove", "seq": "Sicurezza", "r39": "Tempi", "ent": "Iscritti", "contatti": "Contatti", "wxnow": "Ora", "cold": "Sabato", "road": "Strada", "prev": "Previsioni", "todo": "Da fare", "portare": "Zaino", "viaggio-s": "Viaggio", "car": "Parcheggio", "posto": "Tornante", "sos": "SOS", "sun": "Sole", "raw": "RAW", "shots39": "Scatti", "match": "Nomi", "lr": "Lightroom", "exp": "Esporta", "post": "Dopo", "story": "Storia", "test": "Prova", "offl": "Offline", "snd": "Avvisi", "batt": "Batteria", "backup": "Backup"};
+  var ICO={"adesso": "<path d=\"M4 8h3l2-3h6l2 3h3v11H4z\"/><circle cx=\"12\" cy=\"13\" r=\"3.5\"/>", "casa": "<path d=\"M3 11l9-8 9 8\"/><path d=\"M5 10v10h14V10\"/><path d=\"M10 20v-6h4v6\"/>", "sync": "<path d=\"M21 12a9 9 0 0 1-15 6.7L3 16\"/><path d=\"M3 21v-5h5\"/><path d=\"M3 12a9 9 0 0 1 15-6.7L21 8\"/><path d=\"M21 3v5h-5\"/>", "now": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/>", "news": "<path d=\"M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z\"/><path d=\"M16 9a4 4 0 0 1 0 6\"/><path d=\"M19 6a8 8 0 0 1 0 12\"/>", "c39": "<circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>", "arr": "<path d=\"M8 6h13M8 12h13M8 18h13\"/><path d=\"M3.5 6h.01M3.5 12h.01M3.5 18h.01\"/>", "log": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"M14 6l4 4\"/>", "classifica": "<path d=\"M8 4h8v5a4 4 0 0 1-8 0z\"/><path d=\"M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4\"/><path d=\"M12 13v4M9 20h6\"/>", "prog": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"16\" rx=\"2\"/><path d=\"M4 10h16M9 3v4M15 3v4\"/>", "prove": "<circle cx=\"6\" cy=\"18\" r=\"2\"/><circle cx=\"18\" cy=\"6\" r=\"2\"/><path d=\"M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7\"/>", "seq": "<path d=\"M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z\"/>", "r39": "<circle cx=\"12\" cy=\"13\" r=\"8\"/><path d=\"M12 9v4l2 2M10 2h4M12 2v3\"/>", "ent": "<circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20a6.5 6.5 0 0 1 13 0\"/><path d=\"M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 4 6\"/>", "contatti": "<path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z\"/>", "wxnow": "<path d=\"M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z\"/>", "cold": "<path d=\"M3 3v18h18\"/><path d=\"M7 15l4-5 4 3 5-6\"/>", "road": "<path d=\"M12 3l10 18H2z\"/><path d=\"M12 10v4M12 17.5h.01\"/>", "prev": "<path d=\"M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z\"/>", "todo": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M8 12l3 3 5-6\"/>", "portare": "<path d=\"M4 12a8 7 0 0 1 16 0v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\"/><path d=\"M9.5 5.4V4.5a2.5 2.5 0 0 1 5 0v.9\"/><path d=\"M8 14.5h8v3.5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z\"/>", "viaggio-s": "<path d=\"M3 16v-3l2-5h14l2 5v3z\"/><circle cx=\"7.5\" cy=\"16.5\" r=\"2\"/><circle cx=\"16.5\" cy=\"16.5\" r=\"2\"/>", "car": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M10 17V7h3a3 3 0 0 1 0 6h-3\"/>", "posto": "<path d=\"M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/>", "sos": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/>", "raw": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M14.3 3.3L9 12M20.4 9H11M18.4 18L13 9M9.7 20.7L15 12M3.6 15H13M5.6 6L11 15\"/>", "shots39": "<rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/>", "match": "<path d=\"M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\"1.5\"/>", "lr": "<path d=\"M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12\"/><circle cx=\"16\" cy=\"6\" r=\"2\"/><circle cx=\"10\" cy=\"12\" r=\"2\"/><circle cx=\"18\" cy=\"18\" r=\"2\"/>", "exp": "<path d=\"M12 15V3M7 8l5-5 5 5\"/><path d=\"M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6\"/>", "post": "<path d=\"M3 6l2 2 3-3M3 13l2 2 3-3M11 7h10M11 14h10M11 20h10\"/>", "story": "<rect x=\"6\" y=\"2\" width=\"12\" height=\"20\" rx=\"3\"/><circle cx=\"12\" cy=\"11\" r=\"3\"/>", "test": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M10 8l6 4-6 4z\"/>", "offl": "<path d=\"M12 3v12M7 10l5 5 5-5\"/><path d=\"M5 21h14\"/>", "snd": "<path d=\"M6 16V11a6 6 0 0 1 12 0v5l2 2H4z\"/><path d=\"M10 21h4\"/>", "batt": "<rect x=\"2\" y=\"7\" width=\"18\" height=\"10\" rx=\"2\"/><path d=\"M22 11v2M6 10v4M10 10v4\"/>", "backup": "<path d=\"M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z\"/><path d=\"M7 3v6h8V3M7 21v-6h10v6\"/>"},LAB={"now": "Ora", "news": "News", "c39": "39", "arr": "Arrivi", "log": "Registro", "classifica": "Classifica", "prog": "Orari", "prove": "Prove", "seq": "Sicurezza", "r39": "Tempi", "ent": "Iscritti", "contatti": "Contatti", "wxnow": "Ora", "cold": "Sabato", "road": "Strada", "prev": "Previsioni", "todo": "Da fare", "portare": "Zaino", "viaggio-s": "Viaggio", "car": "Parcheggio", "posto": "Tornante", "sos": "SOS", "sun": "Sole", "raw": "RAW", "shots39": "Scatti", "match": "Nomi", "lr": "Lightroom", "exp": "Esporta", "post": "Dopo", "story": "Storia", "test": "Prova", "offl": "Offline", "snd": "Avvisi", "batt": "Batteria", "backup": "Backup"};
   function svg(id,c){return ICO[id]?'<svg class="'+c+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICO[id]+'</svg>':'';}
 
   function mark(nav,id){var on=null;nav.querySelectorAll('a').forEach(function(a){var x=a.getAttribute('data-to')===id;a.classList.toggle('on',x);if(x)on=a;});if(on&&nav.scrollTo)nav.scrollTo({left:on.offsetLeft-nav.clientWidth/2+on.clientWidth/2,behavior:'smooth'});}
@@ -2902,6 +2918,100 @@ function __main(){
     h.innerHTML=out.map(function(t){return '<div>'+t+'</div>';}).join('');}
   document.addEventListener('click',function(e){var b=e.target.closest('[data-ap]');if(!b||!window.lrhLogAdd)return;lrhLogAdd(b.getAttribute('data-ap'));setTimeout(upd,50);});
   window.addEventListener('lrh-log',upd);window.addEventListener('lrh-delay',upd);setTimeout(upd,1500);setInterval(upd,60000);
+})();
+</script>
+<script>
+/* Consiglio sul momento: analisi della foto dello spot */
+(function(){
+  var inp=document.getElementById('sp-in'),out=document.getElementById('sp-out'),pill=document.getElementById('sp-pill');if(!inp)return;
+  function sun(d){var rad=Math.PI/180,lat=45.6198,lon=11.027,n=(d-Date.UTC(2000,0,1,12))/864e5,L=(280.46+.9856474*n)%360,g=(357.528+.9856003*n)%360,lam=L+1.915*Math.sin(g*rad)+.02*Math.sin(2*g*rad),eps=23.439-4e-7*n,ra=Math.atan2(Math.cos(eps*rad)*Math.sin(lam*rad),Math.cos(lam*rad))/rad,dec=Math.asin(Math.sin(eps*rad)*Math.sin(lam*rad))/rad,gm=(18.697374558+24.06570982441908*n)%24,ha=(gm*15+lon-ra)*rad;var alt=Math.asin(Math.sin(lat*rad)*Math.sin(dec*rad)+Math.cos(lat*rad)*Math.cos(dec*rad)*Math.cos(ha))/rad;return alt;}
+  function nextPS(){var L=window.LRH;if(!L)return null;var st=L.current(new Date());return st;}
+  function exifTime(b){try{var v=new DataView(b);if(v.getUint16(0)!==0xFFD8)return null;var o=2;while(o<v.byteLength){var m=v.getUint16(o),s=v.getUint16(o+2);if(m===0xFFE1){var t=String.fromCharCode.apply(null,new Uint8Array(b,o+4,4));if(t==='Exif'){var a=new Uint8Array(b,o+10,Math.min(s,60000));var str='';for(var i=0;i<a.length;i++)str+=String.fromCharCode(a[i]);var mm=str.match(/(\d{4}):(\d\d):(\d\d) (\d\d):(\d\d):(\d\d)/);if(mm)return new Date(+mm[1],+mm[2]-1,+mm[3],+mm[4],+mm[5],+mm[6]);}}o+=2+s;}}catch(e){}return null;}
+  inp.addEventListener('change',function(){var f=inp.files&&inp.files[0];if(!f)return;out.innerHTML='<p class="note">Analizzo…</p>';
+    var url=URL.createObjectURL(f),img=new Image();
+    f.slice(0,256*1024).arrayBuffer().then(function(b){img._t=exifTime(b);}).catch(function(){}).then(function(){img.src=url;});
+    img.onload=function(){
+      var W=160,H=Math.round(W*img.height/img.width),c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');x.drawImage(img,0,0,W,H);var d=x.getImageData(0,0,W,H).data;
+      var n=W*H,sum=0,hi=0,lo=0,R=0,G=0,B=0,top=0,bot=0,mid=0,ys=[],k=0;
+      for(var i=0,p=0;i<d.length;i+=4,p++){var y=.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];sum+=y;if(y>245)hi++;if(y<18)lo++;R+=d[i];G+=d[i+1];B+=d[i+2];var row=Math.floor(p/W);if(row<H/3)top+=y;else if(row>2*H/3)bot+=y;else mid+=y;ys.push(y);}
+      var mean=sum/n;ys.sort(function(a,b){return a-b;});var p5=ys[Math.floor(n*.05)],p95=ys[Math.floor(n*.95)],con=p95-p5;top/=n/3;mid/=n/3;bot/=n/3;var rb=R/Math.max(1,B),hiP=hi/n*100,loP=lo/n*100;
+      var when=img._t||new Date(),alt=sun(when),st=nextPS();
+      var phase=alt>15?'giorno':alt>4?'sole basso':alt>-1?'tramonto':alt>-6?'ora blu':'buio';
+      var dark=mean<45||alt<-6,dim=!dark&&(mean<85||alt<4);
+      // impostazioni
+      var sh,iso,shPan,ev='0',wb,lens,fmt;
+      if(dark){sh='1/250';iso='1600–3200';shPan='scie 2–6 s su treppiede, ISO 50–100';lens='1x (5x no)';}
+      else if(dim){sh='1/500';iso=mean<65?'800–1600':'400–800';shPan='1/40–1/60';lens='3x (1x se cala ancora)';}
+      else{sh='1/1000';iso=mean>150?'50–100':'100–200';shPan='1/60–1/125';lens='3x · 5x sul rettilineo';}
+      if(hiP>6)ev='−0,3/−0,7';else if(mean<90&&!dark)ev='+0,3';else if(dark)ev='0 (misura sui fari: −0,3)';
+      if(dark)wb='3800–4200 K (fari e lampioni)';else if(rb>1.18)wb='5000–5300 K (luce calda)';else if(rb<.9)wb='6000–6500 K (ombra/nuvole)';else wb='5500 K';
+      var tips=[];
+      if(top>mid*1.35&&top>150)tips.push('Il cielo in alto è molto più chiaro della strada: abbassa l\'inquadratura, cielo al massimo nel 10% superiore, oppure EV −0,3 per non bruciarlo.');
+      if(bot<mid*.6)tips.push('La parte bassa è scura (prato o striscione in ombra): tienila fuori o usala come cornice scura, non misurarci la luce.');
+      if(con>200&&!dark)tips.push('Contrasto forte tra sole e ombra: misura la luce sull\'auto e aspetta che entri nella zona illuminata per scattare.');
+      if(con<90&&!dark)tips.push('Luce piatta: punta sul movimento. Panning a '+shPan+' sull\'uscita e raffica in curva.');
+      if(dim)tips.push('Luce che cala: tieni fisso 1/500 per le auto nitide e lascia salire gli ISO; fai qualche panning a 1/40 che con questa luce viene bene.');
+      if(dark){tips.push('Al buio: treppiede, inquadratura larga su tutta la curva, 1x, tempi di 2–6 s per le scie dei fari (ISO 50–100, EV 0).');tips.push('Per l\'auto nitida coi fari: 1/250, ISO alti, aspetta che sia nel punto illuminato dal lampione. Fuoco manuale sul punto di corda.');tips.push('Il 39 ha i fari supplementari? Scattalo frontale in entrata curva: è lì che si vede la livrea.');}
+      if(hiP>6&&!dark)tips.push('Il '+hiP.toFixed(0)+'% dell\'immagine è bruciato: abbassa l\'esposizione.');
+      if(loP>35&&!dark)tips.push('Molte zone nere: alza un po\' l\'esposizione o cambia angolo verso la parte illuminata.');
+      if(!tips.length)tips.push('Condizioni buone: auto nitide a '+sh+', 3x sul punto di corda, raffica da entrata a uscita.');
+      tips.push('Fuoco manuale (MF) sul punto di corda con un\'auto di prova, poi non toccarlo.');
+      function hm(d){return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+      pill.className='pill open';pill.textContent=phase;
+      out.innerHTML='<img class="sp-prev" src="'+url+'" alt="">'+
+        '<div class="sp-meas"><div><b>'+Math.round(mean/2.55)+'%</b><small>luminosità</small></div><div><b>'+Math.round(con/2.55)+'%</b><small>contrasto</small></div><div><b>'+(alt>0?Math.round(alt)+'°':'sotto')+'</b><small>sole · '+hm(when)+'</small></div></div>'+
+        '<div class="sp-set"><div><small>Auto nitide</small><b>'+sh+'</b></div><div><small>ISO</small><b>'+iso+'</b></div><div><small>Panning / scie</small><b style="font-size:14px">'+shPan+'</b></div><div><small>EV</small><b>'+ev+'</b></div><div><small>Bilanciamento</small><b style="font-size:14px">'+wb+'</b></div><div><small>Obiettivo</small><b style="font-size:14px">'+lens+'</b></div></div>'+
+        '<div class="eyebrow">Inquadratura</div><ul class="sp-tips">'+tips.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'+
+        (st?'<p class="note">'+st.ps+' · il 39 verso le '+hm(window.LRH.eta(st,window.LRH.posOf(39)||1))+'. Rifai la foto se la luce cambia.</p>':'');
+    };
+  });
+})();
+</script>
+<script>
+/* Consiglio dalla scena: luce, colori ed EXIF della foto */
+(function(){
+  var inp=document.getElementById('scn-in'),out=document.getElementById('scn-out');if(!inp)return;
+  function exif(buf){try{var v=new DataView(buf),o=2;if(v.getUint16(0)!==0xFFD8)return {};
+    while(o<v.byteLength-4){var m=v.getUint16(o);if(m===0xFFE1){var s=o+10,le=v.getUint16(s)===0x4949,g16=function(p){return v.getUint16(p,le);},g32=function(p){return v.getUint32(p,le);};
+      var res={};function rd(ifd){var n=g16(s+ifd);for(var i=0;i<n;i++){var e=s+ifd+2+i*12,tag=g16(e),typ=g16(e+2),val=e+8;
+        if(tag===0x8769)rd(g32(val));
+        else if(tag===0x829A||tag===0x829D){var p=s+g32(val);res[tag===0x829A?'t':'f']=g32(p)/g32(p+4);}
+        else if(tag===0x8827)res.iso=typ===3?g16(val):g32(val);
+        else if(tag===0x920A){var q=s+g32(val);res.fl=g32(q)/g32(q+4);}}}
+      rd(g32(s+4));return res;}
+      o+=2+v.getUint16(o+2);}}catch(e){}return {};}
+  function sh(t){if(t>=1)return t.toFixed(0)+' s';var d=[8000,4000,2000,1600,1250,1000,800,640,500,400,320,250,200,160,125,100,80,60,50,40,30,25,20,15,10,8,6,4,3,2];var b=d[0];d.forEach(function(x){if(Math.abs(Math.log(1/x)-Math.log(t))<Math.abs(Math.log(1/b)-Math.log(t)))b=x;});return '1/'+b;}
+  function isoR(x){var s=[50,64,80,100,125,160,200,250,320,400,500,640,800,1000,1250,1600,2000,2500,3200,4000,5000,6400];var b=s[0];s.forEach(function(v){if(Math.abs(Math.log(v/x))<Math.abs(Math.log(b/x)))b=v;});return b;}
+  inp.addEventListener('change',function(){var f=inp.files&&inp.files[0];if(!f)return;out.innerHTML='<p class="note">Analizzo…</p>';
+    f.slice(0,256*1024).arrayBuffer().then(function(b){var ex=exif(b);var url=URL.createObjectURL(f),im=new Image();im.onload=function(){
+      var W=160,H=Math.round(im.height/im.width*W),c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');x.drawImage(im,0,0,W,H);var d=x.getImageData(0,0,W,H).data;
+      var n=0,sum=0,hi=0,lo=0,R=0,G=0,B=0,z=[0,0,0],zn=[0,0,0];
+      for(var i=0;i<d.length;i+=4){var r=d[i],g=d[i+1],bb=d[i+2],L=0.2126*r+0.7152*g+0.0722*bb;n++;sum+=L;if(L>=250)hi++;if(L<=20)lo++;if(L>30&&L<235){R+=r;G+=g;B+=bb;}var px=(i/4)%W,k=px<W/3?0:px<2*W/3?1:2;z[k]+=L;zn[k]++;}
+      var mean=sum/n,hiP=hi/n*100,loP=lo/n*100,zm=z.map(function(v,k){return v/zn[k];}),br=B/(R||1);
+      var EV=null;if(ex.t&&ex.f&&ex.iso){EV=Math.log2(ex.f*ex.f/ex.t)-Math.log2(ex.iso/100)+Math.log2(Math.max(mean,4)/118);}
+      else{EV=Math.log2(Math.max(mean,2)/118)+ (new Date().getHours()>=17||new Date().getHours()<7?3:11);}
+      var K=br<0.75?'3200 K (lampioni)':br<0.9?'4300 K':br<1.08?'5500 K':br<1.25?'6500 K (ombra/nuvoloso)':'7500 K (ora blu)';
+      var N3=2.4,N1=1.7,mode,setts=[],tips=[];
+      function isoFor(N,t){return 100*N*N/t/Math.pow(2,EV);}
+      if(EV>=9){var i3=isoFor(N3,1/1000);mode='Luce buona';setts=[['Obiettivo','3x'],['Tempo','1/1000'],['ISO',String(Math.max(50,isoR(i3)))],['Panning','1/60 · ISO 50']];}
+      else if(EV>=6){var t=1/500,i3b=isoFor(N3,t);if(i3b>1600){t=1/250;i3b=isoFor(N3,t);}mode='Luce bassa';setts=[['Obiettivo','3x'],['Tempo',sh(t)],['ISO',String(isoR(Math.min(i3b,3200)))],['Panning','1/30–1/60']];tips.push('Con poca luce il panning rende meglio della foto ferma: segui l\'auto e scatta in raffica.');}
+      else if(EV>=3){var i1=isoFor(N1,1/250);mode='Crepuscolo / fari';setts=[['Obiettivo','1x'],['Tempo','1/250'],['ISO',String(isoR(Math.min(Math.max(i1,800),3200)))],['Scia fari','treppiede 4–8 s · ISO 100']];tips.push('Niente 3x e 5x: troppo bui, il telefono alza gli ISO e impasta i dettagli.');}
+      else{mode='Buio';setts=[['Scia fari','treppiede 1x'],['Tempo','6–10 s'],['ISO','50–100'],['Fuoco','MF all\'infinito']];tips.push('Una sola auto per scatto: avvia la posa appena vedi i fari arrivare dal rettilineo.');}
+      var ev=0;if(hiP>3)ev=-0.7;else if(hiP>1)ev=-0.3;else if(mean<70&&EV>=6)ev=0.3;
+      setts.push(['EV',(ev>0?'+':'')+ev.toFixed(1)]);setts.push(['Bianco',K]);
+      var names=['sinistra','centro','destra'],mx=zm.indexOf(Math.max.apply(null,zm)),mn=zm.indexOf(Math.min.apply(null,zm));
+      if(zm[mx]-zm[mn]>40)tips.unshift('La parte più luminosa è a <b>'+names[mx]+'</b>, la più buia a '+names[mn]+': scatta quando l\'auto è a '+names[mx]+' e misura la luce lì (tocco lungo sull\'auto).');
+      else tips.unshift('Luce uniforme sulla curva: puoi inquadrare tutto il tornante a 1x e scattare in ogni punto.');
+      if(hiP>3)tips.push('Cielo o fari bruciati: abbassa l\'EV o togli il cielo dall\'inquadratura.');
+      if(loP>35&&EV>=6)tips.push('Molte zone nere: alza l\'inquadratura verso la strada e lascia fuori il bosco in ombra.');
+      if(br>1.15&&EV<9)tips.push('Luce fredda da ora blu: tieni il bianco a 6500–7500 K, il cielo resta blu e i fari bianchi.');
+      var zc=zm.map(function(v){var g=Math.round(Math.min(255,v));return '<span style="background:rgb('+g+','+g+','+g+');color:'+(g>120?'#111':'#eee')+'">'+Math.round(v/2.55)+'%</span>';}).join('');
+      out.innerHTML='<img class="scn-img" src="'+url+'" alt="Scena analizzata"><div class="scn-z">'+zc+'</div>'+
+        '<div class="note"><b>'+mode+'</b> · luminosità '+Math.round(mean/2.55)+'%'+(ex.t?' · foto a '+sh(ex.t)+' ISO '+ex.iso+' f/'+ex.f.toFixed(1):' · senza dati EXIF, stima dalla sola luminosità')+'</div>'+
+        '<div class="scn-g">'+setts.map(function(s){return '<div class="scn-k"><small>'+s[0]+'</small><b>'+s[1]+'</b></div>';}).join('')+'</div>'+
+        '<ul>'+tips.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul><p class="note">Expert RAW: imposta S, ISO, EV e bianco (K) come sopra, fuoco MF sul punto di corda. Rifai l\'analisi ogni mezz\'ora: la luce cambia in fretta.</p>';
+      inp.value='';};im.src=url;});
+  });
 })();
 </script>
 <script>document.addEventListener('contextmenu',function(e){var t=e.target;if(!(t.closest&&t.closest('input,textarea,a,img.c39-img')))e.preventDefault();});</script>
