@@ -143,7 +143,7 @@ ul.plain{margin:0;padding-left:18px;display:grid;gap:6px}
 .log-n{margin:0;font:700 22px/1 var(--mono);text-align:center;max-width:120px}
 .log-go{flex:1;justify-content:center;padding:16px;font-size:18px;font-weight:700;background:var(--accent);border-color:var(--accent);color:#141414}
 .log-hint{min-height:18px;margin:6px 0}
-.log-list{list-style:none;margin:8px 0;padding:0;display:grid;gap:4px;max-height:300px;overflow:auto}
+.log-list{margin:8px 0;padding:0;display:grid;gap:8px}.lg-g{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}.lg-g>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;cursor:pointer}.lg-g>summary::-webkit-details-marker{display:none}.lg-g>summary b{font:800 17px/1 var(--display,inherit)}.lg-g>summary span{font:600 13px/1 var(--mono,monospace);color:var(--muted)}.lg-g>summary::after{content:"\25BE";color:var(--muted);margin-left:6px;transition:transform .2s}.lg-g[open]>summary::after{transform:rotate(180deg)}.lg-ul{list-style:none;margin:0;padding:0 8px 8px;display:grid;gap:4px;max-height:340px;overflow:auto}
 .log-list li{cursor:pointer;display:grid;grid-template-columns:76px 48px 1fr;gap:8px;align-items:center;padding:7px 10px;border-radius:10px;background:var(--soft);font-size:13px}
 .log-list li.mine{box-shadow:inset 3px 0 0 var(--accent)}
 .log-list .lt{font:600 13px/1 var(--mono);color:var(--muted)}
@@ -897,7 +897,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
   <div class="log-hint note" id="ap-hint"></div>
   <div class="log-quick" id="log-quick" hidden><span class="note">Tocca l'auto appena passata</span><div class="lq-btns" id="lq-btns"></div><div class="sk-wrap" id="lq-skip"></div></div>
   <div class="log-hint note" id="log-hint"></div>
-  <ol class="log-list" id="log-list"></ol>
+  <div class="log-list" id="log-list"></div>
   <div class="btns">
     <button class="btn ghost" type="button" id="log-undo">Annulla l'ultima</button>
     <button class="btn ghost" type="button" id="log-share">Condividi o copia l'elenco</button>
@@ -2509,7 +2509,13 @@ function __main(){
     function name(num){var s=String(num);if(s==='000'||s==='00'||s==='0')return 'Apripista, auto '+s;if(s==='CP')return 'Chiudipista: prova finita';var e=(RALLY.entries||[]).filter(function(x){return String(x.n)===s;})[0];return e?(e.d+' · '+e.car):'';}
     function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     function save(){try{localStorage.setItem(K,JSON.stringify(L));}catch(e){}}
-    function draw(){var nr=L.filter(function(r){return !/^(0+|CP)$/.test(String(r.n));}).length;cnt.textContent=nr+' auto';L.sort(function(x,y){return (x.d+x.t)<(y.d+y.t)?-1:(x.d+x.t)>(y.d+y.t)?1:0;});list.innerHTML=L.map(function(r,j){return '<li data-i="'+j+'"'+(String(r.n)==='39'?' class="mine"':'')+'><span class="lt">'+r.t+'</span><span class="ln">'+esc(r.n)+'</span><span>'+esc(name(r.n))+'</span></li>';}).join('');}
+    function draw(){var nr=L.filter(function(r){return !/^(0+|CP)$/.test(String(r.n));}).length;cnt.textContent=nr+' auto';L.sort(function(x,y){return (x.d+x.t)<(y.d+y.t)?-1:(x.d+x.t)>(y.d+y.t)?1:0;});var GR=[{k:'PS 1/2',a:'00:00',b:'00:00',fri:1},{k:'PS 4',a:'08:50',b:'12:00'},{k:'PS 6',a:'12:50',b:'16:00'},{k:'PS 8',a:'16:20',b:'19:55'}],groups={},order=[];
+      function gk(r){var p=(r.t||'').split(':'),m=(+p[0])*60+(+p[1]),day=r.d||'';if(day&&day<'2026-11-14')return 'Venerdì';for(var i=1;i<GR.length;i++){var A=GR[i].a.split(':'),B=GR[i].b.split(':');if(m>=(+A[0])*60+(+A[1])&&m<=(+B[0])*60+(+B[1]))return GR[i].k;}return 'Fuori dalle prove';}
+      L.forEach(function(r,j){var k=gk(r);if(!groups[k]){groups[k]=[];order.push(k);}groups[k].push([r,j]);});
+      var nowk=gk({t:new Date().toTimeString().slice(0,8),d:new Date().toISOString().slice(0,10)});
+      list.innerHTML=order.map(function(k){var a=groups[k],cars=a.filter(function(x){return !/^(0+|CP)$/.test(String(x[0].n));}).length,t0=a[0][0].t.slice(0,5),t1=a[a.length-1][0].t.slice(0,5),op=(OPEN[k]!=null?OPEN[k]:k===nowk);
+        return '<details class="lg-g" data-k="'+k+'"'+(op?' open':'')+'><summary><b>'+k+'</b><span>'+cars+' auto · '+t0+(a.length>1?'–'+t1:'')+'</span></summary><ul class="lg-ul">'+a.map(function(x){var r=x[0],j=x[1];return '<li data-i="'+j+'"'+(String(r.n)==='39'?' class="mine"':'')+'><span class="lt">'+r.t+'</span><span class="ln">'+esc(r.n)+'</span><span>'+esc(name(r.n))+'</span></li>';}).join('')+'</ul></details>';}).join('');}
+    var OPEN={};list.addEventListener('toggle',function(e){var d=e.target;if(d.classList&&d.classList.contains('lg-g'))OPEN[d.getAttribute('data-k')]=d.open;},true);
     n.addEventListener('input',function(){hint.textContent=name(n.value)||'';});
     function add(val){var v=(typeof val==='string'||typeof val==='number')?String(val):n.value.trim();if(!v)return;var d=new Date();L.push({n:v,t:d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),d:d.toISOString().slice(0,10)});save();draw();buzz(60);if(window.LRH)LRH.onLog(v,d);n.value='';hint.textContent='';try{n.blur();if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();}catch(x){}}
     window.lrhLogAdd=add;
