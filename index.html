@@ -811,6 +811,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 .scn-g{display:grid;grid-template-columns:1fr 1fr;gap:6px}.scn-k{background:var(--soft);border-radius:12px;padding:10px 12px}.scn-k small{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}.scn-k b{font:700 17px/1.1 var(--mono,monospace)}.scn-img{width:100%;max-height:220px;object-fit:cover;border-radius:12px;display:block}.scn ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}.scn-z{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:-4px}.scn-z span{font:600 11px/1 var(--mono,monospace);text-align:center;padding:6px 0;border-radius:8px;color:#111}
 .scn-p{display:grid;gap:6px}.scn-pr{background:var(--soft);border-radius:12px;padding:10px 12px;display:grid;gap:5px}.scn-pr.off{opacity:.5}.scn-pn{font-weight:700;font-size:14px}.scn-pv{display:grid;grid-template-columns:auto auto 1fr;gap:6px}.scn-pv span{font:700 14px/1 var(--mono,monospace);background:#0f0f10;border-radius:8px;padding:7px 9px;text-align:center}.scn-pv span:first-child{color:var(--accent)}.scn-pr small{color:var(--muted);font-size:12px}
 #adesso .scn{border:0;background:none;padding:0;margin:0}#adesso .scn-h b{font-size:20px}
+#arr.arr-done [data-focus],#arr.arr-done .dly,#arr.arr-done .more{display:none}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -2328,7 +2329,8 @@ function __main(){
     function setD(o){try{localStorage.setItem('lrh26-dly',JSON.stringify(o));}catch(e){}window.dispatchEvent(new Event('lrh-delay'));}
     function delay(ps){return +getD()[ps]||0;}
     function stageAt(d){for(var i=0;i<ST.length;i++)if(d>=at(ST[i].a)&&d<=at(ST[i].b))return ST[i];return null;}
-    function current(now){now=now||new Date();for(var i=0;i<ST.length;i++)if(now<=at(ST[i].b))return ST[i];return null;}
+    function fin39(){var d=window.RALLY_LOCAL||window.RALLY_DATA||null;if(!d){try{d=JSON.parse(localStorage.getItem('lrh26-data'));}catch(e){}}return !!((d&&d.final39)||(window.RALLY&&RALLY.final39));}
+    function current(now){now=now||new Date();for(var i=0;i<ST.length;i++){if(now>at(ST[i].b))continue;if(now>=at(ST[i].a)&&passed(ST[i])['CP'])continue;if(i===ST.length-1&&fin39())continue;return ST[i];}return null;}
     function eta(st,pos,raw){return at(st.t,(pos-1)+TO+(raw?0:delay(st.ps)));}
     function logs(){try{return JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){return [];}}
     function lt(r){var d=(r.d||'').split('-'),t=(r.t||'').split(':');return new Date(+d[0],+d[1]-1,+d[2],+t[0],+t[1],+(t[2]||0));}
@@ -2360,7 +2362,8 @@ function __main(){
     function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     function draw(){
       var now=new Date(),st=LRH.current(now);
-      if(!st){pill.className='pill idle';pill.textContent='prove finite';sub.textContent='Il tornante ha visto passare tutte le auto: ci vediamo all\'arrivo in Piazza Marconi.';list.innerHTML='';stats.innerHTML='';dv.textContent='–';return;}
+      var ar=document.getElementById('arr');if(ar)ar.classList.toggle('arr-done',!st);
+      if(!st){pill.className='pill open';pill.textContent='gara finita';sub.textContent='Prove finite: al tornante sono passate tutte le auto. La classifica finale è in Gara → Classifica, i risultati del 39 nella sezione Il 39.';list.innerHTML='';stats.innerHTML='';dv.textContent='–';return;}
       var d=LRH.delay(st.ps);
       dv.textContent=d===0?'in orario':(d>0?'+'+d+' min':d+' min');
       var first=LRH.eta(st,1),live=now>=LRH.at(st.a);
