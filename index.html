@@ -759,6 +759,29 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 .ap-row{margin:14px 0 4px}.ap-row>.note{display:block;margin:0 0 8px}.ap-btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ap-btns .btn{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:700 18px/1 var(--mono,monospace);padding:12px 0;letter-spacing:.04em}.ap-btns .btn.done{background:var(--soft);color:var(--muted);border-color:var(--line)}.ap-btns .btn small{display:block;font:500 11px/1.2 var(--body);margin-top:4px;letter-spacing:0;color:var(--muted)}
 .ed-sheet{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;padding:12px}.ed-sheet[hidden]{display:none}.ed-box{width:100%;max-width:440px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:20px 18px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.5)}.ed-head{display:flex;align-items:baseline;gap:12px;margin:6px 0 14px}.ed-n{font:800 34px/1 var(--display,inherit);color:var(--accent)}.ed-name{color:var(--muted);font-size:14px}.ed-t{width:100%;box-sizing:border-box;font:700 40px/1 var(--mono,monospace);text-align:center;color:var(--ink);background:var(--soft);border:1px solid var(--accent);border-radius:14px;padding:14px;color-scheme:dark;-webkit-user-select:text;user-select:text}.ed-btns{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:8px;margin-top:14px}.ed-btns .btn{justify-content:center;text-align:center}#ed-del{color:#ff7a6b}#ed-ok{background:var(--accent);color:#111;border-color:var(--accent);font-weight:700}
 .ap-end{grid-template-columns:1fr;margin-top:8px}
+
+/* Schermata in prova, rifinita */
+.focus{gap:12px;align-content:start}
+.fo-top .pill{font-size:12px}
+.fo-39{background:linear-gradient(180deg,#1d1a10,#141310);border:1px solid #3a3218;border-radius:22px;padding:16px 14px 14px;gap:2px}
+.fo-39 .eyebrow{color:var(--accent);opacity:.9}
+.fo-time{font:800 60px/1 var(--display);margin-top:4px}
+.fo-count{font:700 20px/1.2 var(--body);color:var(--ink);margin-top:6px}
+.fo-sub{font-size:13px;color:var(--muted)}
+.fo-next{gap:6px}
+.fo-row{grid-template-columns:54px 44px minmax(0,1fr) auto;gap:10px;padding:10px 12px;border-radius:12px}
+.fo-row .t{font-size:15px}.fo-row .n{font-size:24px}.fo-row .c{font-size:13px;color:var(--ink);opacity:.85}
+.fo-row .w{font:700 13px/1 var(--mono);color:var(--muted);text-align:right;white-space:nowrap}
+.fo-log{gap:10px;margin-top:2px}
+.fo-btns .lq{padding:14px 6px;border-radius:16px}.fo-btns .lq b{font-size:34px}
+.fo-ap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.fo-ap .btn{justify-content:center;padding:9px 0;font:700 14px/1 var(--mono);border-radius:12px}
+.fo-man .btn{background:var(--accent);color:#111;border-color:var(--accent);font-weight:700;padding-left:22px;padding-right:22px}
+.fo-man input{text-align:center}
+#fo-last{text-align:center;margin:0}
+#fo-car{justify-content:center;padding:10px;font-size:14px;opacity:.85}
+@media (max-width:599px){.fo-time{font-size:54px}.fo-row{grid-template-columns:50px 40px minmax(0,1fr) auto}.fo-row .w{grid-column:auto}}
+@media (orientation:landscape) and (max-height:520px){.fo-39{padding:10px}.fo-time{font-size:44px}.fo-count{font-size:16px}.fo-ap .btn{padding:6px 0}}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -1740,12 +1763,12 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 </script>
 <div class="focus" id="focus" hidden>
   <div class="fo-top"><span class="pill closed" id="fo-pill">–</span><button class="ar-x" type="button" id="fo-close" aria-label="Chiudi">✕</button></div>
-  <div class="fo-39"><div class="eyebrow">Il 39 al tornante</div><div class="fo-time" id="fo-time">–</div><div class="fo-count" id="fo-count"></div></div>
+  <div class="fo-39"><div class="eyebrow">Il 39 al tornante</div><div class="fo-time" id="fo-time">–</div><div class="fo-count" id="fo-count"></div><div class="fo-sub" id="fo-sub"></div></div>
   <div class="fo-next" id="fo-next"></div>
-  <div class="fo-log"><div class="eyebrow">Passata adesso</div><div class="fo-btns" id="fo-btns"></div>
+  <div class="fo-log"><div class="eyebrow">Tocca l'auto appena passata</div><div class="fo-btns" id="fo-btns"></div><div class="fo-ap"><button type="button" class="btn ghost" data-ap="000">000</button><button type="button" class="btn ghost" data-ap="00">00</button><button type="button" class="btn ghost" data-ap="0">0</button><button type="button" class="btn ghost" data-ap="CP">Fine PS</button></div>
     <div class="fo-man"><input class="search" id="fo-n" type="number" inputmode="numeric" placeholder="Altro numero" aria-label="Altro numero"><button class="btn" type="button" id="fo-go">Passata</button></div>
     <div class="note" id="fo-last"></div>
-    <button class="btn ghost" type="button" id="fo-car" style="justify-content:center">Riportami alla macchina</button></div>
+    <button class="btn ghost" type="button" id="fo-car">Riportami alla macchina</button></div>
 </div>
 <script>
 // ===== Registro rapido, schermata "in prova", riepilogo del 39, storia Instagram =====
@@ -1773,12 +1796,13 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
     var live=now>=l.at(st.a);pill.className='pill '+(live?'closed':'idle');pill.textContent=st.ps+(live?' · in corso':' · prossima');
     var p39=l.posOf(39)||1,t39=l.eta(st,p39),m=Math.round((t39-now)/60000),ps=l.passed(st),done=!!ps['39'];
     document.getElementById('fo-time').textContent=done?'Passato':'~'+hm(t39);
-    document.getElementById('fo-count').textContent=done?'alle '+hm(ps['39']):(m>0?(m>=60?Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'m':m+' min'):'adesso');
-    var x=expected(5);
-    document.getElementById('fo-next').innerHTML=x.length?x.map(function(y){var mm=Math.round((y.t-now)/60000);return '<div class="fo-row'+(String(y.e.n)==='39'?' mine':'')+'"><span class="t">'+hm(y.t)+'</span><span class="n">'+esc(y.e.n)+'</span><span class="c">'+esc(y.e.d)+' · '+esc(y.e.car)+'</span><span class="w">'+(mm<=0?'adesso':'tra '+mm+'′')+'</span></div>';}).join(''):'<p class="note">L\'ordine di partenza non è ancora nell\'app: segna le auto con il campo qui sotto.</p>';
+    document.getElementById('fo-count').textContent=done?'alle '+hm(ps['39']):(m>0?'tra '+(m>=60?Math.floor(m/60)+' h '+String(m%60).padStart(2,'0'):m)+' min':'adesso');
+    (function(){var p39=l.posOf(39)||1,bef=l.ents.filter(function(e){return !e.ret&&e.p<p39&&!ps[String(e.n)];}).length;var s=document.getElementById('fo-sub');if(s)s.textContent=done?'Già passato in questa prova':(bef?bef+(bef===1?' auto':' auto')+' prima di lui':'È il prossimo!');})();
+    var x=expected(window.innerHeight>820?6:(window.innerHeight>700?5:4));
+    document.getElementById('fo-next').innerHTML=x.length?x.map(function(y){var mm=Math.round((y.t-now)/60000);return '<div class="fo-row'+(String(y.e.n)==='39'?' mine':'')+'"><span class="t">'+hm(y.t)+'</span><span class="n">'+esc(y.e.n)+'</span><span class="c">'+esc(y.e.d)+' · '+esc(y.e.car)+'</span><span class="w">'+(mm<=0?'ora':mm+' min')+'</span></div>';}).join(''):'<p class="note">L\'ordine di partenza non è ancora nell\'app: segna le auto con il campo qui sotto.</p>';
     document.getElementById('fo-btns').innerHTML=x.slice(0,3).map(function(y){return qbtn(y,true);}).join('');
     var lg=[];try{lg=JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){}
-    var la=lg[lg.length-1];document.getElementById('fo-last').textContent=la?('Ultima segnata: n. '+la.n+' alle '+la.t+' · '+lg.length+' in tutto'):'Nessuna auto segnata';
+    lg.sort(function(a,b){return (a.d+a.t)<(b.d+b.t)?-1:1;});var real=lg.filter(function(r){return !/^(0+|CP)$/.test(String(r.n));});var la=lg[lg.length-1];document.getElementById('fo-last').textContent=la?('Ultima: '+(/^(0+|CP)$/.test(String(la.n))?(la.n==='CP'?'chiudipista':'apripista '+la.n):'n. '+la.n)+' alle '+String(la.t).slice(0,5)+' · '+real.length+(real.length===1?' auto segnata':' auto segnate')):'Nessuna auto segnata';
   }
   function openF(){open=true;fo.hidden=false;drawF();try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(w){fo._wl=w;}).catch(function(){});}catch(e){}}
   function closeF(){open=false;fo.hidden=true;try{if(fo._wl){fo._wl.release();fo._wl=null;}}catch(e){}if(location.hash==='#prova')history.replaceState(null,'','#gara');}
