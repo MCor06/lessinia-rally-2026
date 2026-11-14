@@ -659,8 +659,8 @@
   }
  ],
  "offline": {
-  "title": "Classifica provvisoria dopo PS 6",
-  "time": "sab 16:30",
+  "title": "Classifica provvisoria dopo PS 7",
+  "time": "sab 18:57",
   "rows": [
    {
     "pos": 1,
@@ -672,119 +672,119 @@
     "pos": 2,
     "n": 2,
     "crew": "Tezza Dennis / Merzari Massimo",
-    "gap": "+22.9"
+    "gap": "+21.6"
    },
    {
     "pos": 3,
     "n": 22,
     "crew": "Bombieri Mattia / Tripi Linda",
-    "gap": "+1:53.7"
+    "gap": "+2:11.8"
    },
    {
     "pos": 4,
     "n": 4,
     "crew": "\"PEDRO\" / Baldaccini Emanuele",
-    "gap": "+2:03.2"
+    "gap": "+2:13.4"
    },
    {
     "pos": 5,
     "n": 16,
     "crew": "Costola Michele / Lorenzi Sofia",
-    "gap": "+2:18.2"
+    "gap": "+2:32.3"
    },
    {
     "pos": 6,
     "n": 11,
     "crew": "Dalla Libera Paolo / Zago Emanuele",
-    "gap": "+2:20.6"
+    "gap": "+2:35.1"
    },
    {
     "pos": 7,
     "n": 3,
     "crew": "\"RAFFA\" / Signorini Andrea",
-    "gap": "+2:30.2"
+    "gap": "+2:53.9"
    },
    {
     "pos": 8,
     "n": 12,
     "crew": "Garzotto Fabio / Sbalchiero Andrea",
-    "gap": "+2:45.4"
+    "gap": "+3:22.4"
    },
    {
     "pos": 9,
     "n": 31,
     "crew": "Favero Giacomo / Di Fonzo Veronica",
-    "gap": "+2:59.3"
+    "gap": "+3:35.7"
    },
    {
     "pos": 10,
     "n": 38,
     "crew": "Rigon Nicola / Minuzzo Simone",
-    "gap": "+3:12.4"
+    "gap": "+3:44.0"
    },
    {
     "pos": 11,
     "n": 32,
     "crew": "Bennati Loris / Castegini Mattia",
-    "gap": "+3:20.6"
+    "gap": "+3:53.7"
    },
    {
     "pos": 12,
-    "n": 29,
-    "crew": "Bombieri Nicola / Fiocco Elena",
-    "gap": "+3:26.4"
+    "n": 30,
+    "crew": "Sulsente Corrado / Gasparotto Ivan",
+    "gap": "+4:09.2"
    },
    {
     "pos": 13,
-    "n": 30,
-    "crew": "Sulsente Corrado / Gasparotto Ivan",
-    "gap": "+3:30.0"
+    "n": 21,
+    "crew": "Pellizzari Renato / Pellizzari Nico",
+    "gap": "+4:16.1"
    },
    {
     "pos": 14,
-    "n": 25,
-    "crew": "Tacchella Christian / Andrian Fabio",
-    "gap": "+3:35.2"
+    "n": 29,
+    "crew": "Bombieri Nicola / Fiocco Elena",
+    "gap": "+4:17.0"
    },
    {
     "pos": 15,
-    "n": 33,
-    "crew": "Meggiarin Lisa / Mecenero Michele",
-    "gap": "+3:36.1"
+    "n": 39,
+    "crew": "Zambelli Agostino / Zambelli Angela",
+    "gap": "+4:17.9"
    },
    {
     "pos": 16,
-    "n": 21,
-    "crew": "Pellizzari Renato / Pellizzari Nico",
-    "gap": "+3:39.0"
+    "n": 33,
+    "crew": "Meggiarin Lisa / Mecenero Michele",
+    "gap": "+4:21.2"
    },
    {
     "pos": 17,
-    "n": 39,
-    "crew": "Zambelli Agostino / Zambelli Angela",
-    "gap": "+3:40.5"
+    "n": 25,
+    "crew": "Tacchella Christian / Andrian Fabio",
+    "gap": "+4:24.0"
    },
    {
     "pos": 18,
     "n": 80,
     "crew": "Zenari Mirco / Zenari Adele",
-    "gap": "+4:05.6"
+    "gap": "+4:49.9"
    },
    {
     "pos": 19,
     "n": 34,
     "crew": "Soldà Federico / Gecchele Elena",
-    "gap": "+4:12.9"
+    "gap": "+4:53.5"
    },
    {
     "pos": 20,
     "n": 28,
     "crew": "Sanguin Gianni / Ardemagni Veronica",
-    "gap": "+4:28.7"
+    "gap": "+5:00.2"
    }
   ]
  },
- "updated": "sab 14 nov, 16:30",
+ "updated": "sab 14 nov, 18:57",
  "r39": [
   {
    "ps": "PS 1",
@@ -827,6 +827,13 @@
    "pos_ps": 15,
    "pos": 17,
    "gap": "+3:40.5"
+  },
+  {
+   "ps": "PS 7",
+   "time": "6:07.8",
+   "pos_ps": 18,
+   "pos": 15,
+   "gap": "+4:17.9"
   }
  ],
  "final39": null,
@@ -902,6 +909,12 @@
    "title": "Classifica dopo PS 6",
    "text": "Il 39 sale al 17° posto (+3:40.5). Nella PS 6 Calavedo 15° tempo con 9:33.6, 20 secondi meglio della PS 4. Non più in classifica: 6, 15, 18, 58, 74, 89.",
    "imp": false
+  },
+  {
+   "t": "sab 18:57",
+   "title": "Classifica dopo PS 7",
+   "text": "Il 39 sale al 15° posto (+4:17.9). Nella PS 7 Velo Veronese 18° tempo con 6:07.8. Davanti, Bombieri/Fiocco (14°) a 0,9 s: la PS 8 al tornante decide.",
+   "imp": true
   }
  ]
 }
