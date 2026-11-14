@@ -782,6 +782,19 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 #fo-car{justify-content:center;padding:10px;font-size:14px;opacity:.85}
 @media (max-width:599px){.fo-time{font-size:54px}.fo-row{grid-template-columns:50px 40px minmax(0,1fr) auto}.fo-row .w{grid-column:auto}}
 @media (orientation:landscape) and (max-height:520px){.fo-39{padding:10px}.fo-time{font-size:44px}.fo-count{font-size:16px}.fo-ap .btn{padding:6px 0}}
+
+/* Schermata in prova: sempre tutta nello schermo, senza scorrere */
+.focus{display:flex!important;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;gap:10px}
+.focus[hidden]{display:none!important}
+.fo-top,.fo-39,.fo-log{flex:none}
+.fo-next{flex:1 1 auto;min-height:0;overflow:hidden;align-content:start}
+.fo-39{padding:12px 12px 10px}.fo-time{font-size:50px}.fo-count{font-size:18px;margin-top:4px}
+.fo-btns .lq{padding:10px 6px}.fo-btns .lq b{font-size:30px}
+.fo-ap .btn{padding:8px 0}
+.fo-man .btn,.fo-man input{padding-top:10px;padding-bottom:10px}
+#fo-car{padding:8px}
+@media (max-height:760px){.fo-39 .eyebrow{display:none}.fo-time{font-size:42px}.fo-sub{display:none}#fo-car{display:none}}
+@media (orientation:landscape) and (max-height:520px){.focus{display:grid!important}.fo-next{overflow:hidden;max-height:none}}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -1798,15 +1811,16 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
     document.getElementById('fo-time').textContent=done?'Passato':'~'+hm(t39);
     document.getElementById('fo-count').textContent=done?'alle '+hm(ps['39']):(m>0?'tra '+(m>=60?Math.floor(m/60)+' h '+String(m%60).padStart(2,'0'):m)+' min':'adesso');
     (function(){var p39=l.posOf(39)||1,bef=l.ents.filter(function(e){return !e.ret&&e.p<p39&&!ps[String(e.n)];}).length;var s=document.getElementById('fo-sub');if(s)s.textContent=done?'Già passato in questa prova':(bef?bef+(bef===1?' auto':' auto')+' prima di lui':'È il prossimo!');})();
-    var x=expected(window.innerHeight>820?6:(window.innerHeight>700?5:4));
+    var x=expected(6);
     document.getElementById('fo-next').innerHTML=x.length?x.map(function(y){var mm=Math.round((y.t-now)/60000);return '<div class="fo-row'+(String(y.e.n)==='39'?' mine':'')+'"><span class="t">'+hm(y.t)+'</span><span class="n">'+esc(y.e.n)+'</span><span class="c">'+esc(y.e.d)+' · '+esc(y.e.car)+'</span><span class="w">'+(mm<=0?'ora':mm+' min')+'</span></div>';}).join(''):'<p class="note">L\'ordine di partenza non è ancora nell\'app: segna le auto con il campo qui sotto.</p>';
     document.getElementById('fo-btns').innerHTML=x.slice(0,3).map(function(y){return qbtn(y,true);}).join('');
+    (function fit(){var c=document.getElementById('fo-next');if(!c)return;requestAnimationFrame(function(){var B=c.getBoundingClientRect().bottom;[].forEach.call(c.querySelectorAll('.fo-row'),function(r){r.style.visibility=(r.getBoundingClientRect().bottom>B+1)?'hidden':'';});});})();
     var lg=[];try{lg=JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){}
     lg.sort(function(a,b){return (a.d+a.t)<(b.d+b.t)?-1:1;});var real=lg.filter(function(r){return !/^(0+|CP)$/.test(String(r.n));});var la=lg[lg.length-1];document.getElementById('fo-last').textContent=la?('Ultima: '+(/^(0+|CP)$/.test(String(la.n))?(la.n==='CP'?'chiudipista':'apripista '+la.n):'n. '+la.n)+' alle '+String(la.t).slice(0,5)+' · '+real.length+(real.length===1?' auto segnata':' auto segnate')):'Nessuna auto segnata';
   }
   function openF(){open=true;fo.hidden=false;drawF();try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(w){fo._wl=w;}).catch(function(){});}catch(e){}}
   function closeF(){open=false;fo.hidden=true;try{if(fo._wl){fo._wl.release();fo._wl=null;}}catch(e){}if(location.hash==='#prova')history.replaceState(null,'','#gara');}
-  window.lrhFocusOpen=openF;
+  window.lrhFocusOpen=openF;window.addEventListener('resize',function(){if(open)drawF();});
   document.addEventListener('click',function(e){if(e.target.closest('[data-focus]'))openF();});
   document.getElementById('fo-close').addEventListener('click',closeF);
   document.getElementById('fo-btns').addEventListener('click',function(e){var b=e.target.closest('[data-n]');if(b&&window.lrhLogAdd)lrhLogAdd(b.getAttribute('data-n'));});
