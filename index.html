@@ -810,6 +810,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 .scn{display:grid;gap:10px;margin:4px 0 14px;padding:14px;border:1px solid #3a3218;border-radius:16px;background:linear-gradient(180deg,#1d1a10,#141310)}.scn-h{display:grid;gap:4px}.scn-h b{font:800 17px/1.2 var(--display,inherit);color:var(--accent)}.scn-h .note{margin:0}
 .scn-g{display:grid;grid-template-columns:1fr 1fr;gap:6px}.scn-k{background:var(--soft);border-radius:12px;padding:10px 12px}.scn-k small{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}.scn-k b{font:700 17px/1.1 var(--mono,monospace)}.scn-img{width:100%;max-height:220px;object-fit:cover;border-radius:12px;display:block}.scn ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}.scn-z{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:-4px}.scn-z span{font:600 11px/1 var(--mono,monospace);text-align:center;padding:6px 0;border-radius:8px;color:#111}
 .scn-p{display:grid;gap:6px}.scn-pr{background:var(--soft);border-radius:12px;padding:10px 12px;display:grid;gap:5px}.scn-pr.off{opacity:.5}.scn-pn{font-weight:700;font-size:14px}.scn-pv{display:grid;grid-template-columns:auto auto 1fr;gap:6px}.scn-pv span{font:700 14px/1 var(--mono,monospace);background:#0f0f10;border-radius:8px;padding:7px 9px;text-align:center}.scn-pv span:first-child{color:var(--accent)}.scn-pr small{color:var(--muted);font-size:12px}
+#adesso .scn{border:0;background:none;padding:0;margin:0}#adesso .scn-h b{font-size:20px}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -1294,20 +1295,16 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 </section>
 
 <section data-page="foto" id="adesso" data-short="Adesso">
-  <div class="res-head"><h2>Consiglio sul momento</h2><span class="pill idle" id="sp-pill">foto dello spot</span></div>
-  <p class="note">Fai una foto al tornante con la fotocamera normale: l'app misura luce, contrasto e colore e ti dice come inquadrare e cosa impostare in Expert RAW.</p>
-  <label class="btn" for="sp-in" style="justify-content:center">Fotografa lo spot</label><input type="file" id="sp-in" accept="image/*" capture="environment" hidden>
-  <div id="sp-out"></div>
-</section>
-
-<section data-page="foto" id="raw" data-short="Expert RAW">
-  <h2>Expert RAW</h2>
-  <div class="lux-now" id="lux-now"></div>
   <div class="scn">
     <div class="scn-h"><b>Consiglio dalla scena</b><span class="note">Fotografa il tornante adesso: l'app legge luce e colori e ti dà inquadratura e impostazioni.</span></div>
     <label class="btn" for="scn-in" style="justify-content:center">Fotografa il tornante</label><input type="file" id="scn-in" accept="image/*" capture="environment" hidden>
     <div id="scn-out"></div>
   </div>
+</section>
+
+<section data-page="foto" id="raw" data-short="Expert RAW">
+  <h2>Expert RAW</h2>
+  <div class="lux-now" id="lux-now"></div>
 
   <p class="note"><b>Dalla collinetta sopra il tornante</b>: vedi tutta la curva dall'alto, a circa 30 m. Usa <b>3x</b> per il punto di corda, <b>5x</b> per l'arrivo dal rettilineo dei garage, <b>1x</b> per la curva intera.</p>
   <details class="more"><summary>5 consigli per questa posizione</summary><ul class="plain">
@@ -2921,53 +2918,7 @@ function __main(){
   window.addEventListener('lrh-log',upd);window.addEventListener('lrh-delay',upd);setTimeout(upd,1500);setInterval(upd,60000);
 })();
 </script>
-<script>
-/* Consiglio sul momento: analisi della foto dello spot */
-(function(){
-  var inp=document.getElementById('sp-in'),out=document.getElementById('sp-out'),pill=document.getElementById('sp-pill');if(!inp)return;
-  function sun(d){var rad=Math.PI/180,lat=45.6198,lon=11.027,n=(d-Date.UTC(2000,0,1,12))/864e5,L=(280.46+.9856474*n)%360,g=(357.528+.9856003*n)%360,lam=L+1.915*Math.sin(g*rad)+.02*Math.sin(2*g*rad),eps=23.439-4e-7*n,ra=Math.atan2(Math.cos(eps*rad)*Math.sin(lam*rad),Math.cos(lam*rad))/rad,dec=Math.asin(Math.sin(eps*rad)*Math.sin(lam*rad))/rad,gm=(18.697374558+24.06570982441908*n)%24,ha=(gm*15+lon-ra)*rad;var alt=Math.asin(Math.sin(lat*rad)*Math.sin(dec*rad)+Math.cos(lat*rad)*Math.cos(dec*rad)*Math.cos(ha))/rad;return alt;}
-  function nextPS(){var L=window.LRH;if(!L)return null;var st=L.current(new Date());return st;}
-  function exifTime(b){try{var v=new DataView(b);if(v.getUint16(0)!==0xFFD8)return null;var o=2;while(o<v.byteLength){var m=v.getUint16(o),s=v.getUint16(o+2);if(m===0xFFE1){var t=String.fromCharCode.apply(null,new Uint8Array(b,o+4,4));if(t==='Exif'){var a=new Uint8Array(b,o+10,Math.min(s,60000));var str='';for(var i=0;i<a.length;i++)str+=String.fromCharCode(a[i]);var mm=str.match(/(\d{4}):(\d\d):(\d\d) (\d\d):(\d\d):(\d\d)/);if(mm)return new Date(+mm[1],+mm[2]-1,+mm[3],+mm[4],+mm[5],+mm[6]);}}o+=2+s;}}catch(e){}return null;}
-  inp.addEventListener('change',function(){var f=inp.files&&inp.files[0];if(!f)return;out.innerHTML='<p class="note">Analizzo…</p>';
-    var url=URL.createObjectURL(f),img=new Image();
-    f.slice(0,256*1024).arrayBuffer().then(function(b){img._t=exifTime(b);}).catch(function(){}).then(function(){img.src=url;});
-    img.onload=function(){
-      var W=160,H=Math.round(W*img.height/img.width),c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');x.drawImage(img,0,0,W,H);var d=x.getImageData(0,0,W,H).data;
-      var n=W*H,sum=0,hi=0,lo=0,R=0,G=0,B=0,top=0,bot=0,mid=0,ys=[],k=0;
-      for(var i=0,p=0;i<d.length;i+=4,p++){var y=.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];sum+=y;if(y>245)hi++;if(y<18)lo++;R+=d[i];G+=d[i+1];B+=d[i+2];var row=Math.floor(p/W);if(row<H/3)top+=y;else if(row>2*H/3)bot+=y;else mid+=y;ys.push(y);}
-      var mean=sum/n;ys.sort(function(a,b){return a-b;});var p5=ys[Math.floor(n*.05)],p95=ys[Math.floor(n*.95)],con=p95-p5;top/=n/3;mid/=n/3;bot/=n/3;var rb=R/Math.max(1,B),hiP=hi/n*100,loP=lo/n*100;
-      var when=img._t||new Date(),alt=sun(when),st=nextPS();
-      var phase=alt>15?'giorno':alt>4?'sole basso':alt>-1?'tramonto':alt>-6?'ora blu':'buio';
-      var dark=mean<45||alt<-6,dim=!dark&&(mean<85||alt<4);
-      // impostazioni
-      var sh,iso,shPan,ev='0',wb,lens,fmt;
-      if(dark){sh='1/250';iso='1600–3200';shPan='scie 2–6 s su treppiede, ISO 50–100';lens='1x (5x no)';}
-      else if(dim){sh='1/500';iso=mean<65?'800–1600':'400–800';shPan='1/40–1/60';lens='3x (1x se cala ancora)';}
-      else{sh='1/1000';iso=mean>150?'50–100':'100–200';shPan='1/60–1/125';lens='3x · 5x sul rettilineo';}
-      if(hiP>6)ev='−0,3/−0,7';else if(mean<90&&!dark)ev='+0,3';else if(dark)ev='0 (misura sui fari: −0,3)';
-      if(dark)wb='3800–4200 K (fari e lampioni)';else if(rb>1.18)wb='5000–5300 K (luce calda)';else if(rb<.9)wb='6000–6500 K (ombra/nuvole)';else wb='5500 K';
-      var tips=[];
-      if(top>mid*1.35&&top>150)tips.push('Il cielo in alto è molto più chiaro della strada: abbassa l\'inquadratura, cielo al massimo nel 10% superiore, oppure EV −0,3 per non bruciarlo.');
-      if(bot<mid*.6)tips.push('La parte bassa è scura (prato o striscione in ombra): tienila fuori o usala come cornice scura, non misurarci la luce.');
-      if(con>200&&!dark)tips.push('Contrasto forte tra sole e ombra: misura la luce sull\'auto e aspetta che entri nella zona illuminata per scattare.');
-      if(con<90&&!dark)tips.push('Luce piatta: punta sul movimento. Panning a '+shPan+' sull\'uscita e raffica in curva.');
-      if(dim)tips.push('Luce che cala: tieni fisso 1/500 per le auto nitide e lascia salire gli ISO; fai qualche panning a 1/40 che con questa luce viene bene.');
-      if(dark){tips.push('Al buio: treppiede, inquadratura larga su tutta la curva, 1x, tempi di 2–6 s per le scie dei fari (ISO 50–100, EV 0).');tips.push('Per l\'auto nitida coi fari: 1/250, ISO alti, aspetta che sia nel punto illuminato dal lampione. Fuoco manuale sul punto di corda.');tips.push('Il 39 ha i fari supplementari? Scattalo frontale in entrata curva: è lì che si vede la livrea.');}
-      if(hiP>6&&!dark)tips.push('Il '+hiP.toFixed(0)+'% dell\'immagine è bruciato: abbassa l\'esposizione.');
-      if(loP>35&&!dark)tips.push('Molte zone nere: alza un po\' l\'esposizione o cambia angolo verso la parte illuminata.');
-      if(!tips.length)tips.push('Condizioni buone: auto nitide a '+sh+', 3x sul punto di corda, raffica da entrata a uscita.');
-      tips.push('Fuoco manuale (MF) sul punto di corda con un\'auto di prova, poi non toccarlo.');
-      function hm(d){return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
-      pill.className='pill open';pill.textContent=phase;
-      out.innerHTML='<img class="sp-prev" src="'+url+'" alt="">'+
-        '<div class="sp-meas"><div><b>'+Math.round(mean/2.55)+'%</b><small>luminosità</small></div><div><b>'+Math.round(con/2.55)+'%</b><small>contrasto</small></div><div><b>'+(alt>0?Math.round(alt)+'°':'sotto')+'</b><small>sole · '+hm(when)+'</small></div></div>'+
-        '<div class="sp-set"><div><small>Auto nitide</small><b>'+sh+'</b></div><div><small>ISO</small><b>'+iso+'</b></div><div><small>Panning / scie</small><b style="font-size:14px">'+shPan+'</b></div><div><small>EV</small><b>'+ev+'</b></div><div><small>Bilanciamento</small><b style="font-size:14px">'+wb+'</b></div><div><small>Obiettivo</small><b style="font-size:14px">'+lens+'</b></div></div>'+
-        '<div class="eyebrow">Inquadratura</div><ul class="sp-tips">'+tips.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'+
-        (st?'<p class="note">'+st.ps+' · il 39 verso le '+hm(window.LRH.eta(st,window.LRH.posOf(39)||1))+'. Rifai la foto se la luce cambia.</p>':'');
-    };
-  });
-})();
-</script>
+
 <script>
 /* Consiglio dalla scena: luce, colori ed EXIF della foto */
 (function(){
