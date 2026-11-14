@@ -2880,7 +2880,9 @@ function __main(){
   function upd(){var L=[];try{L=JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){}
     var now=new Date(),st=window.LRH&&LRH.current(now);if(!st||!h){if(h)h.textContent='';return;}
     var ps=LRH.passed(st),out=[];['000','00','0'].forEach(function(k){if(ps[k])out.push(k+' alle '+LRH.hm(ps[k]));});
-    ['000','00','0','CP'].forEach(function(k){[].forEach.call(document.querySelectorAll('[data-ap="'+k+'"]'),function(b){b.classList.toggle('done',!!ps[k]);var sm=b.querySelector('small');if(!sm){sm=document.createElement('small');b.appendChild(sm);}var fo=!!b.closest('.fo-ap');sm.textContent=ps[k]?'alle '+LRH.hm(ps[k]):'non ancora';});});
+    var est={},f1=LRH.eta(st,1).getTime();est['000']=new Date(f1-40*60000);est['00']=new Date(f1-25*60000);est['0']=new Date(f1-10*60000);
+    (function(){var lp=0;LRH.ents.forEach(function(e){if(!e.ret&&e.p>lp)lp=e.p;});if(lp)est['CP']=new Date(LRH.eta(st,lp).getTime()+8*60000);})();
+    ['000','00','0','CP'].forEach(function(k){[].forEach.call(document.querySelectorAll('[data-ap="'+k+'"]'),function(b){b.classList.toggle('done',!!ps[k]);var sm=b.querySelector('small');if(!sm){sm=document.createElement('small');b.appendChild(sm);}var fo=!!b.closest('.fo-ap');sm.textContent=ps[k]?'alle '+LRH.hm(ps[k]):(est[k]?(fo?'stima ~':'verso le ')+LRH.hm(est[k]):'non ancora');});});
     var out=[];if(!ps['000']&&!ps['00']&&!ps['0']&&!ps['CP']){var f1=LRH.eta(st,1).getTime();out.push(st.ps+', apripista attese: 000 verso le '+LRH.hm(new Date(f1-40*60000))+', 00 verso le '+LRH.hm(new Date(f1-25*60000))+', 0 verso le '+LRH.hm(new Date(f1-10*60000))+'.');}
     if((ps['0']||ps['00']||ps['000'])&&!ps['CP'])out.push('Prima auto prevista verso le '+LRH.hm(LRH.eta(st,1))+', il 39 verso le '+LRH.hm(LRH.eta(st,LRH.posOf(39)||1))+'.');
     function dur(a,b){var m=Math.round((b-a)/60000);return (m>=60?Math.floor(m/60)+' h '+String(m%60).padStart(2,'0'):m)+' min';}
