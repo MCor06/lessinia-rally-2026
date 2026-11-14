@@ -796,6 +796,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 @media (max-height:760px){.fo-39 .eyebrow{display:none}.fo-time{font-size:42px}.fo-sub{display:none}#fo-car{display:none}}
 @media (orientation:landscape) and (max-height:520px){.focus{display:grid!important}.fo-next{overflow:hidden;max-height:none}}
 .sk-wrap{display:grid;gap:6px}.sk-wrap:empty{display:none}.sk-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.sk-l{font-size:13px;color:var(--muted);margin-right:2px}.sk{font:700 15px/1 var(--mono,monospace);color:var(--ink);background:var(--soft);border:1px dashed var(--line);border-radius:10px;padding:8px 12px;min-width:46px;cursor:pointer}
+.m-fix{display:grid;gap:6px;margin:8px 0}.m-fix .btn{justify-content:center}.m-fx{display:grid;grid-template-columns:minmax(0,1fr) 64px;gap:8px;align-items:center}.m-fx span{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.m-fx input{width:100%;box-sizing:border-box;text-align:center;font:700 15px/1 var(--mono,monospace);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 4px;-webkit-user-select:text;user-select:text}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -1742,18 +1743,20 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
   function stage(d){var L=window.LRH;if(!L)return '';var st=null;L.ST.forEach(function(x){var a=x.a.split(':'),b=x.b.split(':');var A=new Date(d.getFullYear(),d.getMonth(),d.getDate(),+a[0],+a[1]),B=new Date(d.getFullYear(),d.getMonth(),d.getDate(),+b[0],+b[1]);if(d>=A&&d<=B)st=x.ps;});return st?st.replace(' ',''):'';}
   function p2(x){return String(x).padStart(2,'0');}
   function fname(g,f,d){var ext=(f.name.match(/\.[^.]+$/)||[''])[0];return (g==='?'?'senza-auto':'n'+p2(g))+'_'+(stage(d)||'LRH26')+'_'+p2(d.getHours())+'-'+p2(d.getMinutes())+'-'+p2(d.getSeconds())+'_'+f.name.replace(/\.[^.]+$/,'')+ext;}
+  var OV={},last_ph=null;function fk(f){return f.name+'|'+f.size;}
   function run(files){
     if(!files||!files.length)return;
     mSum.textContent='Leggo '+files.length+' foto…';mRes.innerHTML='';
     Promise.all([].map.call(files,function(f){return readDate(f).then(function(r){return {f:f,d:new Date(r.d.getTime()+(+mOff.value||0)*1000),src:r.src};});})).then(function(ph){
       var L=logs(),G={},noEx=0;
-      ph.forEach(function(x){if(x.src!=='exif')noEx++;var best=null,bd=1e12;L.forEach(function(l){var dt=(x.d-l.t)/1000;if(dt<-180||dt>60)return;var sc=Math.abs(dt+15);if(sc<bd){bd=sc;best=l;}});var k=best?best.n:'?';(G[k]=G[k]||[]).push(x);});
+      ph.forEach(function(x){if(x.src!=='exif')noEx++;var ok=OV[fk(x.f)];if(ok){(G[ok]=G[ok]||[]).push(x);return;}var best=null,bd=1e12;L.forEach(function(l){var dt=(x.d-l.t)/1000;if(dt<-300||dt>150)return;var sc=Math.abs(dt+15)+(dt>0?dt:0);if(sc<bd){bd=sc;best=l;}});var k=best?best.n:'?';(G[k]=G[k]||[]).push(x);});
+      last_ph=ph;
       var keys=Object.keys(G).sort(function(a,b){if(a==='39')return -1;if(b==='39')return 1;if(a==='?')return 1;if(b==='?')return -1;return G[a][0].d-G[b][0].d;});
       last={G:G,keys:keys};
       mSum.textContent=ph.length+' foto, '+(keys.length-(G['?']?1:0))+' auto riconosciute'+(L.length?'':' · il Registro passaggi è vuoto: segna le auto durante la gara oppure incolla il registro')+(noEx?' · '+noEx+' senza orario interno (uso la data del file)':'');
       mRes.innerHTML=keys.map(function(k){var a=G[k],t0=a[0].d,t1=a[a.length-1].d;function h(d){return d.toLocaleTimeString('it-IT');}
         return '<div class="m-g'+(k==='39'?' mine':'')+'"><div class="m-gh"><b>'+(k==='?'?'Senza auto':'n. '+k)+'</b><span>'+a.length+' foto · '+h(t0)+(a.length>1?'–'+h(t1):'')+'</span></div>'+(k!=='?'&&name(k)?'<small>'+name(k)+'</small>':'')+
-        '<small>'+a.slice(0,6).map(function(x){return x.f.name;}).join(', ')+(a.length>6?' e altre '+(a.length-6):'')+'</small><div class="btns"><button class="btn ghost sm" type="button" data-share="'+k+'">Condividi</button><button class="btn ghost sm" type="button" data-save="'+k+'">Salva copie rinominate</button></div></div>';}).join('')+
+        (k==='?'?'<div class="m-fix">'+a.map(function(x){return '<div class="m-fx"><span>'+x.f.name+' · '+h(x.d)+'</span><input type="text" inputmode="numeric" placeholder="N°" data-fix="'+fk(x.f).replace(/"/g,'&quot;')+'" aria-label="Numero auto"></div>';}).join('')+'<button class="btn sm" type="button" data-fixgo>Assegna i numeri</button></div>':'<small>'+a.slice(0,6).map(function(x){return x.f.name;}).join(', ')+(a.length>6?' e altre '+(a.length-6):'')+'</small>')+'<div class="btns"><button class="btn ghost sm" type="button" data-share="'+k+'">Condividi</button><button class="btn ghost sm" type="button" data-save="'+k+'">Salva copie rinominate</button></div></div>';}).join('')+
         '<div class="btns"><button class="btn ghost" type="button" id="m-csv">Scarica l\'elenco (CSV)</button></div>';
     });
   }
@@ -1762,6 +1765,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
   mTa.addEventListener('change',function(){if(fIn.files.length)run(fIn.files);});
   mRes.addEventListener('click',function(e){
     var b=e.target.closest('button');if(!b||!last)return;
+    if(b.hasAttribute('data-fixgo')){[].forEach.call(mRes.querySelectorAll('[data-fix]'),function(i){var v=(i.value||'').trim();if(v)OV[i.getAttribute('data-fix')]=v;});run(fIn.files);return;}
     if(b.id==='m-csv'){var rows=['file;auto;orario;nuovo nome'];last.keys.forEach(function(k){last.G[k].forEach(function(x){rows.push(x.f.name+';'+(k==='?'?'':k)+';'+x.d.toLocaleString('it-IT')+';'+fname(k,x.f,x.d));});});
       var a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+rows.join('\n')],{type:'text/csv'}));a.download='foto-lessinia-rally.csv';a.click();return;}
     var k=b.getAttribute('data-share')||b.getAttribute('data-save'),arr=last.G[k];if(!arr)return;
