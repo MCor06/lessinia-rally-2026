@@ -103,7 +103,7 @@
    "c": "Sansone Elisabetta",
    "car": "BMW M3",
    "cls": "4 J2 · A · 2500",
-   "o": 12
+   "ret": true
   },
   {
    "n": 15,
@@ -263,7 +263,7 @@
    "c": "Alessio Mattiuz",
    "car": "Lancia Delta Integrale",
    "cls": "4 J2 · A · >2500",
-   "o": 32
+   "ret": true
   },
   {
    "n": 36,
@@ -327,7 +327,7 @@
    "c": "Cavazzini Gabriele",
    "car": "Alfa Romeo Alfetta GTV 6",
    "cls": "3 · 2 · >2000",
-   "o": 40
+   "ret": true
   },
   {
    "n": 44,
@@ -415,7 +415,7 @@
    "c": "Masin Denis",
    "car": "Fiat 131 Abarth Rally Cors",
    "cls": "3 · 4 · 2000",
-   "o": 50
+   "ret": true
   },
   {
    "n": 55,
@@ -463,7 +463,7 @@
    "c": "Refondini Sara",
    "car": "Peugeot 205 Rally",
    "cls": "4 J2 · A · 1300",
-   "o": 56
+   "ret": true
   },
   {
    "n": 71,
@@ -535,7 +535,7 @@
    "c": "Rizzo Mauro",
    "car": "Fiat 128 Coupe 1300",
    "cls": "2 · 2 · 1600",
-   "o": 66
+   "ret": true
   },
   {
    "n": 80,
@@ -583,7 +583,7 @@
    "c": "Vicentin Renato",
    "car": "Aut. A 112 Abarth",
    "cls": "3 · 2 · 1150",
-   "o": 73
+   "ret": true
   },
   {
    "n": 86,
@@ -599,7 +599,7 @@
    "c": "Mantovani Giulio",
    "car": "Opel Adam Kadett C-GTE",
    "cls": "3 · 2 · 2000",
-   "o": 75
+   "ret": true
   },
   {
    "n": 88,
@@ -607,7 +607,7 @@
    "c": "Asnicar Stefano",
    "car": "Talbot Samba Rallye",
    "cls": "4 J1 · A · 1300",
-   "o": 76
+   "ret": true
   },
   {
    "n": 89,
@@ -659,8 +659,8 @@
   }
  ],
  "offline": {
-  "title": "Classifica provvisoria dopo PS 3",
-  "time": "sab 11:45",
+  "title": "Classifica provvisoria dopo PS 4",
+  "time": "sab 12:30",
   "rows": [
    {
     "pos": 1,
@@ -670,97 +670,97 @@
    },
    {
     "pos": 2,
-    "n": 5,
-    "crew": "Costaganna Sandro / Rizzi Matteo",
-    "gap": "+7.0"
+    "n": 2,
+    "crew": "Tezza Dennis / Merzari Massimo",
+    "gap": "+5.7"
    },
    {
     "pos": 3,
-    "n": 2,
-    "crew": "Tezza Dennis / Merzari Massimo",
-    "gap": "+13.2"
+    "n": 5,
+    "crew": "Costaganna Sandro / Rizzi Matteo",
+    "gap": "+21.1"
    },
    {
     "pos": 4,
     "n": 6,
     "crew": "Patuzzo Nicola / Martini Alberto",
-    "gap": "+29.1"
+    "gap": "+34.3"
    },
    {
     "pos": 5,
-    "n": 22,
-    "crew": "Bombieri Mattia / Tripi Linda",
-    "gap": "+37.6"
+    "n": 8,
+    "crew": "Canteri Matteo / Valbusa Nicola",
+    "gap": "+1:03.0"
    },
    {
     "pos": 6,
-    "n": 8,
-    "crew": "Canteri Matteo / Valbusa Nicola",
-    "gap": "+39.2"
+    "n": 22,
+    "crew": "Bombieri Mattia / Tripi Linda",
+    "gap": "+1:07.7"
    },
    {
     "pos": 7,
-    "n": 16,
-    "crew": "Costola Michele / Lorenzi Sofia",
-    "gap": "+53.3"
+    "n": 18,
+    "crew": "Soldà Fabio / Fracasso Massimo",
+    "gap": "+1:20.9"
    },
    {
     "pos": 8,
-    "n": 45,
-    "crew": "Sbalchiero Stefano / Crivellaro Giovanna",
-    "gap": "+53.8"
+    "n": 16,
+    "crew": "Costola Michele / Lorenzi Sofia",
+    "gap": "+1:20.9"
    },
    {
     "pos": 9,
-    "n": 18,
-    "crew": "Soldà Fabio / Fracasso Massimo",
-    "gap": "+56.1"
+    "n": 11,
+    "crew": "Dalla Libera Paolo / Zago Emanuele",
+    "gap": "+1:30.3"
    },
    {
     "pos": 10,
-    "n": 11,
-    "crew": "Dalla Libera Paolo / Zago Emanuele",
-    "gap": "+1:04.4"
+    "n": 3,
+    "crew": "\"RAFFA\" / Signorini Andrea",
+    "gap": "+1:41.6"
    },
    {
     "pos": 11,
-    "n": 38,
-    "crew": "Rigon Nicola / Minuzzo Simone",
-    "gap": "+1:11.4"
+    "n": 12,
+    "crew": "Garzotto Fabio / Sbalchiero Andrea",
+    "gap": "+1:45.3"
    },
    {
     "pos": 12,
-    "n": 3,
-    "crew": "\"RAFFA\" / Signorini Andrea",
-    "gap": "+1:12.5"
+    "n": 4,
+    "crew": "\"PEDRO\" / Baldaccini Emanuele",
+    "gap": "+1:46.4"
    },
    {
     "pos": 13,
-    "n": 12,
-    "crew": "Garzotto Fabio / Sbalchiero Andrea",
-    "gap": "+1:12.9"
+    "n": 53,
+    "crew": "Stoppani Giacomo Francesco / Boni Massimo",
+    "gap": "+1:54.4"
    },
    {
     "pos": 14,
-    "n": 53,
-    "crew": "Stoppani Giacomo Francesco / Boni Massimo",
-    "gap": "+1:15.0"
+    "n": 31,
+    "crew": "Favero Giacomo / Di Fonzo Veronica",
+    "gap": "+1:54.6"
    },
    {
     "pos": 15,
-    "n": 31,
-    "crew": "Favero Giacomo / Di Fonzo Veronica",
-    "gap": "+1:16.0"
+    "n": 24,
+    "crew": "Tosoni Gabriele / Pavan Andrea",
+    "gap": "+1:57.7"
    },
    {
-    "pos": 25,
+    "pos": 24,
     "n": 39,
     "crew": "Zambelli Agostino / Zambelli Angela",
-    "gap": "+1:31.2"
+    "gap": "+2:24.1"
    }
   ]
  },
- "updated": "sab 14 nov, 11:45",
+ "updated": "sab 14 nov, 12:30",
  "r39": [
   {
    "ps": "PS 1",
@@ -782,6 +782,13 @@
    "pos_ps": 26,
    "pos": 25,
    "gap": "+1:31.2"
+  },
+  {
+   "ps": "PS 4",
+   "time": "9:53.5",
+   "pos_ps": 27,
+   "pos": 24,
+   "gap": "+2:24.1"
   }
  ],
  "final39": null,
@@ -838,6 +845,12 @@
    "t": "sab 11:45",
    "title": "Classifica dopo PS 3",
    "text": "Il 39 è 25° a 1:31.2 da Visintainer/Lonardi. Nella PS 3 Velo Veronese 26° tempo con 6:00.9.",
+   "imp": false
+  },
+  {
+   "t": "sab 12:30",
+   "title": "Classifica dopo PS 4",
+   "text": "Il 39 è 24° a 2:24.1 da Visintainer/Lonardi. Nella PS 4 Calavedo 27° tempo con 9:53.5. Non più in classifica: 14, 35, 43, 54, 70, 79, 85, 87, 88.",
    "imp": false
   }
  ]
