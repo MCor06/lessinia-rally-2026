@@ -756,6 +756,7 @@ html.night .ptr{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brig
 /* niente selezione del testo */
 html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+.ap-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 2px}.ap-row .note{margin:0 4px 0 0}.ap-row .btn{min-width:64px;font-weight:700}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -846,6 +847,8 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
     <input class="search log-n" id="log-n" type="number" inputmode="numeric" min="1" max="999" placeholder="N°" aria-label="Numero di gara">
     <button class="btn log-go" type="button" id="log-go">Passata</button>
   </div>
+  <div class="ap-row"><span class="note">Apripista</span><button type="button" class="btn ghost sm" data-ap="000">000</button><button type="button" class="btn ghost sm" data-ap="00">00</button><button type="button" class="btn ghost sm" data-ap="0">0</button></div>
+  <div class="log-hint note" id="ap-hint"></div>
   <div class="log-quick" id="log-quick" hidden><span class="note">Tocca l'auto appena passata</span><div class="lq-btns" id="lq-btns"></div></div>
   <div class="log-hint note" id="log-hint"></div>
   <ol class="log-list" id="log-list"></ol>
@@ -2237,6 +2240,8 @@ function __main(){
     function nextAfter(pos){var best=null;ents.forEach(function(e){if(!e.ret&&e.p>pos&&(!best||e.p<best.p))best=e;});return best;}
     function onLog(num,d){
       var st=stageAt(d),pos=posOf(num);
+      if(st&&String(num)==='0'){var m0=Math.round((d.getTime()+10*60000-eta(st,1,true).getTime())/60000);var pl=passed(st),real=false;Object.keys(pl).forEach(function(k){if(posOf(k))real=true;});if(!real&&m0<240){var o0=getD();o0[st.ps]=Math.max(0,m0);setD(o0);}window.dispatchEvent(new Event('lrh-log'));return;}
+      if(String(num)==='000'||String(num)==='00'){window.dispatchEvent(new Event('lrh-log'));return;}
       if(st&&pos){var m=Math.round((d-eta(st,pos,true))/60000);if(m>-20&&m<240){var o=getD();o[st.ps]=m;setD(o);}}
       window.dispatchEvent(new Event('lrh-log'));
       var p39=posOf(39);if(!pos||!p39||String(num)==='39')return;
@@ -2427,7 +2432,7 @@ function __main(){
   (function(){
     var K='lrh26-log',L=[],n=document.getElementById('log-n'),list=document.getElementById('log-list'),hint=document.getElementById('log-hint'),cnt=document.getElementById('log-count');
     try{L=JSON.parse(localStorage.getItem(K))||[];}catch(e){L=[];}
-    function name(num){var e=(RALLY.entries||[]).filter(function(x){return String(x.n)===String(num);})[0];return e?(e.d+' · '+e.car):'';}
+    function name(num){var s=String(num);if(s==='000'||s==='00'||s==='0')return 'Apripista, auto '+s;var e=(RALLY.entries||[]).filter(function(x){return String(x.n)===s;})[0];return e?(e.d+' · '+e.car):'';}
     function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     function save(){try{localStorage.setItem(K,JSON.stringify(L));}catch(e){}}
     function draw(){cnt.textContent=L.length+(L.length===1?' auto':' auto');list.innerHTML=L.slice().reverse().map(function(r){return '<li'+(String(r.n)==='39'?' class="mine"':'')+'><span class="lt">'+r.t+'</span><span class="ln">'+esc(r.n)+'</span><span>'+esc(name(r.n))+'</span></li>';}).join('');}
@@ -2772,6 +2777,18 @@ function __main(){
   document.addEventListener('visibilitychange',function(){if(!document.hidden&&code())sync();});
   window.addEventListener('online',function(){if(code())sync();});
   setInterval(function(){if(!document.hidden&&code())sync();},30000);
+})();
+</script>
+<script>
+/* Apripista 000, 00, 0 */
+(function(){
+  var h=document.getElementById('ap-hint');
+  function upd(){var L=[];try{L=JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){}
+    var now=new Date(),st=window.LRH&&LRH.current(now);if(!st||!h){if(h)h.textContent='';return;}
+    var ps=LRH.passed(st),out=[];['000','00','0'].forEach(function(k){if(ps[k])out.push(k+' alle '+LRH.hm(ps[k]));});
+    h.textContent=out.length?(st.ps+': '+out.join(' · ')+(ps['0']?' · prima auto prevista verso le '+LRH.hm(LRH.eta(st,1))+', il 39 verso le '+LRH.hm(LRH.eta(st,LRH.posOf(39)||1)):'')):'';}
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-ap]');if(!b||!window.lrhLogAdd)return;lrhLogAdd(b.getAttribute('data-ap'));setTimeout(upd,50);});
+  window.addEventListener('lrh-log',upd);window.addEventListener('lrh-delay',upd);setTimeout(upd,1500);setInterval(upd,60000);
 })();
 </script>
 <script>document.addEventListener('contextmenu',function(e){var t=e.target;if(!(t.closest&&t.closest('input,textarea,a,img.c39-img')))e.preventDefault();});</script>
