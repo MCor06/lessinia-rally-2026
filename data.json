@@ -659,8 +659,8 @@
   }
  ],
  "offline": {
-  "title": "Classifica provvisoria dopo PS 2",
-  "time": "ven 22:05",
+  "title": "Classifica provvisoria dopo PS 3",
+  "time": "sab 11:45",
   "rows": [
    {
     "pos": 1,
@@ -672,95 +672,95 @@
     "pos": 2,
     "n": 5,
     "crew": "Costaganna Sandro / Rizzi Matteo",
-    "gap": "+4.6"
+    "gap": "+7.0"
    },
    {
     "pos": 3,
     "n": 2,
     "crew": "Tezza Dennis / Merzari Massimo",
-    "gap": "+10.3"
+    "gap": "+13.2"
    },
    {
     "pos": 4,
     "n": 6,
     "crew": "Patuzzo Nicola / Martini Alberto",
-    "gap": "+14.7"
+    "gap": "+29.1"
    },
    {
     "pos": 5,
     "n": 22,
     "crew": "Bombieri Mattia / Tripi Linda",
-    "gap": "+15.1"
+    "gap": "+37.6"
    },
    {
     "pos": 6,
     "n": 8,
     "crew": "Canteri Matteo / Valbusa Nicola",
-    "gap": "+17.7"
+    "gap": "+39.2"
    },
    {
     "pos": 7,
-    "n": 14,
-    "crew": "Bottoni Giuseppe / Sansone Elisabetta",
-    "gap": "+34.9"
+    "n": 16,
+    "crew": "Costola Michele / Lorenzi Sofia",
+    "gap": "+53.3"
    },
    {
     "pos": 8,
-    "n": 18,
-    "crew": "Soldà Fabio / Fracasso Massimo",
-    "gap": "+37.0"
+    "n": 45,
+    "crew": "Sbalchiero Stefano / Crivellaro Giovanna",
+    "gap": "+53.8"
    },
    {
     "pos": 9,
-    "n": 45,
-    "crew": "Sbalchiero Stefano / Crivellaro Giovanna",
-    "gap": "+38.2"
+    "n": 18,
+    "crew": "Soldà Fabio / Fracasso Massimo",
+    "gap": "+56.1"
    },
    {
     "pos": 10,
-    "n": 12,
-    "crew": "Garzotto Fabio / Sbalchiero Andrea",
-    "gap": "+39.8"
+    "n": 11,
+    "crew": "Dalla Libera Paolo / Zago Emanuele",
+    "gap": "+1:04.4"
    },
    {
     "pos": 11,
-    "n": 16,
-    "crew": "Costola Michele / Lorenzi Sofia",
-    "gap": "+40.4"
+    "n": 38,
+    "crew": "Rigon Nicola / Minuzzo Simone",
+    "gap": "+1:11.4"
    },
    {
     "pos": 12,
     "n": 3,
     "crew": "\"RAFFA\" / Signorini Andrea",
-    "gap": "+41.7"
+    "gap": "+1:12.5"
    },
    {
     "pos": 13,
-    "n": 11,
-    "crew": "Dalla Libera Paolo / Zago Emanuele",
-    "gap": "+42.1"
+    "n": 12,
+    "crew": "Garzotto Fabio / Sbalchiero Andrea",
+    "gap": "+1:12.9"
    },
    {
     "pos": 14,
-    "n": 38,
-    "crew": "Rigon Nicola / Minuzzo Simone",
-    "gap": "+42.9"
+    "n": 53,
+    "crew": "Stoppani Giacomo Francesco / Boni Massimo",
+    "gap": "+1:15.0"
    },
    {
     "pos": 15,
-    "n": 54,
-    "crew": "Iessi Michelangelo / Masin Denis",
-    "gap": "+44.2"
+    "n": 31,
+    "crew": "Favero Giacomo / Di Fonzo Veronica",
+    "gap": "+1:16.0"
    },
    {
-    "pos": 23,
+    "pos": 25,
     "n": 39,
     "crew": "Zambelli Agostino / Zambelli Angela",
-    "gap": "+58.8"
+    "gap": "+1:31.2"
    }
   ]
  },
- "updated": "sab 14 nov, 06:30",
+ "updated": "sab 14 nov, 11:45",
  "r39": [
   {
    "ps": "PS 1",
@@ -775,6 +775,13 @@
    "pos_ps": 17,
    "pos": 23,
    "gap": "+58.8"
+  },
+  {
+   "ps": "PS 3",
+   "time": "6:00.9",
+   "pos_ps": 26,
+   "pos": 25,
+   "gap": "+1:31.2"
   }
  ],
  "final39": null,
@@ -826,6 +833,12 @@
    "title": "Ordine di partenza di sabato",
    "text": "78 al via. Il 39 parte 36° alle 8:36 (prima auto 8:01): passa circa 3 minuti prima rispetto alle stime di ieri.",
    "imp": true
+  },
+  {
+   "t": "sab 11:45",
+   "title": "Classifica dopo PS 3",
+   "text": "Il 39 è 25° a 1:31.2 da Visintainer/Lonardi. Nella PS 3 Velo Veronese 26° tempo con 6:00.9.",
+   "imp": false
   }
  ]
 }
