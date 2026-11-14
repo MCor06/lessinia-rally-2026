@@ -2442,7 +2442,7 @@ function __main(){
     function name(num){var s=String(num);if(s==='000'||s==='00'||s==='0')return 'Apripista, auto '+s;var e=(RALLY.entries||[]).filter(function(x){return String(x.n)===s;})[0];return e?(e.d+' · '+e.car):'';}
     function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     function save(){try{localStorage.setItem(K,JSON.stringify(L));}catch(e){}}
-    function draw(){var nr=L.filter(function(r){return !/^0+$/.test(String(r.n));}).length;cnt.textContent=nr+' auto';list.innerHTML=L.slice().reverse().map(function(r,j){return '<li data-i="'+(L.length-1-j)+'"'+(String(r.n)==='39'?' class="mine"':'')+'><span class="lt">'+r.t+'</span><span class="ln">'+esc(r.n)+'</span><span>'+esc(name(r.n))+'</span></li>';}).join('');}
+    function draw(){var nr=L.filter(function(r){return !/^0+$/.test(String(r.n));}).length;cnt.textContent=nr+' auto';L.sort(function(x,y){return (x.d+x.t)<(y.d+y.t)?-1:(x.d+x.t)>(y.d+y.t)?1:0;});list.innerHTML=L.map(function(r,j){return '<li data-i="'+j+'"'+(String(r.n)==='39'?' class="mine"':'')+'><span class="lt">'+r.t+'</span><span class="ln">'+esc(r.n)+'</span><span>'+esc(name(r.n))+'</span></li>';}).join('');}
     n.addEventListener('input',function(){hint.textContent=name(n.value)||'';});
     function add(val){var v=(typeof val==='string'||typeof val==='number')?String(val):n.value.trim();if(!v)return;var d=new Date();L.push({n:v,t:d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),d:d.toISOString().slice(0,10)});save();draw();buzz(60);if(window.LRH)LRH.onLog(v,d);n.value='';hint.textContent='';n.focus();}
     window.lrhLogAdd=add;
