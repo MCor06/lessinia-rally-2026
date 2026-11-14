@@ -797,6 +797,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 @media (orientation:landscape) and (max-height:520px){.focus{display:grid!important}.fo-next{overflow:hidden;max-height:none}}
 .sk-wrap{display:grid;gap:6px}.sk-wrap:empty{display:none}.sk-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.sk-l{font-size:13px;color:var(--muted);margin-right:2px}.sk{font:700 15px/1 var(--mono,monospace);color:var(--ink);background:var(--soft);border:1px dashed var(--line);border-radius:10px;padding:8px 12px;min-width:46px;cursor:pointer}
 .m-fix{display:grid;gap:6px;margin:8px 0}.m-fix .btn{justify-content:center}.m-fx{display:grid;grid-template-columns:minmax(0,1fr) 64px;gap:8px;align-items:center}.m-fx span{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.m-fx input{width:100%;box-sizing:border-box;text-align:center;font:700 15px/1 var(--mono,monospace);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 4px;-webkit-user-select:text;user-select:text}
+.focus{gap:8px}.fo-39{padding:10px 12px 8px}.fo-time{font-size:46px}.fo-count{font-size:17px;margin-top:2px}.fo-next{gap:5px}.fo-row{padding:8px 12px}.fo-row .n{font-size:22px}.fo-log{gap:8px}.fo-btns .lq{padding:8px 6px}.fo-btns .lq b{font-size:28px}.fo-ap .btn{padding:8px 0;gap:4px}#fo-car{padding:7px}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -1838,7 +1839,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
     document.getElementById('fo-time').textContent=done?'Passato':'~'+hm(t39);
     document.getElementById('fo-count').textContent=done?'alle '+hm(ps['39']):(m>0?'tra '+(m>=60?Math.floor(m/60)+' h '+String(m%60).padStart(2,'0'):m)+' min':'adesso');
     (function(){var p39=l.posOf(39)||1,bef=l.ents.filter(function(e){return !e.ret&&e.p<p39&&!ps[String(e.n)];}).length;var s=document.getElementById('fo-sub');if(s)s.textContent=done?'Già passato in questa prova':(bef?bef+(bef===1?' auto':' auto')+' prima di lui':'È il prossimo!');})();
-    var x=expected(6);
+    var x=expected(5);
     document.getElementById('fo-next').innerHTML=x.length?x.map(function(y){var mm=Math.round((y.t-now)/60000);return '<div class="fo-row'+(String(y.e.n)==='39'?' mine':'')+'"><span class="t">'+hm(y.t)+'</span><span class="n">'+esc(y.e.n)+'</span><span class="c">'+esc(y.e.d)+' · '+esc(y.e.car)+'</span><span class="w">'+(mm<=0?'ora':mm+' min')+'</span></div>';}).join(''):'<p class="note">L\'ordine di partenza non è ancora nell\'app: segna le auto con il campo qui sotto.</p>';
     document.getElementById('fo-btns').innerHTML=x.slice(0,3).map(function(y){return qbtn(y,true);}).join('');var fsk=document.getElementById('fo-skip');if(fsk)fsk.innerHTML=skipHtml();
     (function fit(){var c=document.getElementById('fo-next');if(!c)return;requestAnimationFrame(function(){var B=c.getBoundingClientRect().bottom;[].forEach.call(c.querySelectorAll('.fo-row'),function(r){r.style.visibility=(r.getBoundingClientRect().bottom>B+1)?'hidden':'';});});})();
