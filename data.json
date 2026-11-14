@@ -1,5 +1,5 @@
 {
- "pos39": 39,
+ "pos39": 36,
  "entries": [
   {
    "n": 1,
@@ -71,7 +71,7 @@
    "c": "Albieri Alberto",
    "car": "BMW M3",
    "cls": "4 J2 · A · 2500",
-   "o": 9
+   "ret": true
   },
   {
    "n": 10,
@@ -79,7 +79,7 @@
    "c": "Simioni Giorgio",
    "car": "BMW M3 E30",
    "cls": "4 J2 · A · 2500",
-   "o": 10
+   "o": 9
   },
   {
    "n": 11,
@@ -87,7 +87,7 @@
    "c": "Zago Emanuele",
    "car": "Opel Kadett GSI 16V",
    "cls": "4 J2 · A · 2000",
-   "o": 11
+   "o": 10
   },
   {
    "n": 12,
@@ -95,7 +95,7 @@
    "c": "Sbalchiero Andrea",
    "car": "Lancia Delta Integrale",
    "cls": "4 J2 · A · >2500",
-   "o": 12
+   "o": 11
   },
   {
    "n": 14,
@@ -103,7 +103,7 @@
    "c": "Sansone Elisabetta",
    "car": "BMW M3",
    "cls": "4 J2 · A · 2500",
-   "o": 13
+   "o": 12
   },
   {
    "n": 15,
@@ -111,7 +111,7 @@
    "c": "Daldosso Elisa",
    "car": "BMW 318IS",
    "cls": "4 J2 · A · 2000",
-   "o": 14
+   "o": 13
   },
   {
    "n": 16,
@@ -119,7 +119,7 @@
    "c": "Lorenzi Sofia",
    "car": "Opel Kadett GTE",
    "cls": "3 · 2 · 2000",
-   "o": 15
+   "o": 14
   },
   {
    "n": 18,
@@ -127,7 +127,7 @@
    "c": "Fracasso Massimo",
    "car": "BMW M3",
    "cls": "4 J2 · A · 2500",
-   "o": 16
+   "o": 15
   },
   {
    "n": 19,
@@ -135,7 +135,7 @@
    "c": "Ballini Alessio",
    "car": "Opel Ascona",
    "cls": "3 · 2 · 2000",
-   "o": 17
+   "o": 16
   },
   {
    "n": 20,
@@ -143,7 +143,7 @@
    "c": "Gilardoni Cristian",
    "car": "Renault R5 GT Turbo",
    "cls": "4 J1 · A · 2000",
-   "o": 18
+   "o": 17
   },
   {
    "n": 21,
@@ -151,7 +151,7 @@
    "c": "Pellizzari Nico",
    "car": "Opel Kadett GTE",
    "cls": "3 · 2 · 2000",
-   "o": 19
+   "o": 18
   },
   {
    "n": 22,
@@ -159,7 +159,7 @@
    "c": "Tripi Linda",
    "car": "BMW M3",
    "cls": "4 J2 · A · 2500",
-   "o": 20
+   "o": 19
   },
   {
    "n": 23,
@@ -167,7 +167,7 @@
    "c": "Crivellaro Maurizio",
    "car": "Porsche Carrera",
    "cls": "2 · 4 · >2000",
-   "o": 21
+   "o": 20
   },
   {
    "n": 24,
@@ -175,7 +175,7 @@
    "c": "Pavan Andrea",
    "car": "Volkswagen Golf GTI",
    "cls": "4 J2 · A · 2000",
-   "o": 22
+   "o": 21
   },
   {
    "n": 25,
@@ -183,7 +183,7 @@
    "c": "Andrian Fabio",
    "car": "BMW M3",
    "cls": "4 J2 · A · 2500",
-   "o": 23
+   "o": 22
   },
   {
    "n": 26,
@@ -191,7 +191,7 @@
    "c": "Paracchini Maria Teresa",
    "car": "Porsche 911 Carrera RSR",
    "cls": "3 · 4 · >2000",
-   "o": 24
+   "o": 23
   },
   {
    "n": 27,
@@ -199,7 +199,7 @@
    "c": "Schiavo Martina",
    "car": "Alfa Romeo GTV",
    "cls": "3 · 2 · 2000",
-   "o": 25
+   "ret": true
   },
   {
    "n": 28,
@@ -207,7 +207,7 @@
    "c": "Ardemagni Veronica",
    "car": "Peugeot 205 GTI 1600",
    "cls": "4 J2 · A · 1600",
-   "o": 26
+   "o": 24
   },
   {
    "n": 29,
@@ -215,7 +215,7 @@
    "c": "Fiocco Elena",
    "car": "BMW M3",
    "cls": "4 J2 · A · 2500",
-   "o": 27
+   "o": 25
   },
   {
    "n": 30,
@@ -223,7 +223,7 @@
    "c": "Gasparotto Ivan",
    "car": "Opel Kadett GTE",
    "cls": "3 · 2 · 2000",
-   "o": 28
+   "o": 26
   },
   {
    "n": 31,
@@ -231,7 +231,7 @@
    "c": "Di Fonzo Veronica",
    "car": "Opel Kadett GSI",
    "cls": "4 J2 · A · 2000",
-   "o": 29
+   "o": 27
   },
   {
    "n": 32,
@@ -239,7 +239,7 @@
    "c": "Castegini Mattia",
    "car": "Lancia Delta Integrale",
    "cls": "4 J2 · A · >2500",
-   "o": 30
+   "o": 29
   },
   {
    "n": 33,
@@ -247,7 +247,7 @@
    "c": "Mecenero Michele",
    "car": "Fiat 127",
    "cls": "3 · 2 · 1150",
-   "o": 31
+   "o": 30
   },
   {
    "n": 34,
@@ -255,7 +255,7 @@
    "c": "Gecchele Elena",
    "car": "Porsche 911SC",
    "cls": "3 · 4 · >2000",
-   "o": 32
+   "o": 31
   },
   {
    "n": 35,
@@ -263,7 +263,7 @@
    "c": "Alessio Mattiuz",
    "car": "Lancia Delta Integrale",
    "cls": "4 J2 · A · >2500",
-   "o": 33
+   "o": 32
   },
   {
    "n": 36,
@@ -271,7 +271,7 @@
    "c": "Catania Alessandro",
    "car": "Opel Kadett GT/E",
    "cls": "3 · 2 · 2000",
-   "o": 34
+   "o": 33
   },
   {
    "n": 37,
@@ -279,7 +279,7 @@
    "c": "Zanini Matteo",
    "car": "Tabot Sumbeam Lotus",
    "cls": "3 · 2 · >2000",
-   "o": 35
+   "o": 34
   },
   {
    "n": 38,
@@ -287,7 +287,7 @@
    "c": "Minuzzo Simone",
    "car": "Citroen AX GTI",
    "cls": "4 J2 · A · 1600",
-   "o": 36
+   "o": 35
   },
   {
    "n": 39,
@@ -295,7 +295,7 @@
    "c": "Zambelli Angela",
    "car": "Ford Sierra Cosworth",
    "cls": "4 J2 · A · >2500",
-   "o": 37
+   "o": 36
   },
   {
    "n": 40,
@@ -303,7 +303,7 @@
    "c": "Dalla Vecchia Federico",
    "car": "BMW 318IS E30",
    "cls": "4 J2 · A · 2000",
-   "o": 38
+   "o": 37
   },
   {
    "n": 41,
@@ -311,7 +311,7 @@
    "c": "Narminio Marco",
    "car": "Fiat Ritmo 130 Abarth TC",
    "cls": "4 J2 · A · 2000",
-   "o": 39
+   "o": 38
   },
   {
    "n": 42,
@@ -319,7 +319,7 @@
    "c": "Corso Luciano",
    "car": "Fiat 127 Sport",
    "cls": "3 · 2 · 1150",
-   "o": 40
+   "o": 39
   },
   {
    "n": 43,
@@ -327,7 +327,7 @@
    "c": "Cavazzini Gabriele",
    "car": "Alfa Romeo Alfetta GTV 6",
    "cls": "3 · 2 · >2000",
-   "o": 41
+   "o": 40
   },
   {
    "n": 44,
@@ -335,7 +335,7 @@
    "c": "Corradini Giordano",
    "car": "Aut. Abarth A112",
    "cls": "3 · 2 · 1150",
-   "o": 42
+   "o": 41
   },
   {
    "n": 45,
@@ -343,7 +343,7 @@
    "c": "Crivellaro Giovanna",
    "car": "Fiat 127 Cl",
    "cls": "3 · 2 · 1150",
-   "o": 43
+   "o": 42
   },
   {
    "n": 46,
@@ -351,7 +351,7 @@
    "c": "Rossi Giacomo",
    "car": "Ford Sierra Cosworth",
    "cls": "4 J2 · A · >2500",
-   "o": 44
+   "ret": true
   },
   {
    "n": 47,
@@ -359,7 +359,7 @@
    "c": "Beccherle Alessia",
    "car": "Aut. A 112 Abarth",
    "cls": "3 · 2 · 1150",
-   "o": 45
+   "o": 43
   },
   {
    "n": 48,
@@ -367,7 +367,7 @@
    "c": "Dose Riccardo",
    "car": "BMW 325I",
    "cls": "4 J2 · A · 2500",
-   "o": 46
+   "o": 44
   },
   {
    "n": 49,
@@ -375,7 +375,7 @@
    "c": "Norbiato Claudio",
    "car": "Peugeot 205 GTI",
    "cls": "4 J2 · A · 2000",
-   "o": 47
+   "o": 45
   },
   {
    "n": 50,
@@ -383,7 +383,7 @@
    "c": "Gaburro Enrico",
    "car": "Opel Kadett GSI",
    "cls": "4 J2 · N · 2000",
-   "o": 48
+   "o": 46
   },
   {
    "n": 51,
@@ -391,7 +391,7 @@
    "c": "Viola Filippo",
    "car": "BMW 318IS",
    "cls": "4 J2 · A · 2000",
-   "o": 49
+   "o": 47
   },
   {
    "n": 52,
@@ -399,7 +399,7 @@
    "c": "Graziani Mirco",
    "car": "Fiat 131 Abarth",
    "cls": "3 · 4 · 2000",
-   "o": 50
+   "o": 48
   },
   {
    "n": 53,
@@ -407,7 +407,7 @@
    "c": "Boni Massimo",
    "car": "Opel Kadett GTE",
    "cls": "2 · 2 · 2000",
-   "o": 51
+   "o": 49
   },
   {
    "n": 54,
@@ -415,7 +415,7 @@
    "c": "Masin Denis",
    "car": "Fiat 131 Abarth Rally Cors",
    "cls": "3 · 4 · 2000",
-   "o": 52
+   "o": 50
   },
   {
    "n": 55,
@@ -423,7 +423,7 @@
    "c": "Avesani Matteo",
    "car": "Peugeot 205 Rallye",
    "cls": "4 J2 · A · 1300",
-   "o": 53
+   "o": 51
   },
   {
    "n": 56,
@@ -431,7 +431,7 @@
    "c": "Cucciniello Valentina",
    "car": "Fiat Ritmo Abarth 130 TC",
    "cls": "4 J2 · A · 2000",
-   "o": 54
+   "o": 52
   },
   {
    "n": 57,
@@ -439,7 +439,7 @@
    "c": "Milizia Marco",
    "car": "Peugeot 205 Rallye",
    "cls": "4 J2 · A · 1300",
-   "o": 55
+   "o": 53
   },
   {
    "n": 58,
@@ -447,7 +447,7 @@
    "c": "Maddalozzo Jenny",
    "car": "Opel Corsa GSI",
    "cls": "4 J2 · A · 1600",
-   "o": 56
+   "o": 54
   },
   {
    "n": 59,
@@ -455,7 +455,7 @@
    "c": "Fornasiero Carlo",
    "car": "Peugeot 205",
    "cls": "4 J2 · A · 1300",
-   "o": 57
+   "o": 55
   },
   {
    "n": 70,
@@ -463,7 +463,7 @@
    "c": "Refondini Sara",
    "car": "Peugeot 205 Rally",
    "cls": "4 J2 · A · 1300",
-   "o": 58
+   "o": 56
   },
   {
    "n": 71,
@@ -471,7 +471,7 @@
    "c": "Zennaro Nicola",
    "car": "Fiat Ritmo Abarth",
    "cls": "4 J2 · A · 2000",
-   "o": 59
+   "o": 57
   },
   {
    "n": 72,
@@ -479,7 +479,7 @@
    "c": "Fiorin Andrea",
    "car": "Opel Kadett GTE",
    "cls": "3 · 2 · 2000",
-   "o": 60
+   "o": 58
   },
   {
    "n": 73,
@@ -487,7 +487,7 @@
    "c": "Manente Edi",
    "car": "Fiat Uno 70S",
    "cls": "4 J2 · A · 1600",
-   "o": 61
+   "o": 60
   },
   {
    "n": 74,
@@ -495,7 +495,7 @@
    "c": "Zampieri Marta",
    "car": "Peugeot 106 XSI",
    "cls": "4 J2 · A · 1600",
-   "o": 62
+   "o": 61
   },
   {
    "n": 75,
@@ -503,7 +503,7 @@
    "c": "Bergamaschi Lorenzo",
    "car": "Peugeot 205 GTI 1900",
    "cls": "4 J2 · A · 2000",
-   "o": 63
+   "o": 62
   },
   {
    "n": 76,
@@ -511,7 +511,7 @@
    "c": "Bernardi Rienzi",
    "car": "Aut. A112 Abarth 70HP",
    "cls": "3 · 2 · 1150",
-   "o": 64
+   "o": 63
   },
   {
    "n": 77,
@@ -519,7 +519,7 @@
    "c": "Fusina Enrico",
    "car": "BMW 318IS",
    "cls": "4 J2 · A · 2000",
-   "o": 65
+   "o": 64
   },
   {
    "n": 78,
@@ -527,7 +527,7 @@
    "c": "Biancolin Natascia",
    "car": "Peugeot 205 GTI",
    "cls": "4 J2 · A · 2000",
-   "o": 66
+   "o": 65
   },
   {
    "n": 79,
@@ -535,7 +535,7 @@
    "c": "Rizzo Mauro",
    "car": "Fiat 128 Coupe 1300",
    "cls": "2 · 2 · 1600",
-   "o": 67
+   "o": 66
   },
   {
    "n": 80,
@@ -543,7 +543,7 @@
    "c": "Zenari Adele",
    "car": "Peugeot 205 GTI",
    "cls": "4 J2 · A · 2000",
-   "o": 68
+   "o": 67
   },
   {
    "n": 81,
@@ -551,7 +551,7 @@
    "c": "Manea Alessandro",
    "car": "Suzuki Swift",
    "cls": "4 J2 · A · 1300",
-   "o": 69
+   "o": 68
   },
   {
    "n": 82,
@@ -559,7 +559,7 @@
    "c": "Marchet Elisa",
    "car": "Aut. A112 Abarth 70HP",
    "cls": "3 · 2 · 1150",
-   "o": 70
+   "o": 69
   },
   {
    "n": 83,
@@ -567,7 +567,7 @@
    "c": "Bertolini Andrea",
    "car": "Peugeot 205 Rally",
    "cls": "4 J2 · A · 1300",
-   "o": 71
+   "ret": true
   },
   {
    "n": 84,
@@ -575,7 +575,7 @@
    "c": "Modenini Mattea",
    "car": "Peugeot 309 GTI 16V",
    "cls": "4 J2 · A · 2000",
-   "o": 72
+   "o": 70
   },
   {
    "n": 85,
@@ -631,7 +631,7 @@
    "c": "Scaramuzza Maurizio",
    "car": "Renault Clio Williams",
    "cls": "K · A · 2000",
-   "o": 79
+   "o": 28
   },
   {
    "n": 202,
@@ -639,7 +639,7 @@
    "c": "Negretto Federica",
    "car": "Opel Vauxhall Astra F",
    "cls": "K · N · 2000",
-   "o": 80
+   "o": 59
   },
   {
    "n": 203,
@@ -647,7 +647,7 @@
    "c": "Corso Felice",
    "car": "Peugeot 106 Rally",
    "cls": "K · A · 1400",
-   "o": 81
+   "o": 71
   },
   {
    "n": 204,
@@ -655,7 +655,7 @@
    "c": "Pasetto Enrico",
    "car": "Peugeot 106 Rally",
    "cls": "K · A · 1400",
-   "o": 82
+   "o": 72
   }
  ],
  "offline": {
@@ -760,7 +760,7 @@
    }
   ]
  },
- "updated": "ven 13 nov, 22:05",
+ "updated": "sab 14 nov, 06:30",
  "r39": [
   {
    "ps": "PS 1",
@@ -820,6 +820,12 @@
    "title": "Classifica dopo PS 2",
    "text": "Il 39 risale al 23° posto (+58.8 da Visintainer/Lonardi). Nella PS 2 è stato 17° con 4:22.9.",
    "imp": false
+  },
+  {
+   "t": "sab 06:30",
+   "title": "Ordine di partenza di sabato",
+   "text": "78 al via. Il 39 parte 36° alle 8:36 (prima auto 8:01): passa circa 3 minuti prima rispetto alle stime di ieri.",
+   "imp": true
   }
  ]
 }
