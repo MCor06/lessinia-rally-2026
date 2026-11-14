@@ -47,7 +47,7 @@
    "c": "Martini Alberto",
    "car": "Ford Sierra Cosworth",
    "cls": "4 J2 · A · >2500",
-   "o": 6
+   "ret": true
   },
   {
    "n": 7,
@@ -111,7 +111,7 @@
    "c": "Daldosso Elisa",
    "car": "BMW 318IS",
    "cls": "4 J2 · A · 2000",
-   "o": 13
+   "ret": true
   },
   {
    "n": 16,
@@ -127,7 +127,7 @@
    "c": "Fracasso Massimo",
    "car": "BMW M3",
    "cls": "4 J2 · A · 2500",
-   "o": 15
+   "ret": true
   },
   {
    "n": 19,
@@ -447,7 +447,7 @@
    "c": "Maddalozzo Jenny",
    "car": "Opel Corsa GSI",
    "cls": "4 J2 · A · 1600",
-   "o": 54
+   "ret": true
   },
   {
    "n": 59,
@@ -495,7 +495,7 @@
    "c": "Zampieri Marta",
    "car": "Peugeot 106 XSI",
    "cls": "4 J2 · A · 1600",
-   "o": 61
+   "ret": true
   },
   {
    "n": 75,
@@ -615,7 +615,7 @@
    "c": "Girlanda Fabio",
    "car": "Opel Kadett GT/E",
    "cls": "3 · 1 · 2000",
-   "o": 77
+   "ret": true
   },
   {
    "n": 90,
@@ -659,8 +659,8 @@
   }
  ],
  "offline": {
-  "title": "Classifica provvisoria dopo PS 5",
-  "time": "sab 15:17",
+  "title": "Classifica provvisoria dopo PS 6",
+  "time": "sab 16:30",
   "rows": [
    {
     "pos": 1,
@@ -672,119 +672,119 @@
     "pos": 2,
     "n": 2,
     "crew": "Tezza Dennis / Merzari Massimo",
-    "gap": "+15.8"
+    "gap": "+22.9"
    },
    {
     "pos": 3,
-    "n": 6,
-    "crew": "Patuzzo Nicola / Martini Alberto",
-    "gap": "+55.9"
+    "n": 22,
+    "crew": "Bombieri Mattia / Tripi Linda",
+    "gap": "+1:53.7"
    },
    {
     "pos": 4,
-    "n": 22,
-    "crew": "Bombieri Mattia / Tripi Linda",
-    "gap": "+1:34.5"
+    "n": 4,
+    "crew": "\"PEDRO\" / Baldaccini Emanuele",
+    "gap": "+2:03.2"
    },
    {
     "pos": 5,
     "n": 16,
     "crew": "Costola Michele / Lorenzi Sofia",
-    "gap": "+1:42.0"
+    "gap": "+2:18.2"
    },
    {
     "pos": 6,
-    "n": 18,
-    "crew": "Soldà Fabio / Fracasso Massimo",
-    "gap": "+1:45.6"
+    "n": 11,
+    "crew": "Dalla Libera Paolo / Zago Emanuele",
+    "gap": "+2:20.6"
    },
    {
     "pos": 7,
-    "n": 11,
-    "crew": "Dalla Libera Paolo / Zago Emanuele",
-    "gap": "+1:52.7"
+    "n": 3,
+    "crew": "\"RAFFA\" / Signorini Andrea",
+    "gap": "+2:30.2"
    },
    {
     "pos": 8,
-    "n": 4,
-    "crew": "\"PEDRO\" / Baldaccini Emanuele",
-    "gap": "+1:55.5"
+    "n": 12,
+    "crew": "Garzotto Fabio / Sbalchiero Andrea",
+    "gap": "+2:45.4"
    },
    {
     "pos": 9,
-    "n": 3,
-    "crew": "\"RAFFA\" / Signorini Andrea",
-    "gap": "+2:06.9"
+    "n": 31,
+    "crew": "Favero Giacomo / Di Fonzo Veronica",
+    "gap": "+2:59.3"
    },
    {
     "pos": 10,
-    "n": 12,
-    "crew": "Garzotto Fabio / Sbalchiero Andrea",
-    "gap": "+2:19.2"
+    "n": 38,
+    "crew": "Rigon Nicola / Minuzzo Simone",
+    "gap": "+3:12.4"
    },
    {
     "pos": 11,
-    "n": 31,
-    "crew": "Favero Giacomo / Di Fonzo Veronica",
-    "gap": "+2:23.6"
+    "n": 32,
+    "crew": "Bennati Loris / Castegini Mattia",
+    "gap": "+3:20.6"
    },
    {
     "pos": 12,
-    "n": 38,
-    "crew": "Rigon Nicola / Minuzzo Simone",
-    "gap": "+2:32.0"
+    "n": 29,
+    "crew": "Bombieri Nicola / Fiocco Elena",
+    "gap": "+3:26.4"
    },
    {
     "pos": 13,
-    "n": 32,
-    "crew": "Bennati Loris / Castegini Mattia",
-    "gap": "+2:37.0"
+    "n": 30,
+    "crew": "Sulsente Corrado / Gasparotto Ivan",
+    "gap": "+3:30.0"
    },
    {
     "pos": 14,
-    "n": 33,
-    "crew": "Meggiarin Lisa / Mecenero Michele",
-    "gap": "+2:44.7"
+    "n": 25,
+    "crew": "Tacchella Christian / Andrian Fabio",
+    "gap": "+3:35.2"
    },
    {
     "pos": 15,
-    "n": 30,
-    "crew": "Sulsente Corrado / Gasparotto Ivan",
-    "gap": "+2:47.2"
+    "n": 33,
+    "crew": "Meggiarin Lisa / Mecenero Michele",
+    "gap": "+3:36.1"
    },
    {
     "pos": 16,
-    "n": 25,
-    "crew": "Tacchella Christian / Andrian Fabio",
-    "gap": "+2:48.4"
+    "n": 21,
+    "crew": "Pellizzari Renato / Pellizzari Nico",
+    "gap": "+3:39.0"
    },
    {
     "pos": 17,
-    "n": 29,
-    "crew": "Bombieri Nicola / Fiocco Elena",
-    "gap": "+2:49.9"
+    "n": 39,
+    "crew": "Zambelli Agostino / Zambelli Angela",
+    "gap": "+3:40.5"
    },
    {
     "pos": 18,
-    "n": 21,
-    "crew": "Pellizzari Renato / Pellizzari Nico",
-    "gap": "+2:57.3"
+    "n": 80,
+    "crew": "Zenari Mirco / Zenari Adele",
+    "gap": "+4:05.6"
    },
    {
     "pos": 19,
-    "n": 39,
-    "crew": "Zambelli Agostino / Zambelli Angela",
-    "gap": "+2:59.0"
+    "n": 34,
+    "crew": "Soldà Federico / Gecchele Elena",
+    "gap": "+4:12.9"
    },
    {
     "pos": 20,
-    "n": 15,
-    "crew": "Zanini Francesco / Daldosso Elisa",
-    "gap": "+3:10.6"
+    "n": 28,
+    "crew": "Sanguin Gianni / Ardemagni Veronica",
+    "gap": "+4:28.7"
    }
   ]
  },
- "updated": "sab 14 nov, 15:17",
+ "updated": "sab 14 nov, 16:30",
  "r39": [
   {
    "ps": "PS 1",
@@ -820,6 +820,13 @@
    "pos_ps": 20,
    "pos": 19,
    "gap": "+2:59.0"
+  },
+  {
+   "ps": "PS 6",
+   "time": "9:33.6",
+   "pos_ps": 15,
+   "pos": 17,
+   "gap": "+3:40.5"
   }
  ],
  "final39": null,
@@ -888,6 +895,12 @@
    "t": "sab 15:17",
    "title": "Classifica dopo PS 5",
    "text": "Il 39 sale al 19° posto (+2:59.0). Nella PS 5 Velo Veronese 20° tempo con 5:49.0. Non più in classifica: 5, 8, 37, 41, 45, 53, 78.",
+   "imp": false
+  },
+  {
+   "t": "sab 16:30",
+   "title": "Classifica dopo PS 6",
+   "text": "Il 39 sale al 17° posto (+3:40.5). Nella PS 6 Calavedo 15° tempo con 9:33.6, 20 secondi meglio della PS 4. Non più in classifica: 6, 15, 18, 58, 74, 89.",
    "imp": false
   }
  ]
