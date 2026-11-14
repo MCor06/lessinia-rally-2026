@@ -659,8 +659,8 @@
   }
  ],
  "offline": {
-  "title": "Classifica provvisoria dopo PS 7",
-  "time": "sab 18:57",
+  "title": "Classifica finale provvisoria",
+  "time": "sab 19:45",
   "rows": [
    {
     "pos": 1,
@@ -672,119 +672,119 @@
     "pos": 2,
     "n": 2,
     "crew": "Tezza Dennis / Merzari Massimo",
-    "gap": "+21.6"
+    "gap": "+18.3"
    },
    {
     "pos": 3,
-    "n": 22,
-    "crew": "Bombieri Mattia / Tripi Linda",
-    "gap": "+2:11.8"
+    "n": 4,
+    "crew": "\"PEDRO\" / Baldaccini Emanuele",
+    "gap": "+2:30.7"
    },
    {
     "pos": 4,
-    "n": 4,
-    "crew": "\"PEDRO\" / Baldaccini Emanuele",
-    "gap": "+2:13.4"
+    "n": 22,
+    "crew": "Bombieri Mattia / Tripi Linda",
+    "gap": "+2:40.9"
    },
    {
     "pos": 5,
-    "n": 16,
-    "crew": "Costola Michele / Lorenzi Sofia",
-    "gap": "+2:32.3"
+    "n": 11,
+    "crew": "Dalla Libera Paolo / Zago Emanuele",
+    "gap": "+2:57.1"
    },
    {
     "pos": 6,
-    "n": 11,
-    "crew": "Dalla Libera Paolo / Zago Emanuele",
-    "gap": "+2:35.1"
+    "n": 16,
+    "crew": "Costola Michele / Lorenzi Sofia",
+    "gap": "+3:04.0"
    },
    {
     "pos": 7,
     "n": 3,
     "crew": "\"RAFFA\" / Signorini Andrea",
-    "gap": "+2:53.9"
+    "gap": "+3:42.6"
    },
    {
     "pos": 8,
-    "n": 12,
-    "crew": "Garzotto Fabio / Sbalchiero Andrea",
-    "gap": "+3:22.4"
+    "n": 38,
+    "crew": "Rigon Nicola / Minuzzo Simone",
+    "gap": "+4:22.3"
    },
    {
     "pos": 9,
     "n": 31,
     "crew": "Favero Giacomo / Di Fonzo Veronica",
-    "gap": "+3:35.7"
+    "gap": "+4:22.9"
    },
    {
     "pos": 10,
-    "n": 38,
-    "crew": "Rigon Nicola / Minuzzo Simone",
-    "gap": "+3:44.0"
+    "n": 32,
+    "crew": "Bennati Loris / Castegini Mattia",
+    "gap": "+4:55.3"
    },
    {
     "pos": 11,
-    "n": 32,
-    "crew": "Bennati Loris / Castegini Mattia",
-    "gap": "+3:53.7"
+    "n": 30,
+    "crew": "Sulsente Corrado / Gasparotto Ivan",
+    "gap": "+5:03.1"
    },
    {
     "pos": 12,
-    "n": 30,
-    "crew": "Sulsente Corrado / Gasparotto Ivan",
-    "gap": "+4:09.2"
+    "n": 21,
+    "crew": "Pellizzari Renato / Pellizzari Nico",
+    "gap": "+5:09.1"
    },
    {
     "pos": 13,
-    "n": 21,
-    "crew": "Pellizzari Renato / Pellizzari Nico",
-    "gap": "+4:16.1"
+    "n": 33,
+    "crew": "Meggiarin Lisa / Mecenero Michele",
+    "gap": "+5:14.5"
    },
    {
     "pos": 14,
     "n": 29,
     "crew": "Bombieri Nicola / Fiocco Elena",
-    "gap": "+4:17.0"
+    "gap": "+5:20.7"
    },
    {
     "pos": 15,
     "n": 39,
     "crew": "Zambelli Agostino / Zambelli Angela",
-    "gap": "+4:17.9"
+    "gap": "+5:26.7"
    },
    {
     "pos": 16,
-    "n": 33,
-    "crew": "Meggiarin Lisa / Mecenero Michele",
-    "gap": "+4:21.2"
+    "n": 25,
+    "crew": "Tacchella Christian / Andrian Fabio",
+    "gap": "+5:30.9"
    },
    {
     "pos": 17,
-    "n": 25,
-    "crew": "Tacchella Christian / Andrian Fabio",
-    "gap": "+4:24.0"
+    "n": 24,
+    "crew": "Tosoni Gabriele / Pavan Andrea",
+    "gap": "+5:53.1"
    },
    {
     "pos": 18,
-    "n": 80,
-    "crew": "Zenari Mirco / Zenari Adele",
-    "gap": "+4:49.9"
+    "n": 34,
+    "crew": "Soldà Federico / Gecchele Elena",
+    "gap": "+5:55.8"
    },
    {
     "pos": 19,
-    "n": 34,
-    "crew": "Soldà Federico / Gecchele Elena",
-    "gap": "+4:53.5"
+    "n": 80,
+    "crew": "Zenari Mirco / Zenari Adele",
+    "gap": "+5:57.4"
    },
    {
     "pos": 20,
     "n": 28,
     "crew": "Sanguin Gianni / Ardemagni Veronica",
-    "gap": "+5:00.2"
+    "gap": "+6:00.8"
    }
   ]
  },
- "updated": "sab 14 nov, 18:57",
+ "updated": "sab 14 nov, 19:45",
  "r39": [
   {
    "ps": "PS 1",
@@ -834,9 +834,22 @@
    "pos_ps": 18,
    "pos": 15,
    "gap": "+4:17.9"
+  },
+  {
+   "ps": "PS 8",
+   "time": "10:09.3",
+   "pos_ps": 26,
+   "pos": 15,
+   "gap": "+5:26.7"
   }
  ],
- "final39": null,
+ "final39": {
+  "pos": 15,
+  "cls_pos": 3,
+  "cls": "J2/A/>2500",
+  "time": "56:39.9",
+  "gap": "+5:26.7"
+ },
  "news": [
   {
    "t": "ven 13:00",
@@ -914,6 +927,12 @@
    "t": "sab 18:57",
    "title": "Classifica dopo PS 7",
    "text": "Il 39 sale al 15° posto (+4:17.9). Nella PS 7 Velo Veronese 18° tempo con 6:07.8. Davanti, Bombieri/Fiocco (14°) a 0,9 s: la PS 8 al tornante decide.",
+   "imp": true
+  },
+  {
+   "t": "sab 19:45",
+   "title": "Finale provvisoria: il 39 è 15°",
+   "text": "Zambelli/Zambelli chiudono 15° assoluti e 3° di classe J2/A/>2500 (56:39.9, +5:26.7). Vince Visintainer/Lonardi su BMW M3 davanti a Tezza/Merzari e \"Pedro\"/Baldaccini. Classifica ancora provvisoria.",
    "imp": true
   }
  ]
