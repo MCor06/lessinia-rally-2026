@@ -2313,7 +2313,7 @@ function __main(){
     function nextAfter(pos){var best=null;ents.forEach(function(e){if(!e.ret&&e.p>pos&&(!best||e.p<best.p))best=e;});return best;}
     function onLog(num,d){
       var st=stageAt(d),pos=posOf(num);
-      if(st&&String(num)==='0'){var m0=Math.round((d.getTime()+10*60000-eta(st,1,true).getTime())/60000);var pl=passed(st),real=false;Object.keys(pl).forEach(function(k){if(posOf(k))real=true;});if(!real&&m0<240){var o0=getD();o0[st.ps]=Math.max(0,m0);setD(o0);}window.dispatchEvent(new Event('lrh-log'));return;}
+      var APO={'000':40,'00':25,'0':10};if(st&&APO[String(num)]){var m0=Math.round((d.getTime()+APO[String(num)]*60000-eta(st,1,true).getTime())/60000);var pl=passed(st),real=false;Object.keys(pl).forEach(function(k){if(posOf(k))real=true;});if(!real&&m0<240){var o0=getD();o0[st.ps]=Math.max(0,m0);setD(o0);}window.dispatchEvent(new Event('lrh-log'));return;}
       if(String(num)==='000'||String(num)==='00'||String(num)==='CP'){window.dispatchEvent(new Event('lrh-log'));return;}
       if(st&&pos){var mxp=0,pp=passed(st);Object.keys(pp).forEach(function(k){if(k===String(num))return;var q=posOf(k);if(q&&q>mxp)mxp=q;});
         if(pos>=mxp-1){var m=Math.round((d-eta(st,pos,true))/60000);if(m>-20&&m<240){var o=getD();o[st.ps]=m;setD(o);}}}
@@ -2872,7 +2872,7 @@ function __main(){
     var ps=LRH.passed(st),out=[];['000','00','0'].forEach(function(k){if(ps[k])out.push(k+' alle '+LRH.hm(ps[k]));});
     ['000','00','0','CP'].forEach(function(k){var b=document.querySelector('[data-ap="'+k+'"]');if(!b)return;b.classList.toggle('done',!!ps[k]);b.querySelector('small').textContent=ps[k]?'alle '+LRH.hm(ps[k]):'non ancora';});
     var out=[];if(!ps['000']&&!ps['00']&&!ps['0']&&!ps['CP']){var f1=LRH.eta(st,1).getTime();out.push(st.ps+', apripista attese: 000 verso le '+LRH.hm(new Date(f1-40*60000))+', 00 verso le '+LRH.hm(new Date(f1-25*60000))+', 0 verso le '+LRH.hm(new Date(f1-10*60000))+'.');}
-    if(ps['0']&&!ps['CP'])out.push('Prima auto prevista verso le '+LRH.hm(LRH.eta(st,1))+', il 39 verso le '+LRH.hm(LRH.eta(st,LRH.posOf(39)||1))+'.');
+    if((ps['0']||ps['00']||ps['000'])&&!ps['CP'])out.push('Prima auto prevista verso le '+LRH.hm(LRH.eta(st,1))+', il 39 verso le '+LRH.hm(LRH.eta(st,LRH.posOf(39)||1))+'.');
     function dur(a,b){var m=Math.round((b-a)/60000);return (m>=60?Math.floor(m/60)+' h '+String(m%60).padStart(2,'0'):m)+' min';}
     var prev=[];LRH.ST.forEach(function(s2){var p2=LRH.passed(s2);var a=p2['000']||p2['00']||p2['0'],c=p2['CP'];if(c){var first=null,last=null;Object.keys(p2).forEach(function(k){if(/^(0+|CP)$/.test(k))return;if(!first||p2[k]<first)first=p2[k];if(!last||p2[k]>last)last=p2[k];});
       prev.push({ps:s2.ps,txt:s2.ps+': '+(a?'dall\'apripista alle '+LRH.hm(a)+' ':'')+'chiudipista alle '+LRH.hm(c)+(a?' · durata '+dur(a,c):'')+(first&&last&&last>first?' · auto in gara per '+dur(first,last):''),a:a,c:c});}});
