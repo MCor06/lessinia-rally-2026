@@ -798,6 +798,14 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 .sk-wrap{display:grid;gap:6px}.sk-wrap:empty{display:none}.sk-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.sk-l{font-size:13px;color:var(--muted);margin-right:2px}.sk{font:700 15px/1 var(--mono,monospace);color:var(--ink);background:var(--soft);border:1px dashed var(--line);border-radius:10px;padding:8px 12px;min-width:46px;cursor:pointer}
 .m-fix{display:grid;gap:6px;margin:8px 0}.m-fix .btn{justify-content:center}.m-fx{display:grid;grid-template-columns:minmax(0,1fr) 64px;gap:8px;align-items:center}.m-fx span{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.m-fx input{width:100%;box-sizing:border-box;text-align:center;font:700 15px/1 var(--mono,monospace);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 4px;-webkit-user-select:text;user-select:text}
 .focus{gap:8px}.fo-39{padding:10px 12px 8px}.fo-time{font-size:46px}.fo-count{font-size:17px;margin-top:2px}.fo-next{gap:5px}.fo-row{padding:8px 12px}.fo-row .n{font-size:22px}.fo-log{gap:8px}.fo-btns .lq{padding:8px 6px}.fo-btns .lq b{font-size:28px}.fo-ap .btn{padding:8px 0;gap:4px}#fo-car{padding:7px}
+.ap-btns .btn.done,.fo-ap .btn.done{background:transparent;border:1px dashed var(--line);color:#6b6b72;opacity:.75}
+.ap-btns .btn.done small,.fo-ap .btn.done small{color:#5fbf7a}
+.ap-btns .btn.next,.fo-ap .btn.next{border:2px solid var(--accent);background:#2a2412;color:var(--ink)}
+.ap-btns .btn.next small,.fo-ap .btn.next small{color:var(--accent);font-weight:700}
+.ap-btns .btn.cp:not(.done),.fo-ap .btn.cp:not(.done){color:#ff8a7a}
+.ap-btns .btn.cp.next small,.fo-ap .btn.cp.next small{color:#ff8a7a}
+.ap-btns .btn.cp.next,.fo-ap .btn.cp.next{border-color:#ff8a7a;background:#2a1614}
+.fo-apl{margin-top:2px}
 </style>
 <script>
 // Blocca lo zoom accidentale dell'app (pizzico, doppio tocco, Ctrl + rotella), ma non quello di mappe e radar
@@ -1801,7 +1809,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
   <div class="fo-top"><span class="pill closed" id="fo-pill">–</span><button class="ar-x" type="button" id="fo-close" aria-label="Chiudi">✕</button></div>
   <div class="fo-39"><div class="eyebrow">Il 39 al tornante</div><div class="fo-time" id="fo-time">–</div><div class="fo-count" id="fo-count"></div><div class="fo-sub" id="fo-sub"></div></div>
   <div class="fo-next" id="fo-next"></div>
-  <div class="fo-log"><div class="eyebrow">Tocca l'auto appena passata</div><div class="fo-btns" id="fo-btns"></div><div class="sk-wrap" id="fo-skip"></div><div class="fo-ap"><button type="button" class="btn ghost" data-ap="000">000<small>non ancora</small></button><button type="button" class="btn ghost" data-ap="00">00<small>non ancora</small></button><button type="button" class="btn ghost" data-ap="0">0<small>non ancora</small></button><button type="button" class="btn ghost" data-ap="CP">Chiudi<small>non ancora</small></button></div>
+  <div class="fo-log"><div class="eyebrow">Tocca l'auto appena passata</div><div class="fo-btns" id="fo-btns"></div><div class="sk-wrap" id="fo-skip"></div><div class="eyebrow fo-apl">Apripista e chiusura</div><div class="fo-ap"><button type="button" class="btn ghost" data-ap="000">000<small>non ancora</small></button><button type="button" class="btn ghost" data-ap="00">00<small>non ancora</small></button><button type="button" class="btn ghost" data-ap="0">0<small>non ancora</small></button><button type="button" class="btn ghost" data-ap="CP">Chiudi<small>non ancora</small></button></div>
     <div class="fo-man"><input class="search" id="fo-n" type="number" inputmode="numeric" placeholder="Altro numero" aria-label="Altro numero"><button class="btn" type="button" id="fo-go">Passata</button></div>
     <div class="note" id="fo-last"></div>
     <button class="btn ghost" type="button" id="fo-car">Riportami alla macchina</button></div>
@@ -2882,7 +2890,8 @@ function __main(){
     var ps=LRH.passed(st),out=[];['000','00','0'].forEach(function(k){if(ps[k])out.push(k+' alle '+LRH.hm(ps[k]));});
     var est={},f1=LRH.eta(st,1).getTime();est['000']=new Date(f1-40*60000);est['00']=new Date(f1-25*60000);est['0']=new Date(f1-10*60000);
     (function(){var lp=0;LRH.ents.forEach(function(e){if(!e.ret&&e.p>lp)lp=e.p;});if(lp)est['CP']=new Date(LRH.eta(st,lp).getTime()+8*60000);})();
-    ['000','00','0','CP'].forEach(function(k){[].forEach.call(document.querySelectorAll('[data-ap="'+k+'"]'),function(b){b.classList.toggle('done',!!ps[k]);var sm=b.querySelector('small');if(!sm){sm=document.createElement('small');b.appendChild(sm);}var fo=!!b.closest('.fo-ap');sm.textContent=ps[k]?'alle '+LRH.hm(ps[k]):(est[k]?(fo?'stima ~':'verso le ')+LRH.hm(est[k]):'non ancora');});});
+    var nxt=null;['000','00','0','CP'].forEach(function(k){if(!nxt&&!ps[k])nxt=k;});
+    ['000','00','0','CP'].forEach(function(k){[].forEach.call(document.querySelectorAll('[data-ap="'+k+'"]'),function(b){b.classList.toggle('done',!!ps[k]);b.classList.toggle('next',k===nxt);b.classList.toggle('cp',k==='CP');var sm=b.querySelector('small');if(!sm){sm=document.createElement('small');b.appendChild(sm);}var fo=!!b.closest('.fo-ap');sm.textContent=ps[k]?'✓ '+LRH.hm(ps[k]):(est[k]?(fo?'stima ~':'verso le ')+LRH.hm(est[k]):'non ancora');});});
     var out=[];if(!ps['000']&&!ps['00']&&!ps['0']&&!ps['CP']){var f1=LRH.eta(st,1).getTime();out.push(st.ps+', apripista attese: 000 verso le '+LRH.hm(new Date(f1-40*60000))+', 00 verso le '+LRH.hm(new Date(f1-25*60000))+', 0 verso le '+LRH.hm(new Date(f1-10*60000))+'.');}
     if((ps['0']||ps['00']||ps['000'])&&!ps['CP'])out.push('Prima auto prevista verso le '+LRH.hm(LRH.eta(st,1))+', il 39 verso le '+LRH.hm(LRH.eta(st,LRH.posOf(39)||1))+'.');
     function dur(a,b){var m=Math.round((b-a)/60000);return (m>=60?Math.floor(m/60)+' h '+String(m%60).padStart(2,'0'):m)+' min';}
