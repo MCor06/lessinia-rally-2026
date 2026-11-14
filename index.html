@@ -775,7 +775,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
 .fo-log{gap:10px;margin-top:2px}
 .fo-btns .lq{padding:14px 6px;border-radius:16px}.fo-btns .lq b{font-size:34px}
 .fo-ap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.fo-ap .btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 0;font:700 14px/1 var(--mono);border-radius:12px}.fo-ap .btn small{font:600 11px/1 var(--body);color:var(--muted)}.fo-ap .btn small:empty{display:none}.fo-ap .btn.done{background:var(--soft);color:var(--muted);border-color:var(--line)}
+.fo-ap .btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:10px 0;font:700 17px/1 var(--mono);border-radius:14px}.fo-ap .btn small{font:500 11px/1 var(--body);color:var(--muted);letter-spacing:0}.fo-ap .btn small:empty{display:none}.fo-ap .btn.done{background:var(--soft);color:var(--muted);border-color:var(--line)}
 .fo-man .btn{background:var(--accent);color:#111;border-color:var(--accent);font-weight:700;padding-left:22px;padding-right:22px}
 .fo-man input{text-align:center}
 #fo-last{text-align:center;margin:0}
@@ -1800,7 +1800,7 @@ input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:tex
   <div class="fo-top"><span class="pill closed" id="fo-pill">–</span><button class="ar-x" type="button" id="fo-close" aria-label="Chiudi">✕</button></div>
   <div class="fo-39"><div class="eyebrow">Il 39 al tornante</div><div class="fo-time" id="fo-time">–</div><div class="fo-count" id="fo-count"></div><div class="fo-sub" id="fo-sub"></div></div>
   <div class="fo-next" id="fo-next"></div>
-  <div class="fo-log"><div class="eyebrow">Tocca l'auto appena passata</div><div class="fo-btns" id="fo-btns"></div><div class="sk-wrap" id="fo-skip"></div><div class="fo-ap"><button type="button" class="btn ghost" data-ap="000">000</button><button type="button" class="btn ghost" data-ap="00">00</button><button type="button" class="btn ghost" data-ap="0">0</button><button type="button" class="btn ghost" data-ap="CP">Fine PS</button></div>
+  <div class="fo-log"><div class="eyebrow">Tocca l'auto appena passata</div><div class="fo-btns" id="fo-btns"></div><div class="sk-wrap" id="fo-skip"></div><div class="fo-ap"><button type="button" class="btn ghost" data-ap="000">000<small>non ancora</small></button><button type="button" class="btn ghost" data-ap="00">00<small>non ancora</small></button><button type="button" class="btn ghost" data-ap="0">0<small>non ancora</small></button><button type="button" class="btn ghost" data-ap="CP">Chiudi<small>non ancora</small></button></div>
     <div class="fo-man"><input class="search" id="fo-n" type="number" inputmode="numeric" placeholder="Altro numero" aria-label="Altro numero"><button class="btn" type="button" id="fo-go">Passata</button></div>
     <div class="note" id="fo-last"></div>
     <button class="btn ghost" type="button" id="fo-car">Riportami alla macchina</button></div>
@@ -2879,7 +2879,7 @@ function __main(){
   function upd(){var L=[];try{L=JSON.parse(localStorage.getItem('lrh26-log'))||[];}catch(e){}
     var now=new Date(),st=window.LRH&&LRH.current(now);if(!st||!h){if(h)h.textContent='';return;}
     var ps=LRH.passed(st),out=[];['000','00','0'].forEach(function(k){if(ps[k])out.push(k+' alle '+LRH.hm(ps[k]));});
-    ['000','00','0','CP'].forEach(function(k){[].forEach.call(document.querySelectorAll('[data-ap="'+k+'"]'),function(b){b.classList.toggle('done',!!ps[k]);var sm=b.querySelector('small');if(!sm){sm=document.createElement('small');b.appendChild(sm);}var fo=!!b.closest('.fo-ap');sm.textContent=ps[k]?(fo?'✓ '+LRH.hm(ps[k]):'alle '+LRH.hm(ps[k])):(fo?'':'non ancora');});});
+    ['000','00','0','CP'].forEach(function(k){[].forEach.call(document.querySelectorAll('[data-ap="'+k+'"]'),function(b){b.classList.toggle('done',!!ps[k]);var sm=b.querySelector('small');if(!sm){sm=document.createElement('small');b.appendChild(sm);}var fo=!!b.closest('.fo-ap');sm.textContent=ps[k]?'alle '+LRH.hm(ps[k]):'non ancora';});});
     var out=[];if(!ps['000']&&!ps['00']&&!ps['0']&&!ps['CP']){var f1=LRH.eta(st,1).getTime();out.push(st.ps+', apripista attese: 000 verso le '+LRH.hm(new Date(f1-40*60000))+', 00 verso le '+LRH.hm(new Date(f1-25*60000))+', 0 verso le '+LRH.hm(new Date(f1-10*60000))+'.');}
     if((ps['0']||ps['00']||ps['000'])&&!ps['CP'])out.push('Prima auto prevista verso le '+LRH.hm(LRH.eta(st,1))+', il 39 verso le '+LRH.hm(LRH.eta(st,LRH.posOf(39)||1))+'.');
     function dur(a,b){var m=Math.round((b-a)/60000);return (m>=60?Math.floor(m/60)+' h '+String(m%60).padStart(2,'0'):m)+' min';}
