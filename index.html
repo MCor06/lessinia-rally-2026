@@ -152,7 +152,7 @@ ul.plain{margin:0;padding-left:18px;display:grid;gap:6px}
 html.night .night-btn{background:#3a0b0b;color:#ff6b6b;border-color:#5a1414}
 html.night .wrap,html.night .ovl-card{filter:grayscale(1) sepia(1) saturate(6) hue-rotate(-45deg) brightness(.55)}
 html.night body{background:#000}
-.ovl{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:20px}
+.ovl{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:20px}
 .ovl[hidden]{display:none}
 .ovl-card{background:#161618;border:2px solid var(--accent);border-radius:22px;padding:24px;max-width:420px;width:100%;display:grid;gap:10px;text-align:center}
 .ovl-big{font:800 48px/1 var(--display);color:var(--accent)}
@@ -2489,7 +2489,7 @@ function __main(){
     function check(){
       var off=(RALLY.pos39?RALLY.pos39-1:0)+TO,now=new Date();
       PSL.forEach(function(p){
-        var dl=LRH.delay(p[0]),t=at(p[1],off+dl),mins=(t-now)/60000;
+        var dl=LRH.delay(p[0]),st0=LRH.ST.filter(function(x){return x.ps===p[0];})[0],p39=LRH.posOf(39),t=(st0&&p39)?LRH.eta(st0,p39):at(p[1],off+dl),mins=(t-now)/60000;if(st0&&LRH.passed(st0)['39'])return;
         [[10,'10'],[2,'2']].forEach(function(w){
           var key='lrh26-al-'+p[0]+'-'+w[1]+(dl?'-d'+dl:'');
           if(mins<=w[0]&&mins>w[0]-3){
